@@ -52,3 +52,9 @@ section {
     text-align: center;  
     min-height: 300px;  
 }
+.header-image {  
+    background-image: url('https://cdn-bio.qrz.com/b/bi4mib/IMG_0354.jpeg?p=94df982a329eacd28e1a9aa42a33be91');  
+    background-size: cover; /* 确保背景图片覆盖整个元素 */  
+    background-position: center; /* 背景图片居中显示 */  
+    height: 300px; /* 或你想要的任何高度 */  
+}
