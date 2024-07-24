@@ -1,90 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>支付界面</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-        .payment-form {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .payment-form h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .submit-btn {
-            width: 100%;
-            padding: 10px;
-            background-color: #5cb85c;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .submit-btn:hover {
-            background-color: #4cae4c;
-        }
-    </style>
-</head>
-<body>
-    <div class="payment-form">
-        <h2>支付信息</h2>
-        <form action="/submit-payment" method="post"> <!-- 注意：这里的action需要替换为你的后端处理URL -->
-            <div class="form-group">
-                <label for="name">姓名：</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="cardNumber">卡号：</label>
-                <input type="text" id="cardNumber" name="cardNumber" pattern="[0-9]{16}" title="请输入16位数字卡号" required>
-            </div>
-            <div class="form-group">
-                <label for="expiryMonth">有效期（月）：</label>
-                <select id="expiryMonth" name="expiryMonth" required>
-                    <option value="01">01</option>
-                    <option value="02">02</option>
-                    <!-- ... 省略其他月份 -->
-                    <option value="12">12</option>
-                </select>
-                <label for="expiryYear" style="margin-left: 20px;">有效期（年）：</label>
-                <select id="expiryYear" name="expiryYear" required>
-                    <!-- 根据当前年份动态生成选项 -->
-                    <option value="2023">2023</option>
-                    <option value="2024">2024</option>
-                    <!-- ... 省略其他年份 -->
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="cvv">CVV：</label>
-                <input type="text" id="cvv" name="cvv" pattern="[0-9]{3}" title="请输入3位数字CVV" required>
-            </div>
-            <button type="submit" class="submit-btn">提交支付</button>
-        </form>
-    </div>
-</body>
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>青岛何影</title>  
+    <link rel="stylesheet" href="styles.css">  
+</head>  
+<body>  
+    <header>  
+        <nav class="navbar">  
+            <ul>  
+                <li><a href="https://hsyscn.top/">首页</a></li>  
+                <li><a href="#services">服务</a></li>  
+                <li><a href="https://hsyscn.top/team.html">关于我们</a></li>  
+                <li><a href="#contact">联系我们</a></li>  
+            </ul>  
+        </nav>  
+      
+    <main>  
+    <a href="https://example.com" class="button-link">炫酷点击我</a>
+
+<style>
+.button-link {
+    display: inline-block; /* 让链接表现得像块级元素 */
+    padding: 10px 20px; /* 内边距 */
+    text-decoration: none; /* 去除下划线 */
+    color: white; /* 文字颜色 */
+    background-color: #007bff; /* 背景颜色 */
+    border: 1px solid #007bff; /* 边框 */
+    border-radius: 5px; /* 边框圆角 */
+    cursor: pointer; /* 鼠标悬停时显示手指形状，表示可点击 */
+    transition: background-color 0.3s; /* 平滑过渡效果 */
+}
+
+.button-link:hover {
+    background-color: #0056b3; /* 鼠标悬停时的背景颜色 */
+}
+
+.button-link:active {
+    background-color: #004085; /* 点击时的背景颜色 */
+}
+</style>
+
+    </main>  
+  
+    <script src="script.js"></script>  
+</body>  
 </html>
