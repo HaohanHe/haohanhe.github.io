@@ -75,12 +75,31 @@
             flex-wrap: wrap;  
         }  
   
-        .box {  
-            flex: 1 1 200px;  
-            margin: 10px;  
-            padding: 20px;  
-            background-color: #ddd;  
-        }  
+        .box-link {  
+    display: inline-block; /* 让链接可以像块级元素一样设置宽度和高度 */  
+    padding: 10px 20px;  
+    background-color: #007bff;  
+    color: white;  
+    text-decoration: none; /* 移除下划线 */  
+    border-radius: 5px;  
+    cursor: pointer;  
+}  
+  
+/* 防止链接的默认行为（如果不需要导航到另一页） */  
+.box-link:hover {  
+    text-decoration: none;  
+}  
+  
+.box-link:focus {  
+    outline: none;  
+}  
+  
+/* 使用JavaScript阻止默认行为 */  
+document.querySelector('.box-link').addEventListener('click', function(e) {  
+    e.preventDefault(); // 阻止链接的默认行为  
+    alert('Box 被点击了！');  
+    // 可以在这里添加其他逻辑  
+});
     </style>  
 </head>  
 <body>  
@@ -90,11 +109,11 @@
     <nav>  
         <div class="nav-container">  
             <!-- Logo -->  
-            <a href="home.html" class="logo">  
+            <a href="https://hsyscn.top/" class="logo">  
                 <img src="whitelogo.jpg" alt="何影">  
             </a>  
   
-           <li><a href="https://hsyscn.top/">首页</a></li>  
+                <li><a href="https://hsyscn.top/">首页</a></li>  
                 <li><a href="https://hsyscn.top/qdhsyscninformation.html">信息门户</a></li>  
                 <li><a href="https://hsyscn.top/team.html">关于我们</a></li>  
                 <li><a href="https://hsyscn.top/pay.html">支付与捐赠</a></li>  
@@ -102,9 +121,9 @@
     </nav>  
     <section>  
         <div class="container">  
-            <div class="box">功能1</div>  
-            <div class="box">功能2</div>  
-            <div class="box">功能3</div>  
+            <a href="https://qdhsyscn.feishu.cn/" class="box-link">OA系统</a>
+            <a href="https://github.com/HaohanHe/haohanhe.github.io/tree/main" class="box-link">网站检修github</a>
+            <div class="https://www.cnki.net/">知网</div>  
             <!-- 更多功能盒子 -->  
         </div>  
     </section>  
