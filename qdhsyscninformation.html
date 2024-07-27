@@ -11,33 +11,55 @@
             padding: 0;  
             background-color: #f4f4f4;  
         }  
+  
         header {  
             background-color: #007bff;  
             color: #ffffff;  
             padding: 10px 20px;  
             text-align: center;  
         }  
+  
         nav {  
             background-color: #333;  
-            overflow: hidden;  
+            padding: 10px 0; /* Adjust padding for logo */  
         }  
+  
+        .nav-container {  
+            max-width: 1200px; /* Optional: Maximum width for the navigation container */  
+            margin: 0 auto; /* Center the navigation container */  
+            display: flex; /* Use flexbox for navigation items */  
+            align-items: center; /* Center items vertically */  
+        }  
+  
+        .logo {  
+            margin-right: 20px; /* Space between logo and navigation items */  
+        }  
+  
+        .logo img {  
+            height: 40px; /* Adjust logo height */  
+            width: auto; /* Keep aspect ratio */  
+        }  
+  
         nav a {  
-            float: left;  
-            display: block;  
             color: white;  
             text-align: center;  
             padding: 14px 20px;  
             text-decoration: none;  
+            display: block; /* Optional: Ensure the whole area is clickable, but not necessary with flexbox */  
         }  
-        nav a:hover {  
+  
+        nav a:not(.logo):hover { /* Exclude logo from hover effect */  
             background-color: #ddd;  
             color: black;  
         }  
+  
         section {  
             padding: 20px;  
             background-color: #ffffff;  
             margin: 10px;  
+            margin-top: 20px; /* Optional: Add space between navigation and section */  
         }  
+  
         footer {  
             background-color: #333;  
             color: white;  
@@ -47,10 +69,12 @@
             bottom: 0;  
             width: 100%;  
         }  
+  
         .container {  
             display: flex;  
             flex-wrap: wrap;  
         }  
+  
         .box {  
             flex: 1 1 200px;  
             margin: 10px;  
@@ -61,16 +85,20 @@
 </head>  
 <body>  
     <header>  
-        <h1>信息门户</h1>  
+        <h1>何影信息门户</h1>  
     </header>  
     <nav>  
-        <a href="#">首页</a>  
-        <a href="#">我的</a>  
-        <a href="#">分类</a>  
-        <a href="#">社区</a>  
-        <a href="#">服务</a>  
-        <a href="#">工具</a>  
-        <a href="#">设置</a>  
+        <div class="nav-container">  
+            <!-- Logo -->  
+            <a href="home.html" class="logo">  
+                <img src="whitelogo.jpg" alt="何影">  
+            </a>  
+  
+           <li><a href="https://hsyscn.top/">首页</a></li>  
+                <li><a href="https://hsyscn.top/qdhsyscninformation.html">信息门户</a></li>  
+                <li><a href="https://hsyscn.top/team.html">关于我们</a></li>  
+                <li><a href="https://hsyscn.top/pay.html">支付与捐赠</a></li>  
+        </div>  
     </nav>  
     <section>  
         <div class="container">  
@@ -81,7 +109,7 @@
         </div>  
     </section>  
     <footer>  
-        <li><a href="https://hsyscn.top/">回首页</a></li>  
+         <li><a href="https://hsyscn.top/">回首页</a></li>    
     </footer>  
 </body>  
 </html>
