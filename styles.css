@@ -1,7 +1,11 @@
 body, html {  
+    height: 100%; /* 使body和html高度占满整个视口 */
     margin: 0;  
     padding: 0;  
     font-family: Arial, sans-serif;  
+    display: flex; /* 启用Flexbox */
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
 }  
   
 .navbar {  
@@ -78,3 +82,12 @@ section {
 .slide.active {
     opacity: 1;
 }
+/* 按钮样式 */
+  .centered-button {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
