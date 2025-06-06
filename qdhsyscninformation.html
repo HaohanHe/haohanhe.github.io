@@ -1,143 +1,183 @@
-<!DOCTYPE html>  
-<html lang="zh-CN">  
-<head>  
-    <meta charset="UTF-8">  
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>青岛何影信息门户</title>
-            <!-- ... 小贴士：你好喵，当你看到了这注释时，你大概会代码，您甭跟我们老大耍小聪明喵，因为您耍不过他，喵。 ... -->
-    <style>  
-        body {  
-            font-family: Arial, sans-serif;  
-            margin: 0;  
-            padding: 0;  
-            background-color: #f4f4f4;  
-        }  
-  
-        header {  
-            background-color: #007bff;  
-            color: #ffffff;  
-            padding: 10px 20px;  
-            text-align: center;  
-        }  
-  
-        nav {  
-            background-color: #333;  
-            padding: 10px 0; /* Adjust padding for logo */  
-        }  
-  
-        .nav-container {  
-            max-width: 1200px; /* Optional: Maximum width for the navigation container */  
-            margin: 0 auto; /* Center the navigation container */  
-            display: flex; /* Use flexbox for navigation items */  
-            align-items: center; /* Center items vertically */  
-        }  
-  
-        .logo {  
-            margin-right: 20px; /* Space between logo and navigation items */  
-        }  
-  
-        .logo img {  
-            height: 40px; /* Adjust logo height */  
-            width: auto; /* Keep aspect ratio */  
-        }  
-  
-        nav a {  
-            color: white;  
-            text-align: center;  
-            padding: 14px 20px;  
-            text-decoration: none;  
-            display: block; /* Optional: Ensure the whole area is clickable, but not necessary with flexbox */  
-        }  
-  
-        nav a:not(.logo):hover { /* Exclude logo from hover effect */  
-            background-color: #ddd;  
-            color: black;  
-        }  
-  
-        section {  
-            padding: 20px;  
-            background-color: #ffffff;  
-            margin: 10px;  
-            margin-top: 20px; /* Optional: Add space between navigation and section */  
-        }  
-  
-        footer {  
-            background-color: #333;  
-            color: white;  
-            text-align: center;  
-            padding: 10px;  
-            position: fixed;  
-            bottom: 0;  
-            width: 100%;  
-        }  
-  
-        .container {  
-            display: flex;  
-            flex-wrap: wrap;  
-        }  
-  
-        .box-link {  
-    display: inline-block; /* 让链接可以像块级元素一样设置宽度和高度 */  
-    padding: 10px 20px;  
-    background-color: #007bff;  
-    color: white;  
-    text-decoration: none; /* 移除下划线 */  
-    border-radius: 5px;  
-    cursor: pointer;  
-}  
-  
-/* 防止链接的默认行为（如果不需要导航到另一页） */  
-.box-link:hover {  
-    text-decoration: none;  
-}  
-  
-.box-link:focus {  
-    outline: none;  
-}  
-  
-/* 使用JavaScript阻止默认行为 */  
-document.querySelector('.box-link').addEventListener('click', function(e) {  
-    e.preventDefault(); // 阻止链接的默认行为  
-    alert('Box 被点击了！');  
-    // 可以在这里添加其他逻辑  
-});
-    </style> 
-<link href="whitelogo.jpg" rel="SHORTCUT ICON"> 
-</head>  
-<body>  
-    <header>  
-        <h1>何影信息门户</h1>  
-    </header>  
-    <nav>  
-        <div class="nav-container">  
-            <!-- Logo -->  
-            <a href="https://hsyscn.top/" class="logo">  
-                <img src="whitelogo.jpg" alt="何影">  
-            </a>  
-  
-                <li><a href="https://hsyscn.top/">首页</a></li>  
-                <li><a href="https://hsyscn.top/qdhsyscninformation.html">信息门户</a></li>  
-                <li><a href="https://hsyscn.top/team.html">关于我们</a></li>  
-                <li><a href="https://hsyscn.top/pay.html">支付与捐赠</a></li>  
-            <iframe width="280" scrolling="no" height="16" frameborder="0" allowtransparency="true" style="margin-top:8px;float:left;" src="http://i.tianqi.com/index.php?c=code&id=11&color=%238cb5e3&icon=1&site=14" ></iframe> 
-        </div>  
-    </nav>  
-    <section>  
-        <div class="container">  
+    <title>何影信息门户</title>
+    <link href="whitelogo.jpg" rel="SHORTCUT ICON">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        
+        .bk66 {
+            background-image: url('https://cdn-bio.qrz.com/b/bi4mib/IMG_0354.jpeg?p=94df982a329eacd28e1a9aa42a33be91'); /* 替换背景图片 */
+            background-size: cover;
+            background-position: center;
+            height: 120px; /* 设置图片高度 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .bk66 h1 {
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        nav {
+            background-color: #333;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            margin-right: 20px;
+        }
+        
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        nav a {
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        
+        nav a:not(.logo):hover {
+            background-color: #ddd;
+            color: black;
+        }
+        
+        .weather-iframe {
+            margin-left: auto;
+        }
+        
+        section {
+            padding: 20px;
+            background-color: #ffffff;
+            margin: 10px;
+            margin-top: 20px;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .box-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .box-link:hover {
+            text-decoration: none;
+            background-color: #0056b3;
+        }
+        
+        .box-link:focus {
+            outline: none;
+        }
+        
+        .debug-iframe {
+            width: 100%;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="bk66">
+            <h1>何影信息门户</h1>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="nav-container">
+            <a href="https://hsyscn.top/" class="logo">
+                <img src="whitelogo.jpg" alt="何影">
+            </a>
+            
+            <ul>
+                <li><a href="https://hsyscn.top/">首页</a></li>
+                <li><a href="https://hsyscn.top/qdhsyscninformation.html">信息门户</a></li>
+                <li><a href="https://hsyscn.top/team.html">关于我们</a></li>
+                <li><a href="https://hsyscn.top/pay.html">支付与捐赠</a></li>
+            </ul>
+            
+            <iframe class="weather-iframe" width="280" scrolling="no" height="16" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=11&color=%238cb5e3&icon=1&site=14"></iframe>
+        </div>
+    </nav>
+    
+    <section>
+        <div class="container">
             <a href="https://qdhsyscn.feishu.cn/" class="box-link">OA系统</a>
             <a href="https://github.com/HaohanHe/haohanhe.github.io/tree/main" class="box-link">网站检修github</a>
-<a href="https://cloud.Lexar.com/" class="box-link">网盘</a>
-            <a
-<a href="https://www.cnki.net/" class="box-link">知网</a>
-<!——网络调试，别乱改，我重拾你的梦>
-           <iframe src="https://ip.skk.moe/simple" style="width: 100%; border: 0"></iframe>
-<!-- 网络调试 -->
+            <a href="https://cloud.Lexar.com/" class="box-link">网盘</a>
+            <a href="https://www.cnki.net/" class="box-link">知网</a>
             
-            <!-- 更多功能盒子，你可添加的。两个月前写的东西我是半点也不想动，我测恁木琴 -->  
-        </div>  
-    </section>  
-    <footer>  
-         <li><a href="https://hsyscn.top/">回首页</a></li>    
-    </footer>  
-</body>  
+            <div class="debug-area">
+                <h3>网络调试</h3>
+                <iframe class="debug-iframe" src="https://ip.skk.moe/simple" style="height: 100px;"></iframe>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <a href="https://hsyscn.top/">回首页</a>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.box-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('Box link clicked:', this.textContent);
+                // 可以在这里添加其他逻辑
+            });
+        });
+    </script>
+</body>
 </html>
