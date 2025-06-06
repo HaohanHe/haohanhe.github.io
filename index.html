@@ -1,45 +1,149 @@
-<!DOCTYPE html>  
-<html lang="zh">  
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>青岛何影</title>
-    <link rel="stylesheet" href="styles.css">  
-<link href="whitelogo.jpg" rel="SHORTCUT ICON">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ffe6e6; /* 设置整体背景颜色 */
+        }
 
-</head>  
-<body>  
-            <!-- ... 小贴士：你好喵，当你看到了这注释时，你大概会代码，您甭跟我们老大耍小聪明喵，因为您耍不过他，喵。 ... -->
-    <header>  
-        <nav class="navbar">  
-            <ul>    
-                <li><a href="https://hsyscn.top/ ">首页</a></li>  
-                <li><a href="https://hsyscn.top/qdhsyscninformation.html ">信息门户</a></li>  
-                <li><a href="https://hsyscn.top/team.html ">关于我们</a></li>  
-                <li><a href="https://hsyscn.top/pay.html ">支付与捐赠</a></li>  
-               
-            </ul>  
-        </nav>  
-        <div class="header-image" style="background-image: url('大概.jpg');"></div>  
-    </header>  
-      
-    <main>  
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-radius: 0 0 10px 10px; /* 添加圆角 */
+        }
 
+        .navbar.scrolled {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
 
-     <li><a href="https://hsyscn.top/qdhsyscninformation.html ">综合数字化信息平台</a></li>
-  
-    <!-- 观世音菩萨，行深般若波罗蜜多时，照见五阴空，度一切苦厄。
+        .navbar ul {
+            list-style: none;
+            text-align: center;
+        }
 
-舍利弗，色空故，无恼坏相；受空故，无受相；想空故，无知相；行空故，无作相；识空故，无觉相。何以故？
-舍利弗，非色异空，非空异色，色即是空，空即是色，受想行识亦复如是。舍利弗，是诸法空相，不生不灭，不垢不净，不增不减。是空法，非过去，非未来，非现在。是故空中，无色，无受想行识，无眼耳鼻舌身意，无色声香味触法，无眼界乃至无意识界，无无明亦无无明尽，乃至无老死，无老死尽，无苦集灭道，无智亦无得。
-以无所得故，菩萨依般若波罗蜜故，心无挂碍；无挂碍故，无有恐怖，离一切颠倒梦想苦恼，究竟涅槃。三世诸佛依般若波罗蜜故，得阿耨多罗三藐三菩提。故知般若波罗蜜是大明咒、无上明咒、无等等明咒，能除一切苦，真实不虚。
-故说般若波罗蜜咒，即说咒曰：竭帝竭帝　波罗竭帝　波罗僧竭帝　菩提僧莎呵The Bodhisattva of the view of the world, walking deep Prajnaparamita, seeing the five Yin voidness, and measuring all the suffering.
-Sariputra, color empty, no angry bad phase; Be empty, no phase; Want to empty, ignorant phase; Line empty, no phase; Sense of space, no sense of phase. What's the reason?
-Sariputra, no color is different, no color is different, color is emptiness, and emptiness is color, and so is thought and knowledge. Sariputra is the empty phase of the Dhamma, which is neither born nor destroyed, neither unclean nor pure, neither increasing nor decreasing. It is empty law, not past, not future, not present. It is therefore in the air, colorless, no thought to do knowledge, no eyes, ears, nose and tongue body meaning, colorless sound and fragrance touching method, no vision and even unconscious world, no knowledge and no knowledge, and even no old death, no old death, no suffering set out the road, no wisdom and no gain.
-Because there is no gain, Bodhisattva depends on Prajna paramita, the mind is not hindered; There is no obstruction, there is no terror, from all upside down dream distress, after all Nirvana. The three Buddhas, in accordance with Prajna Parami, received Anuttara Samyam Sambodhi. Knowing Prajna paramita is a great mantra, supreme mantra, and no other mantra, which can eliminate all suffering and is true.
-Therefore, the mantra of Prajna Paramita, that is, the mantra says: Di Di Di di Po di di Po Shi Di Bodhi Sangha ha -->
-    </main>  
-  
-    <script src="script.js"></script>  
-</body>  
+        .navbar ul li {
+            display: inline;
+            margin: 0 20px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .header-image {
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px; /* 添加圆角 */
+        }
+
+        main {
+            padding-top: 70px;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            border-radius: 10px; /* 添加圆角 */
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            border-radius: 10px; /* 添加圆角 */
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        /* 添加圆角到section */
+        section {
+            padding: 20px;
+            text-align: center;
+            min-height: 300px;
+            border-radius: 10px; /* 添加圆角 */
+            background-color: white; /* 设置背景颜色 */
+            margin: 20px;
+        }
+    </style>
+    <link href="whitelogo.jpg" rel="SHORTCUT ICON">
+</head>
+<body>
+    <div class="slideshow-container">
+        <div class="slide active" style="background-image: url('大概.jpg');"></div>
+        <div class="slide" style="background-image: url('大概2.jpg');"></div>
+        <div class="slide" style="background-image: url('大概3.jpg');"></div>
+    </div>
+
+    <div class="navbar">
+        <ul>
+            <li><a href="https://hsyscn.top/">首页</a></li>
+            <li><a href="https://hsyscn.top/qdhsyscninformation.html">信息门户</a></li>
+            <li><a href="https://hsyscn.top/team.html">关于我们</a></li>
+            <li><a href="https://hsyscn.top/pay.html">支付与捐赠</a></li>
+        </ul>
+    </div>
+
+    <main>
+        <section>
+            <li><a href="https://hsyscn.top/qdhsyscninformation.html">综合数字化信息平台</a></li>
+        </section>
+    </main>
+
+    <script>
+        window.onscroll = function() {scrollFunction()};
+        
+        function scrollFunction() {
+            if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+                document.querySelector(".navbar").classList.add("scrolled");
+            } else {
+                document.querySelector(".navbar").classList.remove("scrolled");
+            }
+        }
+        
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+
+        function showSlide(slideIndex) {
+            slides.forEach((slide) => {
+                slide.classList.remove('active');
+            });
+            slides[slideIndex].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentSlide++;
+            if (currentSlide >= slides.length) {
+                currentSlide = 0;
+            }
+            showSlide(currentSlide);
+        }
+
+        function startSlideshow() {
+            setInterval(nextSlide, 3000);
+        }
+
+        startSlideshow();
+    </script>
+</body>
 </html>
