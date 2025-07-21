@@ -1,4 +1,4 @@
-const CACHE_NAME = 'livestream-v1';
+const CACHE_NAME = 'huluan-live-v1';
 const urlsToCache = [
   'live.html',
   'app.webmanifest',
