@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>胡乱live - 真人大秀直播推流系统</title>
+    <title>胡乱Live - 真人大秀直播推流系统</title>
     <meta name="theme-color" content="#2c3e50">
-<meta name="robots" content="noindex, nofollow">
-
     <link rel="manifest" href="app.webmanifest">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -705,6 +703,9 @@
     <div class="notification" id="notification"></div>
     
     <script>
+        // 您的Workers API地址
+        const API_BASE_URL = 'https://livestream-api.hehaohan.workers.dev';
+        
         // DOM元素
         const previewVideo = document.getElementById('previewVideo');
         const startStreamBtn = document.getElementById('startStream');
@@ -741,6 +742,7 @@
         let dataArray = null;
         let micGainNode = null;
         let bitrateInterval = null;
+        let peerConnection = null;
         let userSettings = {
             platform: "bilibili",
             server: "rtmp://live-push.bilivideo.com/live-bvc/",
@@ -957,7 +959,7 @@
                 streaming = true;
                 
                 // 开始推流
-                startRTMPStreaming();
+                startWebRTCStreaming();
                 
                 // 模拟比特率变化
                 simulateBitrate();
@@ -997,17 +999,94 @@
             }
         }
         
-        // RTMP推流实现
-        function startRTMPStreaming() {
-            // 创建完整的RTMP URL
-            const rtmpUrl = `${userSettings.server}${userSettings.streamKey}`;
-            
-            // 显示推流信息
-            showNotification(`开始推流到: ${userSettings.platform}`, 'info');
-            console.log("推流地址:", rtmpUrl);
-            
-            // 在实际应用中，这里会使用WebRTC或其他技术推流
-            // 由于浏览器限制，直接RTMP推流不可行，需要媒体服务器中转
+        // 使用WebRTC推流
+        async function startWebRTCStreaming() {
+            try {
+                // 从API获取ICE服务器配置
+                const iceConfig = await getIceServers();
+                
+                // 创建RTCPeerConnection
+                peerConnection = new RTCPeerConnection({
+                    iceServers: iceConfig.iceServers
+                });
+                
+                // 添加媒体轨道
+                mediaStream.getTracks().forEach(track => {
+                    peerConnection.addTrack(track, mediaStream);
+                });
+                
+                // 创建offer
+                const offer = await peerConnection.createOffer();
+                await peerConnection.setLocalDescription(offer);
+                
+                // 发送offer到API
+                const response = await fetch(`${API_BASE_URL}/api/start-stream`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        offer: peerConnection.localDescription,
+                        streamKey: userSettings.streamKey,
+                        platform: userSettings.platform
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('API请求失败: ' + response.status);
+                }
+                
+                const data = await response.json();
+                
+                // 设置远程描述
+                await peerConnection.setRemoteDescription(
+                    new RTCSessionDescription(data.answer)
+                );
+                
+                // 处理ICE候选
+                peerConnection.onicecandidate = (event) => {
+                    if (event.candidate) {
+                        // 发送ICE候选到API
+                        fetch(`${API_BASE_URL}/api/ice-candidate`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                candidate: event.candidate,
+                                streamKey: userSettings.streamKey
+                            })
+                        });
+                    }
+                };
+                
+                // 显示推流信息
+                showNotification(`开始推流到: ${userSettings.platform}`, 'info');
+                
+            } catch (error) {
+                console.error('WebRTC推流失败:', error);
+                showNotification(`推流失败: ${error.message}`, 'error');
+                stopStreaming();
+            }
+        }
+        
+        // 从API获取ICE服务器配置
+        async function getIceServers() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/ice-servers`);
+                if (!response.ok) {
+                    throw new Error('获取ICE服务器失败: ' + response.status);
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('获取ICE服务器失败:', error);
+                // 返回默认STUN服务器
+                return {
+                    iceServers: [
+                        { urls: 'stun:stun.l.google.com:19302' }
+                    ]
+                };
+            }
         }
         
         // 停止推流
@@ -1015,6 +1094,12 @@
             if (mediaStream) {
                 mediaStream.getTracks().forEach(track => track.stop());
                 previewVideo.srcObject = null;
+            }
+            
+            // 关闭WebRTC连接
+            if (peerConnection) {
+                peerConnection.close();
+                peerConnection = null;
             }
             
             // 关闭音频上下文
