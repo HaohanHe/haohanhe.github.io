@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="noindex, nofollow">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>胡乱Live - 专业直播推流系统</title>
     <meta name="theme-color" content="#FF5722">
-    <link rel="manifest" href="app.webmanifest">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -128,7 +128,7 @@
             overflow: hidden;
         }
         
-        .preview canvas {
+        .preview video {
             max-width: 100%;
             max-height: 100%;
             background-color: #000;
@@ -258,7 +258,7 @@
             border-radius: 4px;
             display: flex;
             align-items: center;
-            cursor: pointer;
+            cursor: move;
         }
         
         .source-item i {
@@ -363,7 +363,7 @@
         }
         
         .modal-content {
-            background-color: #333;
+            background-color: #2c3e50;
             width: 90%;
             max-width: 500px;
             border-radius: 8px;
@@ -537,7 +537,7 @@
         <!-- 预览区域 -->
         <div class="preview-container">
             <div class="preview">
-                <canvas id="previewCanvas"></canvas>
+                <video id="previewVideo" autoplay muted playsinline></video>
                 <div class="preview-overlay">
                     预览 | 720p | 30fps
                 </div>
@@ -561,12 +561,13 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-tab active" data-tab="sources">场景和源</div>
+                <div class="sidebar-tab" data-tab="audio">混音器</div>
             </div>
             
             <div class="sidebar-content">
                 <div class="tab-content" id="sources-tab">
                     <ul class="source-list">
-                        <li class="source-item" id="cameraSource">
+                        <li class="source-item active" id="cameraSource">
                             <i class="fas fa-video"></i>
                             <span>摄像头源</span>
                             <div class="actions">
@@ -590,6 +591,38 @@
                     </ul>
                     <div class="add-source" id="addSource">
                         <i class="fas fa-plus"></i> 添加源
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="audio-tab" style="display: none;">
+                    <div class="audio-control-group">
+                        <h3><i class="fas fa-microphone"></i> 麦克风</h3>
+                        <div class="slider-container">
+                            <input type="range" min="0" max="100" value="80" class="volume-slider" id="micVolumeTab">
+                            <button class="mute-btn" id="micMuteTab">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="audio-control-group">
+                        <h3><i class="fas fa-desktop"></i> 系统音频</h3>
+                        <div class="slider-container">
+                            <input type="range" min="0" max="100" value="60" class="volume-slider" id="systemVolume">
+                            <button class="mute-btn" id="systemMute">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="audio-control-group">
+                        <h3><i class="fas fa-music"></i> 背景音乐</h3>
+                        <div class="slider-container">
+                            <input type="range" min="0" max="100" value="40" class="volume-slider" id="musicVolume">
+                            <button class="mute-btn" id="musicMute">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -636,9 +669,9 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="streamKey">推流密钥</label>
-                    <input type="password" id="streamKey" class="form-control" placeholder="输入您的推流密钥">
-                    <div class="stream-key-help">在您的直播平台获取推流密钥</div>
+                    <label for="streamKey">流密钥</label>
+                    <input type="password" id="streamKey" class="form-control" placeholder="输入您的流密钥">
+                    <div class="stream-key-help">在您的直播平台获取流密钥</div>
                 </div>
                 
                 <div class="form-group">
@@ -696,6 +729,39 @@
         </div>
     </div>
     
+    <!-- 屏幕共享设置模态框 -->
+    <div class="modal" id="screenModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-desktop"></i> 屏幕共享设置</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="screenSourceType">共享内容</label>
+                    <select id="screenSourceType" class="form-control">
+                        <option value="screen">整个屏幕</option>
+                        <option value="window">应用窗口</option>
+                        <option value="tab">浏览器标签页</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="screenResolution">分辨率</label>
+                    <select id="screenResolution" class="form-control">
+                        <option value="720p" selected>720p (HD)</option>
+                        <option value="1080p">1080p (Full HD)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="saveScreenSettings">保存设置</button>
+            </div>
+        </div>
+    </div>
+    
     <!-- 背景图片设置模态框 -->
     <div class="modal" id="imageModal">
         <div class="modal-content">
@@ -713,10 +779,6 @@
                 <div class="form-group">
                     <label for="imageOpacity">透明度</label>
                     <input type="range" min="0" max="100" value="100" class="form-control" id="imageOpacity">
-                </div>
-                
-                <div class="preview-container" style="height: 200px; margin-top: 15px;">
-                    <canvas id="imagePreviewCanvas"></canvas>
                 </div>
             </div>
             
@@ -740,8 +802,7 @@
         const API_BASE_URL = 'https://livestream-api.hehaohan.workers.dev';
         
         // DOM元素
-        const previewCanvas = document.getElementById('previewCanvas');
-        const previewCtx = previewCanvas.getContext('2d');
+        const previewVideo = document.getElementById('previewVideo');
         const startStreamBtn = document.getElementById('startStream');
         const stopStreamBtn = document.getElementById('stopStream');
         const settingsBtn = document.getElementById('settingsBtn');
@@ -773,14 +834,17 @@
         const imageSource = document.getElementById('imageSource');
         const addSource = document.getElementById('addSource');
         const cameraSettings = document.getElementById('cameraSettings');
+        const screenSettings = document.getElementById('screenSettings');
         const imageSettings = document.getElementById('imageSettings');
         const cameraModal = document.getElementById('cameraModal');
+        const screenModal = document.getElementById('screenModal');
         const imageModal = document.getElementById('imageModal');
         const cameraSelect = document.getElementById('cameraSelect');
         const cameraResolution = document.getElementById('cameraResolution');
+        const screenSourceType = document.getElementById('screenSourceType');
+        const screenResolution = document.getElementById('screenResolution');
         const imageUpload = document.getElementById('imageUpload');
         const imageOpacity = document.getElementById('imageOpacity');
-        const imagePreviewCanvas = document.getElementById('imagePreviewCanvas');
         
         // 全局变量
         let mediaStream = null;
@@ -792,13 +856,10 @@
         let analyser = null;
         let dataArray = null;
         let micGainNode = null;
-        let bitrateInterval = null;
-        let peerConnection = null;
         let statsInterval = null;
-        let activeCamera = null;
+        let peerConnection = null;
+        let activeSource = 'camera';
         let cameras = [];
-        let canvasWidth = 1280;
-        let canvasHeight = 720;
         let userSettings = {
             platform: "bilibili",
             server: "rtmp://live-push.bilivideo.com/live-bvc/",
@@ -807,13 +868,14 @@
             fps: 30,
             camera: null,
             cameraResolution: "720p",
+            screenSource: "screen",
+            screenResolution: "720p",
             backgroundImage: null,
             imageOpacity: 100
         };
         
         // 初始化函数
         function init() {
-            setupCanvas();
             setupEventListeners();
             setupTabs();
             setupAudioControls();
@@ -821,18 +883,6 @@
             checkPWAInstallable();
             loadSettings();
             getCameras();
-        }
-        
-        // 设置画布
-        function setupCanvas() {
-            // 设置画布尺寸
-            previewCanvas.width = canvasWidth;
-            previewCanvas.height = canvasHeight;
-            imagePreviewCanvas.width = 400;
-            imagePreviewCanvas.height = 225;
-            
-            // 初始绘制
-            drawPreview();
         }
         
         // 设置事件监听器
@@ -860,12 +910,13 @@
             });
             
             // 源选择
-            cameraSource.addEventListener('click', () => toggleSource('camera'));
-            screenSource.addEventListener('click', () => toggleSource('screen'));
-            imageSource.addEventListener('click', () => toggleSource('image'));
+            cameraSource.addEventListener('click', () => setActiveSource('camera'));
+            screenSource.addEventListener('click', () => setActiveSource('screen'));
+            imageSource.addEventListener('click', () => setActiveSource('image'));
             
             // 设置按钮
             cameraSettings.addEventListener('click', openCameraSettings);
+            screenSettings.addEventListener('click', openScreenSettings);
             imageSettings.addEventListener('click', openImageSettings);
             
             // 添加源
@@ -875,7 +926,6 @@
             
             // 图片上传
             imageUpload.addEventListener('change', handleImageUpload);
-            imageOpacity.addEventListener('input', updateImagePreview);
         }
         
         // 设置标签页切换
@@ -937,6 +987,7 @@
                 close.addEventListener('click', () => {
                     settingsModal.classList.remove('active');
                     cameraModal.classList.remove('active');
+                    screenModal.classList.remove('active');
                     imageModal.classList.remove('active');
                 });
             });
@@ -944,6 +995,7 @@
             // 保存设置
             saveSettingsBtn.addEventListener('click', saveSettings);
             document.getElementById('saveCameraSettings').addEventListener('click', saveCameraSettings);
+            document.getElementById('saveScreenSettings').addEventListener('click', saveScreenSettings);
             document.getElementById('saveImageSettings').addEventListener('click', saveImageSettings);
         }
         
@@ -966,13 +1018,19 @@
             cameraModal.classList.add('active');
         }
         
+        // 打开屏幕共享设置
+        function openScreenSettings() {
+            // 填充当前屏幕共享设置
+            screenSourceType.value = userSettings.screenSource;
+            screenResolution.value = userSettings.screenResolution;
+            
+            screenModal.classList.add('active');
+        }
+        
         // 打开图片设置
         function openImageSettings() {
             // 填充当前图片设置
             imageOpacity.value = userSettings.imageOpacity;
-            
-            // 更新预览
-            updateImagePreview();
             
             imageModal.classList.add('active');
         }
@@ -985,7 +1043,7 @@
             const frameRate = fps.value;
             
             if (!key) {
-                showNotification("请输入推流密钥", "error");
+                showNotification("请输入流密钥", "error");
                 return;
             }
             
@@ -1020,10 +1078,11 @@
         
         // 保存摄像头设置
         function saveCameraSettings() {
+            userSettings.camera = cameraSelect.value;
             userSettings.cameraResolution = cameraResolution.value;
             
             // 重新初始化摄像头
-            if (activeCamera === 'camera') {
+            if (activeSource === 'camera') {
                 initCamera();
             }
             
@@ -1032,12 +1091,29 @@
             cameraModal.classList.remove('active');
         }
         
+        // 保存屏幕共享设置
+        function saveScreenSettings() {
+            userSettings.screenSource = screenSourceType.value;
+            userSettings.screenResolution = screenResolution.value;
+            
+            // 重新初始化屏幕共享
+            if (activeSource === 'screen') {
+                initScreenShare();
+            }
+            
+            localStorage.setItem('userSettings', JSON.stringify(userSettings));
+            showNotification("屏幕共享设置已保存", "success");
+            screenModal.classList.remove('active');
+        }
+        
         // 保存图片设置
         function saveImageSettings() {
             userSettings.imageOpacity = imageOpacity.value;
             
             // 更新预览
-            drawPreview();
+            if (activeSource === 'image') {
+                previewVideo.style.opacity = userSettings.imageOpacity / 100;
+            }
             
             localStorage.setItem('userSettings', JSON.stringify(userSettings));
             showNotification("背景图片设置已保存", "success");
@@ -1054,8 +1130,9 @@
                 if (userSettings.backgroundImage) {
                     backgroundImage = new Image();
                     backgroundImage.onload = () => {
-                        drawPreview();
-                        updateImagePreview();
+                        if (activeSource === 'image') {
+                            previewVideo.style.opacity = userSettings.imageOpacity / 100;
+                        }
                     };
                     backgroundImage.src = userSettings.backgroundImage;
                 }
@@ -1069,8 +1146,8 @@
             }
         }
         
-        // 切换源
-        function toggleSource(sourceType) {
+        // 设置活动源
+        function setActiveSource(sourceType) {
             // 移除所有活动源
             document.querySelectorAll('.source-item').forEach(item => {
                 item.classList.remove('active');
@@ -1078,7 +1155,7 @@
             
             // 添加活动类
             document.getElementById(`${sourceType}Source`).classList.add('active');
-            activeCamera = sourceType;
+            activeSource = sourceType;
             
             // 初始化源
             switch(sourceType) {
@@ -1089,19 +1166,14 @@
                     initScreenShare();
                     break;
                 case 'image':
-                    // 不需要额外初始化
+                    initBackgroundImage();
                     break;
             }
-            
-            drawPreview();
         }
         
         // 初始化摄像头
         async function initCamera() {
             try {
-                // 获取摄像头列表
-                await getCameras();
-                
                 // 获取摄像头权限
                 const constraints = {
                     video: {
@@ -1114,10 +1186,8 @@
                 };
                 
                 mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+                previewVideo.srcObject = mediaStream;
                 cameraStatus.textContent = '启用';
-                
-                // 开始绘制预览
-                drawPreview();
                 
             } catch (error) {
                 console.error('获取摄像头失败:', error);
@@ -1139,12 +1209,32 @@
                     audio: false
                 });
                 
-                // 开始绘制预览
-                drawPreview();
+                previewVideo.srcObject = screenStream;
                 
             } catch (error) {
                 console.error('屏幕共享失败:', error);
                 showNotification(`无法共享屏幕: ${error.message}`, 'error');
+            }
+        }
+        
+        // 初始化背景图片
+        function initBackgroundImage() {
+            if (backgroundImage) {
+                // 创建canvas作为视频源
+                const canvas = document.createElement('canvas');
+                canvas.width = 1280;
+                canvas.height = 720;
+                const ctx = canvas.getContext('2d');
+                
+                // 绘制背景图片
+                ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+                
+                // 创建媒体流
+                const stream = canvas.captureStream(30);
+                previewVideo.srcObject = stream;
+                previewVideo.style.opacity = userSettings.imageOpacity / 100;
+            } else {
+                showNotification("请先上传背景图片", "warning");
             }
         }
         
@@ -1189,72 +1279,13 @@
                 backgroundImage = new Image();
                 backgroundImage.onload = () => {
                     userSettings.backgroundImage = e.target.result;
-                    updateImagePreview();
+                    if (activeSource === 'image') {
+                        initBackgroundImage();
+                    }
                 };
                 backgroundImage.src = e.target.result;
             };
             reader.readAsDataURL(file);
-        }
-        
-        // 更新图片预览
-        function updateImagePreview() {
-            const ctx = imagePreviewCanvas.getContext('2d');
-            ctx.clearRect(0, 0, imagePreviewCanvas.width, imagePreviewCanvas.height);
-            
-            if (backgroundImage) {
-                // 计算缩放比例
-                const scale = Math.min(
-                    imagePreviewCanvas.width / backgroundImage.width,
-                    imagePreviewCanvas.height / backgroundImage.height
-                );
-                
-                const width = backgroundImage.width * scale;
-                const height = backgroundImage.height * scale;
-                const x = (imagePreviewCanvas.width - width) / 2;
-                const y = (imagePreviewCanvas.height - height) / 2;
-                
-                // 绘制图片
-                ctx.globalAlpha = imageOpacity.value / 100;
-                ctx.drawImage(backgroundImage, x, y, width, height);
-            }
-        }
-        
-        // 绘制预览
-        function drawPreview() {
-            previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
-            
-            // 绘制背景图片
-            if (backgroundImage && activeCamera !== 'image') {
-                previewCtx.globalAlpha = userSettings.imageOpacity / 100;
-                previewCtx.drawImage(backgroundImage, 0, 0, previewCanvas.width, previewCanvas.height);
-                previewCtx.globalAlpha = 1.0;
-            }
-            
-            // 绘制当前活动源
-            if (activeCamera === 'camera' && mediaStream) {
-                const videoTrack = mediaStream.getVideoTracks()[0];
-                if (videoTrack) {
-                    const video = document.createElement('video');
-                    video.srcObject = new MediaStream([videoTrack]);
-                    video.play();
-                    previewCtx.drawImage(video, 0, 0, previewCanvas.width, previewCanvas.height);
-                }
-            }
-            else if (activeCamera === 'screen' && screenStream) {
-                const videoTrack = screenStream.getVideoTracks()[0];
-                if (videoTrack) {
-                    const video = document.createElement('video');
-                    video.srcObject = new MediaStream([videoTrack]);
-                    video.play();
-                    previewCtx.drawImage(video, 0, 0, previewCanvas.width, previewCanvas.height);
-                }
-            }
-            else if (activeCamera === 'image' && backgroundImage) {
-                previewCtx.drawImage(backgroundImage, 0, 0, previewCanvas.width, previewCanvas.height);
-            }
-            
-            // 继续绘制
-            requestAnimationFrame(drawPreview);
         }
         
         // 开始推流
@@ -1262,7 +1293,7 @@
             try {
                 // 确保已配置推流设置
                 if (!userSettings.streamKey) {
-                    showNotification("请先设置推流密钥", "error");
+                    showNotification("请先设置流密钥", "error");
                     openSettings();
                     return;
                 }
@@ -1284,7 +1315,7 @@
                 // 开始推流
                 startWebRTCStreaming();
                 
-                // 开始统计比特率
+                // 开始比特率监控
                 startBitrateMonitoring();
                 
                 showNotification('推流已开始', 'success');
@@ -1334,20 +1365,11 @@
                 });
                 
                 // 添加视频轨道
-                let videoStream;
-                if (activeCamera === 'camera' && mediaStream) {
-                    videoStream = mediaStream;
-                } else if (activeCamera === 'screen' && screenStream) {
-                    videoStream = screenStream;
-                } else {
-                    // 从Canvas获取视频流
-                    videoStream = previewCanvas.captureStream(30);
+                if (mediaStream) {
+                    mediaStream.getTracks().forEach(track => {
+                        peerConnection.addTrack(track, mediaStream);
+                    });
                 }
-                
-                // 添加视频轨道
-                videoStream.getVideoTracks().forEach(track => {
-                    peerConnection.addTrack(track, videoStream);
-                });
                 
                 // 添加音频轨道
                 const audioContextStream = audioContext.createMediaStreamDestination().stream;
@@ -1469,6 +1491,7 @@
         function stopStreaming() {
             if (mediaStream) {
                 mediaStream.getTracks().forEach(track => track.stop());
+                previewVideo.srcObject = null;
             }
             
             if (screenStream) {
