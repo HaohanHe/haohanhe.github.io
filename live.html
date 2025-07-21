@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <meta name="robots" content="noindex, nofollow">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>胡乱Live - 真人大秀直播推流系统</title>
-    <meta name="theme-color" content="#2c3e50">
+    <title>胡乱Live - 专业直播推流系统</title>
+    <meta name="theme-color" content="#FF5722">
     <link rel="manifest" href="app.webmanifest">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #3498db;
-            --secondary: #2c3e50;
-            --success: #2ecc71;
-            --danger: #e74c3c;
-            --warning: #f39c12;
+            --primary: #FF5722;
+            --secondary: #333;
+            --success: #4CAF50;
+            --danger: #F44336;
+            --warning: #FFC107;
             --dark: #1a1a1a;
             --light: #f8f9fa;
             --gray: #6c757d;
@@ -127,7 +128,7 @@
             overflow: hidden;
         }
         
-        .preview video {
+        .preview canvas {
             max-width: 100%;
             max-height: 100%;
             background-color: #000;
@@ -257,7 +258,7 @@
             border-radius: 4px;
             display: flex;
             align-items: center;
-            cursor: move;
+            cursor: pointer;
         }
         
         .source-item i {
@@ -278,6 +279,11 @@
         
         .source-item .actions i:hover {
             color: white;
+        }
+        
+        .source-item.active {
+            background-color: #444;
+            border-left: 3px solid var(--primary);
         }
         
         .add-source {
@@ -357,7 +363,7 @@
         }
         
         .modal-content {
-            background-color: #2c3e50;
+            background-color: #333;
             width: 90%;
             max-width: 500px;
             border-radius: 8px;
@@ -511,7 +517,7 @@
     <nav class="navbar">
         <div class="logo">
             <i class="fas fa-broadcast-tower"></i>
-            <span>LiveStream Studio</span>
+            <span>胡乱Live</span>
         </div>
         <div class="nav-controls">
             <button class="btn btn-warning" id="settingsBtn">
@@ -531,7 +537,7 @@
         <!-- 预览区域 -->
         <div class="preview-container">
             <div class="preview">
-                <video id="previewVideo" autoplay muted playsinline></video>
+                <canvas id="previewCanvas"></canvas>
                 <div class="preview-overlay">
                     预览 | 720p | 30fps
                 </div>
@@ -555,68 +561,35 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-tab active" data-tab="sources">场景和源</div>
-                <div class="sidebar-tab" data-tab="settings">设置</div>
             </div>
             
             <div class="sidebar-content">
                 <div class="tab-content" id="sources-tab">
                     <ul class="source-list">
-                        <li class="source-item">
+                        <li class="source-item" id="cameraSource">
                             <i class="fas fa-video"></i>
                             <span>摄像头源</span>
                             <div class="actions">
-                                <i class="fas fa-cog"></i>
-                                <i class="fas fa-trash"></i>
+                                <i class="fas fa-cog" id="cameraSettings"></i>
                             </div>
                         </li>
-                        <li class="source-item">
+                        <li class="source-item" id="screenSource">
                             <i class="fas fa-desktop"></i>
                             <span>屏幕共享</span>
                             <div class="actions">
-                                <i class="fas fa-cog"></i>
-                                <i class="fas fa-trash"></i>
+                                <i class="fas fa-cog" id="screenSettings"></i>
                             </div>
                         </li>
-                        <li class="source-item">
+                        <li class="source-item" id="imageSource">
                             <i class="fas fa-image"></i>
                             <span>背景图片</span>
                             <div class="actions">
-                                <i class="fas fa-cog"></i>
-                                <i class="fas fa-trash"></i>
+                                <i class="fas fa-cog" id="imageSettings"></i>
                             </div>
                         </li>
                     </ul>
-                    <div class="add-source">
+                    <div class="add-source" id="addSource">
                         <i class="fas fa-plus"></i> 添加源
-                    </div>
-                </div>
-                
-                <div class="tab-content" id="settings-tab" style="display: none;">
-                    <div class="form-group">
-                        <label for="videoResolution">视频分辨率</label>
-                        <select id="videoResolution" class="form-control">
-                            <option value="480p">480p (SD)</option>
-                            <option value="720p" selected>720p (HD)</option>
-                            <option value="1080p">1080p (Full HD)</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="videoFps">帧率 (FPS)</label>
-                        <select id="videoFps" class="form-control">
-                            <option value="24">24</option>
-                            <option value="30" selected>30</option>
-                            <option value="60">60</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="audioQuality">音频质量</label>
-                        <select id="audioQuality" class="form-control">
-                            <option value="low">低 (64kbps)</option>
-                            <option value="medium" selected>中 (128kbps)</option>
-                            <option value="high">高 (256kbps)</option>
-                        </select>
                     </div>
                 </div>
             </div>
@@ -693,6 +666,66 @@
         </div>
     </div>
     
+    <!-- 摄像头设置模态框 -->
+    <div class="modal" id="cameraModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-camera"></i> 摄像头设置</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="cameraSelect">选择摄像头</label>
+                    <select id="cameraSelect" class="form-control"></select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cameraResolution">分辨率</label>
+                    <select id="cameraResolution" class="form-control">
+                        <option value="480p">480p (SD)</option>
+                        <option value="720p" selected>720p (HD)</option>
+                        <option value="1080p">1080p (Full HD)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="saveCameraSettings">保存设置</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 背景图片设置模态框 -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-image"></i> 背景图片设置</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="imageUpload">上传背景图片</label>
+                    <input type="file" id="imageUpload" class="form-control" accept="image/*">
+                </div>
+                
+                <div class="form-group">
+                    <label for="imageOpacity">透明度</label>
+                    <input type="range" min="0" max="100" value="100" class="form-control" id="imageOpacity">
+                </div>
+                
+                <div class="preview-container" style="height: 200px; margin-top: 15px;">
+                    <canvas id="imagePreviewCanvas"></canvas>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="saveImageSettings">保存设置</button>
+            </div>
+        </div>
+    </div>
+    
     <!-- PWA安装提示 -->
     <div class="pwa-install" id="pwaInstall">
         <p>将此应用安装到您的设备上以获得更好的体验</p>
@@ -707,12 +740,13 @@
         const API_BASE_URL = 'https://livestream-api.hehaohan.workers.dev';
         
         // DOM元素
-        const previewVideo = document.getElementById('previewVideo');
+        const previewCanvas = document.getElementById('previewCanvas');
+        const previewCtx = previewCanvas.getContext('2d');
         const startStreamBtn = document.getElementById('startStream');
         const stopStreamBtn = document.getElementById('stopStream');
         const settingsBtn = document.getElementById('settingsBtn');
         const settingsModal = document.getElementById('settingsModal');
-        const modalClose = document.querySelector('.modal-close');
+        const modalClose = document.querySelectorAll('.modal-close');
         const saveSettingsBtn = document.getElementById('saveSettings');
         const pwaInstall = document.getElementById('pwaInstall');
         const installBtn = document.getElementById('installBtn');
@@ -733,8 +767,25 @@
         const videoQuality = document.getElementById('videoQuality');
         const fps = document.getElementById('fps');
         
+        // 源元素
+        const cameraSource = document.getElementById('cameraSource');
+        const screenSource = document.getElementById('screenSource');
+        const imageSource = document.getElementById('imageSource');
+        const addSource = document.getElementById('addSource');
+        const cameraSettings = document.getElementById('cameraSettings');
+        const imageSettings = document.getElementById('imageSettings');
+        const cameraModal = document.getElementById('cameraModal');
+        const imageModal = document.getElementById('imageModal');
+        const cameraSelect = document.getElementById('cameraSelect');
+        const cameraResolution = document.getElementById('cameraResolution');
+        const imageUpload = document.getElementById('imageUpload');
+        const imageOpacity = document.getElementById('imageOpacity');
+        const imagePreviewCanvas = document.getElementById('imagePreviewCanvas');
+        
         // 全局变量
         let mediaStream = null;
+        let screenStream = null;
+        let backgroundImage = null;
         let streaming = false;
         let deferredPrompt = null;
         let audioContext = null;
@@ -743,22 +794,45 @@
         let micGainNode = null;
         let bitrateInterval = null;
         let peerConnection = null;
+        let statsInterval = null;
+        let activeCamera = null;
+        let cameras = [];
+        let canvasWidth = 1280;
+        let canvasHeight = 720;
         let userSettings = {
             platform: "bilibili",
             server: "rtmp://live-push.bilivideo.com/live-bvc/",
             streamKey: "",
             quality: "720p",
-            fps: 30
+            fps: 30,
+            camera: null,
+            cameraResolution: "720p",
+            backgroundImage: null,
+            imageOpacity: 100
         };
         
         // 初始化函数
         function init() {
+            setupCanvas();
             setupEventListeners();
             setupTabs();
             setupAudioControls();
             setupModal();
             checkPWAInstallable();
             loadSettings();
+            getCameras();
+        }
+        
+        // 设置画布
+        function setupCanvas() {
+            // 设置画布尺寸
+            previewCanvas.width = canvasWidth;
+            previewCanvas.height = canvasHeight;
+            imagePreviewCanvas.width = 400;
+            imagePreviewCanvas.height = 225;
+            
+            // 初始绘制
+            drawPreview();
         }
         
         // 设置事件监听器
@@ -784,6 +858,24 @@
                     deferredPrompt = null;
                 }
             });
+            
+            // 源选择
+            cameraSource.addEventListener('click', () => toggleSource('camera'));
+            screenSource.addEventListener('click', () => toggleSource('screen'));
+            imageSource.addEventListener('click', () => toggleSource('image'));
+            
+            // 设置按钮
+            cameraSettings.addEventListener('click', openCameraSettings);
+            imageSettings.addEventListener('click', openImageSettings);
+            
+            // 添加源
+            addSource.addEventListener('click', () => {
+                showNotification("添加源功能开发中", "info");
+            });
+            
+            // 图片上传
+            imageUpload.addEventListener('change', handleImageUpload);
+            imageOpacity.addEventListener('input', updateImagePreview);
         }
         
         // 设置标签页切换
@@ -841,15 +933,18 @@
             settingsBtn.addEventListener('click', openSettings);
             
             // 关闭设置
-            modalClose.addEventListener('click', closeSettings);
-            settingsModal.addEventListener('click', (e) => {
-                if (e.target === settingsModal) {
-                    closeSettings();
-                }
+            modalClose.forEach(close => {
+                close.addEventListener('click', () => {
+                    settingsModal.classList.remove('active');
+                    cameraModal.classList.remove('active');
+                    imageModal.classList.remove('active');
+                });
             });
             
             // 保存设置
             saveSettingsBtn.addEventListener('click', saveSettings);
+            document.getElementById('saveCameraSettings').addEventListener('click', saveCameraSettings);
+            document.getElementById('saveImageSettings').addEventListener('click', saveImageSettings);
         }
         
         // 打开设置
@@ -863,9 +958,23 @@
             settingsModal.classList.add('active');
         }
         
-        // 关闭设置
-        function closeSettings() {
-            settingsModal.classList.remove('active');
+        // 打开摄像头设置
+        function openCameraSettings() {
+            // 填充当前摄像头设置
+            cameraResolution.value = userSettings.cameraResolution;
+            
+            cameraModal.classList.add('active');
+        }
+        
+        // 打开图片设置
+        function openImageSettings() {
+            // 填充当前图片设置
+            imageOpacity.value = userSettings.imageOpacity;
+            
+            // 更新预览
+            updateImagePreview();
+            
+            imageModal.classList.add('active');
         }
         
         // 保存设置
@@ -906,7 +1015,33 @@
             localStorage.setItem('userSettings', JSON.stringify(userSettings));
             
             showNotification("设置已保存", "success");
-            closeSettings();
+            settingsModal.classList.remove('active');
+        }
+        
+        // 保存摄像头设置
+        function saveCameraSettings() {
+            userSettings.cameraResolution = cameraResolution.value;
+            
+            // 重新初始化摄像头
+            if (activeCamera === 'camera') {
+                initCamera();
+            }
+            
+            localStorage.setItem('userSettings', JSON.stringify(userSettings));
+            showNotification("摄像头设置已保存", "success");
+            cameraModal.classList.remove('active');
+        }
+        
+        // 保存图片设置
+        function saveImageSettings() {
+            userSettings.imageOpacity = imageOpacity.value;
+            
+            // 更新预览
+            drawPreview();
+            
+            localStorage.setItem('userSettings', JSON.stringify(userSettings));
+            showNotification("背景图片设置已保存", "success");
+            imageModal.classList.remove('active');
         }
         
         // 加载设置
@@ -914,6 +1049,16 @@
             const savedSettings = localStorage.getItem('userSettings');
             if (savedSettings) {
                 userSettings = JSON.parse(savedSettings);
+                
+                // 加载背景图片
+                if (userSettings.backgroundImage) {
+                    backgroundImage = new Image();
+                    backgroundImage.onload = () => {
+                        drawPreview();
+                        updateImagePreview();
+                    };
+                    backgroundImage.src = userSettings.backgroundImage;
+                }
             }
         }
         
@@ -922,6 +1067,194 @@
             if (window.matchMedia('(display-mode: standalone)').matches) {
                 pwaInstall.style.display = 'none';
             }
+        }
+        
+        // 切换源
+        function toggleSource(sourceType) {
+            // 移除所有活动源
+            document.querySelectorAll('.source-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // 添加活动类
+            document.getElementById(`${sourceType}Source`).classList.add('active');
+            activeCamera = sourceType;
+            
+            // 初始化源
+            switch(sourceType) {
+                case 'camera':
+                    initCamera();
+                    break;
+                case 'screen':
+                    initScreenShare();
+                    break;
+                case 'image':
+                    // 不需要额外初始化
+                    break;
+            }
+            
+            drawPreview();
+        }
+        
+        // 初始化摄像头
+        async function initCamera() {
+            try {
+                // 获取摄像头列表
+                await getCameras();
+                
+                // 获取摄像头权限
+                const constraints = {
+                    video: {
+                        deviceId: userSettings.camera ? { exact: userSettings.camera } : undefined,
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 },
+                        frameRate: { ideal: userSettings.fps }
+                    },
+                    audio: false
+                };
+                
+                mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+                cameraStatus.textContent = '启用';
+                
+                // 开始绘制预览
+                drawPreview();
+                
+            } catch (error) {
+                console.error('获取摄像头失败:', error);
+                showNotification(`无法访问摄像头: ${error.message}`, 'error');
+                cameraStatus.textContent = '禁用';
+            }
+        }
+        
+        // 初始化屏幕共享
+        async function initScreenShare() {
+            try {
+                // 获取屏幕共享权限
+                screenStream = await navigator.mediaDevices.getDisplayMedia({
+                    video: {
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 },
+                        frameRate: { ideal: userSettings.fps }
+                    },
+                    audio: false
+                });
+                
+                // 开始绘制预览
+                drawPreview();
+                
+            } catch (error) {
+                console.error('屏幕共享失败:', error);
+                showNotification(`无法共享屏幕: ${error.message}`, 'error');
+            }
+        }
+        
+        // 获取摄像头列表
+        async function getCameras() {
+            try {
+                // 获取所有媒体设备
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                
+                // 过滤出摄像头设备
+                cameras = devices.filter(device => device.kind === 'videoinput');
+                
+                // 更新摄像头选择下拉框
+                cameraSelect.innerHTML = '';
+                cameras.forEach(camera => {
+                    const option = document.createElement('option');
+                    option.value = camera.deviceId;
+                    option.textContent = camera.label || `摄像头 ${cameraSelect.length + 1}`;
+                    cameraSelect.appendChild(option);
+                });
+                
+                // 设置当前选择的摄像头
+                if (userSettings.camera && cameras.some(cam => cam.deviceId === userSettings.camera)) {
+                    cameraSelect.value = userSettings.camera;
+                } else if (cameras.length > 0) {
+                    userSettings.camera = cameras[0].deviceId;
+                    cameraSelect.value = cameras[0].deviceId;
+                }
+                
+            } catch (error) {
+                console.error('获取摄像头列表失败:', error);
+            }
+        }
+        
+        // 处理图片上传
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                backgroundImage = new Image();
+                backgroundImage.onload = () => {
+                    userSettings.backgroundImage = e.target.result;
+                    updateImagePreview();
+                };
+                backgroundImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // 更新图片预览
+        function updateImagePreview() {
+            const ctx = imagePreviewCanvas.getContext('2d');
+            ctx.clearRect(0, 0, imagePreviewCanvas.width, imagePreviewCanvas.height);
+            
+            if (backgroundImage) {
+                // 计算缩放比例
+                const scale = Math.min(
+                    imagePreviewCanvas.width / backgroundImage.width,
+                    imagePreviewCanvas.height / backgroundImage.height
+                );
+                
+                const width = backgroundImage.width * scale;
+                const height = backgroundImage.height * scale;
+                const x = (imagePreviewCanvas.width - width) / 2;
+                const y = (imagePreviewCanvas.height - height) / 2;
+                
+                // 绘制图片
+                ctx.globalAlpha = imageOpacity.value / 100;
+                ctx.drawImage(backgroundImage, x, y, width, height);
+            }
+        }
+        
+        // 绘制预览
+        function drawPreview() {
+            previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+            
+            // 绘制背景图片
+            if (backgroundImage && activeCamera !== 'image') {
+                previewCtx.globalAlpha = userSettings.imageOpacity / 100;
+                previewCtx.drawImage(backgroundImage, 0, 0, previewCanvas.width, previewCanvas.height);
+                previewCtx.globalAlpha = 1.0;
+            }
+            
+            // 绘制当前活动源
+            if (activeCamera === 'camera' && mediaStream) {
+                const videoTrack = mediaStream.getVideoTracks()[0];
+                if (videoTrack) {
+                    const video = document.createElement('video');
+                    video.srcObject = new MediaStream([videoTrack]);
+                    video.play();
+                    previewCtx.drawImage(video, 0, 0, previewCanvas.width, previewCanvas.height);
+                }
+            }
+            else if (activeCamera === 'screen' && screenStream) {
+                const videoTrack = screenStream.getVideoTracks()[0];
+                if (videoTrack) {
+                    const video = document.createElement('video');
+                    video.srcObject = new MediaStream([videoTrack]);
+                    video.play();
+                    previewCtx.drawImage(video, 0, 0, previewCanvas.width, previewCanvas.height);
+                }
+            }
+            else if (activeCamera === 'image' && backgroundImage) {
+                previewCtx.drawImage(backgroundImage, 0, 0, previewCanvas.width, previewCanvas.height);
+            }
+            
+            // 继续绘制
+            requestAnimationFrame(drawPreview);
         }
         
         // 开始推流
@@ -934,20 +1267,11 @@
                     return;
                 }
                 
-                // 获取摄像头和麦克风权限
-                mediaStream = await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 },
-                        frameRate: { ideal: userSettings.fps }
-                    },
-                    audio: true
-                });
-                
-                previewVideo.srcObject = mediaStream;
+                // 获取麦克风权限
+                const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 
                 // 初始化音频分析器
-                initAudioAnalyzer(mediaStream);
+                initAudioAnalyzer(audioStream);
                 
                 // 更新UI
                 startStreamBtn.disabled = true;
@@ -955,20 +1279,19 @@
                 statusIndicator.classList.add('active');
                 statusText.textContent = '推流中';
                 micStatus.textContent = '启用';
-                cameraStatus.textContent = '启用';
                 streaming = true;
                 
                 // 开始推流
                 startWebRTCStreaming();
                 
-                // 模拟比特率变化
-                simulateBitrate();
+                // 开始统计比特率
+                startBitrateMonitoring();
                 
                 showNotification('推流已开始', 'success');
                 
             } catch (error) {
-                console.error('获取媒体设备失败:', error);
-                showNotification(`无法访问摄像头/麦克风: ${error.message}`, 'error');
+                console.error('推流失败:', error);
+                showNotification(`推流失败: ${error.message}`, 'error');
             }
         }
         
@@ -1010,9 +1333,26 @@
                     iceServers: iceConfig.iceServers
                 });
                 
-                // 添加媒体轨道
-                mediaStream.getTracks().forEach(track => {
-                    peerConnection.addTrack(track, mediaStream);
+                // 添加视频轨道
+                let videoStream;
+                if (activeCamera === 'camera' && mediaStream) {
+                    videoStream = mediaStream;
+                } else if (activeCamera === 'screen' && screenStream) {
+                    videoStream = screenStream;
+                } else {
+                    // 从Canvas获取视频流
+                    videoStream = previewCanvas.captureStream(30);
+                }
+                
+                // 添加视频轨道
+                videoStream.getVideoTracks().forEach(track => {
+                    peerConnection.addTrack(track, videoStream);
+                });
+                
+                // 添加音频轨道
+                const audioContextStream = audioContext.createMediaStreamDestination().stream;
+                audioContextStream.getAudioTracks().forEach(track => {
+                    peerConnection.addTrack(track, audioContextStream);
                 });
                 
                 // 创建offer
@@ -1089,11 +1429,50 @@
             }
         }
         
+        // 开始比特率监控
+        function startBitrateMonitoring() {
+            let lastBytesSent = 0;
+            let lastTime = Date.now();
+            
+            statsInterval = setInterval(async () => {
+                if (!peerConnection || !streaming) return;
+                
+                try {
+                    const stats = await peerConnection.getStats();
+                    let bytesSent = 0;
+                    
+                    stats.forEach(report => {
+                        if (report.type === 'outbound-rtp') {
+                            bytesSent += report.bytesSent || 0;
+                        }
+                    });
+                    
+                    const now = Date.now();
+                    const timeDiff = (now - lastTime) / 1000; // 秒
+                    const bytesDiff = bytesSent - lastBytesSent;
+                    
+                    if (timeDiff > 0) {
+                        const bitrate = (bytesDiff * 8) / timeDiff / 1000; // kbps
+                        bitrateValue.textContent = Math.round(bitrate);
+                    }
+                    
+                    lastBytesSent = bytesSent;
+                    lastTime = now;
+                    
+                } catch (error) {
+                    console.error('获取统计信息失败:', error);
+                }
+            }, 1000);
+        }
+        
         // 停止推流
         function stopStreaming() {
             if (mediaStream) {
                 mediaStream.getTracks().forEach(track => track.stop());
-                previewVideo.srcObject = null;
+            }
+            
+            if (screenStream) {
+                screenStream.getTracks().forEach(track => track.stop());
             }
             
             // 关闭WebRTC连接
@@ -1111,6 +1490,9 @@
                 micGainNode = null;
             }
             
+            // 停止比特率监控
+            clearInterval(statsInterval);
+            
             // 更新UI
             startStreamBtn.disabled = false;
             stopStreamBtn.disabled = true;
@@ -1118,26 +1500,9 @@
             statusText.textContent = '离线';
             streaming = false;
             
-            // 停止比特率模拟
-            clearInterval(bitrateInterval);
             bitrateValue.textContent = '0';
             
             showNotification('推流已停止', 'info');
-        }
-        
-        // 模拟比特率变化
-        function simulateBitrate() {
-            let bitrate = 1500;
-            bitrateInterval = setInterval(() => {
-                if (streaming) {
-                    // 随机波动比特率
-                    bitrate += (Math.random() * 100) - 50;
-                    if (bitrate < 800) bitrate = 800;
-                    if (bitrate > 3000) bitrate = 3000;
-                    
-                    bitrateValue.textContent = Math.round(bitrate);
-                }
-            }, 1000);
         }
         
         // 显示通知
