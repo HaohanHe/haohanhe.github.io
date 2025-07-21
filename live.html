@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiveStream Studio - 专业直播推流系统</title>
+    <meta name="theme-color" content="#2c3e50">
+    <link rel="manifest" href="app.webmanifest">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --dark: #1a1a1a;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #1e1e1e;
+            color: #f0f0f0;
+            height: 100vh;
+            display: grid;
+            grid-template-rows: 50px 1fr 40px;
+            overflow: hidden;
+        }
+        
+        /* 顶部导航栏 */
+        .navbar {
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            border-bottom: 1px solid #444;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        .nav-controls {
+            display: flex;
+            margin-left: auto;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+        
+        .btn i {
+            margin-right: 5px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        /* 主内容区 */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        /* 预览区域 */
+        .preview-container {
+            display: grid;
+            grid-template-rows: 1fr auto;
+            background-color: #111;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .preview {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .preview video {
+            max-width: 100%;
+            max-height: 100%;
+            background-color: #000;
+            border-radius: 4px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        
+        .preview-overlay {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(0,0,0,0.7);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        /* 音频控制 */
+        .audio-controls {
+            padding: 15px;
+            background-color: #252525;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .audio-control-group {
+            margin-bottom: 15px;
+        }
+        
+        .audio-control-group h3 {
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: #aaa;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .slider-container i {
+            margin-right: 10px;
+            color: #777;
+        }
+        
+        .volume-slider {
+            flex: 1;
+            height: 5px;
+            background-color: #444;
+            border-radius: 5px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 15px;
+            height: 15px;
+            background-color: white;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .mute-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            margin-left: 10px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .mute-btn:hover {
+            background-color: #444;
+        }
+        
+        .mute-btn.active {
+            color: var(--danger);
+        }
+        
+        /* 侧边栏 */
+        .sidebar {
+            background-color: #252525;
+            border-left: 1px solid #444;
+            display: grid;
+            grid-template-rows: 40px 1fr;
+            height: 100%;
+        }
+        
+        .sidebar-header {
+            display: flex;
+            background-color: #2c2c2c;
+            border-bottom: 1px solid #444;
+        }
+        
+        .sidebar-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .sidebar-tab.active {
+            background-color: #333;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .sidebar-content {
+            padding: 15px;
+            overflow-y: auto;
+        }
+        
+        .source-list {
+            list-style: none;
+        }
+        
+        .source-item {
+            background-color: #333;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            cursor: move;
+        }
+        
+        .source-item i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .source-item .actions {
+            margin-left: auto;
+            display: flex;
+        }
+        
+        .source-item .actions i {
+            margin-left: 10px;
+            color: #aaa;
+            cursor: pointer;
+        }
+        
+        .source-item .actions i:hover {
+            color: white;
+        }
+        
+        .add-source {
+            background-color: #3a3a3a;
+            color: #aaa;
+            border: 1px dashed #555;
+            padding: 10px;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .add-source:hover {
+            background-color: #444;
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* 底部状态栏 */
+        .status-bar {
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 0.9rem;
+            border-top: 1px solid #444;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        
+        .status-item i {
+            margin-right: 5px;
+            color: var(--primary);
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--danger);
+            margin-right: 5px;
+        }
+        
+        .status-indicator.active {
+            background-color: var(--success);
+        }
+        
+        .bitrate {
+            margin-left: auto;
+        }
+        
+        /* 模态框 */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .modal-content {
+            background-color: #2c3e50;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            transform: translateY(-20px);
+            transition: transform 0.3s;
+        }
+        
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #444;
+        }
+        
+        .modal-title {
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .modal-title i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .modal-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #444;
+            background-color: #3a3a3a;
+            color: white;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .stream-key-help {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 5px;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        
+        /* PWA安装提示 */
+        .pwa-install {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--secondary);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            transform: translateY(150%);
+            transition: transform 0.5s ease;
+        }
+        
+        .pwa-install.show {
+            transform: translateY(0);
+        }
+        
+        .pwa-install p {
+            margin-right: 15px;
+        }
+        
+        /* 通知 */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 4px;
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            transform: translateX(120%);
+            transition: transform 0.5s;
+            z-index: 1100;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            border-left-color: var(--success);
+        }
+        
+        .notification.error {
+            border-left-color: var(--danger);
+        }
+        
+        .notification.info {
+            border-left-color: var(--primary);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr auto;
+            }
+            
+            .sidebar {
+                grid-row: 2;
+                grid-column: 1;
+                border-left: none;
+                border-top: 1px solid #444;
+                grid-template-rows: 40px 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-broadcast-tower"></i>
+            <span>LiveStream Studio</span>
+        </div>
+        <div class="nav-controls">
+            <button class="btn btn-warning" id="settingsBtn">
+                <i class="fas fa-cog"></i>推流设置
+            </button>
+            <button class="btn btn-primary" id="startStream">
+                <i class="fas fa-play"></i>开始推流
+            </button>
+            <button class="btn btn-danger" id="stopStream" disabled>
+                <i class="fas fa-stop"></i>停止推流
+            </button>
+        </div>
+    </nav>
+    
+    <!-- 主内容区 -->
+    <div class="main-container">
+        <!-- 预览区域 -->
+        <div class="preview-container">
+            <div class="preview">
+                <video id="previewVideo" autoplay muted playsinline></video>
+                <div class="preview-overlay">
+                    预览 | 720p | 30fps
+                </div>
+            </div>
+            
+            <!-- 音频控制 -->
+            <div class="audio-controls">
+                <div class="audio-control-group">
+                    <h3><i class="fas fa-microphone"></i> 麦克风控制</h3>
+                    <div class="slider-container">
+                        <input type="range" min="0" max="100" value="80" class="volume-slider" id="micVolume">
+                        <button class="mute-btn" id="micMute">
+                            <i class="fas fa-volume-up"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-tab active" data-tab="sources">场景和源</div>
+                <div class="sidebar-tab" data-tab="settings">设置</div>
+            </div>
+            
+            <div class="sidebar-content">
+                <div class="tab-content" id="sources-tab">
+                    <ul class="source-list">
+                        <li class="source-item">
+                            <i class="fas fa-video"></i>
+                            <span>摄像头源</span>
+                            <div class="actions">
+                                <i class="fas fa-cog"></i>
+                                <i class="fas fa-trash"></i>
+                            </div>
+                        </li>
+                        <li class="source-item">
+                            <i class="fas fa-desktop"></i>
+                            <span>屏幕共享</span>
+                            <div class="actions">
+                                <i class="fas fa-cog"></i>
+                                <i class="fas fa-trash"></i>
+                            </div>
+                        </li>
+                        <li class="source-item">
+                            <i class="fas fa-image"></i>
+                            <span>背景图片</span>
+                            <div class="actions">
+                                <i class="fas fa-cog"></i>
+                                <i class="fas fa-trash"></i>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="add-source">
+                        <i class="fas fa-plus"></i> 添加源
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="settings-tab" style="display: none;">
+                    <div class="form-group">
+                        <label for="videoResolution">视频分辨率</label>
+                        <select id="videoResolution" class="form-control">
+                            <option value="480p">480p (SD)</option>
+                            <option value="720p" selected>720p (HD)</option>
+                            <option value="1080p">1080p (Full HD)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="videoFps">帧率 (FPS)</label>
+                        <select id="videoFps" class="form-control">
+                            <option value="24">24</option>
+                            <option value="30" selected>30</option>
+                            <option value="60">60</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="audioQuality">音频质量</label>
+                        <select id="audioQuality" class="form-control">
+                            <option value="low">低 (64kbps)</option>
+                            <option value="medium" selected>中 (128kbps)</option>
+                            <option value="high">高 (256kbps)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部状态栏 -->
+    <div class="status-bar">
+        <div class="status-item">
+            <div class="status-indicator" id="statusIndicator"></div>
+            <span id="statusText">离线</span>
+        </div>
+        <div class="status-item">
+            <i class="fas fa-microphone"></i>
+            <span>麦克风: <span id="micStatus">启用</span></span>
+        </div>
+        <div class="status-item">
+            <i class="fas fa-video"></i>
+            <span>摄像头: <span id="cameraStatus">启用</span></span>
+        </div>
+        <div class="bitrate">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>比特率: <span id="bitrateValue">0</span> Kbps</span>
+        </div>
+    </div>
+    
+    <!-- 推流设置模态框 -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-cog"></i> 推流设置</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="streamPlatform">直播平台</label>
+                    <select id="streamPlatform" class="form-control">
+                        <option value="bilibili">哔哩哔哩 (Bilibili)</option>
+                        <option value="youtube">YouTube</option>
+                        <option value="twitch">Twitch</option>
+                        <option value="custom">自定义平台</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="streamKey">推流密钥</label>
+                    <input type="password" id="streamKey" class="form-control" placeholder="输入您的推流密钥">
+                    <div class="stream-key-help">在您的直播平台获取推流密钥</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="videoQuality">视频质量</label>
+                    <select id="videoQuality" class="form-control">
+                        <option value="480p">480p (SD)</option>
+                        <option value="720p" selected>720p (HD)</option>
+                        <option value="1080p">1080p (Full HD)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fps">帧率 (FPS)</label>
+                    <select id="fps" class="form-control">
+                        <option value="24">24</option>
+                        <option value="30" selected>30</option>
+                        <option value="60">60</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="saveSettings">保存设置</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- PWA安装提示 -->
+    <div class="pwa-install" id="pwaInstall">
+        <p>将此应用安装到您的设备上以获得更好的体验</p>
+        <button class="btn btn-primary" id="installBtn">安装应用</button>
+    </div>
+    
+    <!-- 通知 -->
+    <div class="notification" id="notification"></div>
+    
+    <script>
+        // DOM元素
+        const previewVideo = document.getElementById('previewVideo');
+        const startStreamBtn = document.getElementById('startStream');
+        const stopStreamBtn = document.getElementById('stopStream');
+        const settingsBtn = document.getElementById('settingsBtn');
+        const settingsModal = document.getElementById('settingsModal');
+        const modalClose = document.querySelector('.modal-close');
+        const saveSettingsBtn = document.getElementById('saveSettings');
+        const pwaInstall = document.getElementById('pwaInstall');
+        const installBtn = document.getElementById('installBtn');
+        const statusIndicator = document.getElementById('statusIndicator');
+        const statusText = document.getElementById('statusText');
+        const bitrateValue = document.getElementById('bitrateValue');
+        const micStatus = document.getElementById('micStatus');
+        const cameraStatus = document.getElementById('cameraStatus');
+        const notification = document.getElementById('notification');
+        
+        // 音频控制元素
+        const micVolume = document.getElementById('micVolume');
+        const micMute = document.getElementById('micMute');
+        
+        // 设置元素
+        const streamPlatform = document.getElementById('streamPlatform');
+        const streamKey = document.getElementById('streamKey');
+        const videoQuality = document.getElementById('videoQuality');
+        const fps = document.getElementById('fps');
+        
+        // 全局变量
+        let mediaStream = null;
+        let streaming = false;
+        let deferredPrompt = null;
+        let audioContext = null;
+        let analyser = null;
+        let dataArray = null;
+        let micGainNode = null;
+        let bitrateInterval = null;
+        let userSettings = {
+            platform: "bilibili",
+            server: "rtmp://live-push.bilivideo.com/live-bvc/",
+            streamKey: "",
+            quality: "720p",
+            fps: 30
+        };
+        
+        // 初始化函数
+        function init() {
+            setupEventListeners();
+            setupTabs();
+            setupAudioControls();
+            setupModal();
+            checkPWAInstallable();
+            loadSettings();
+        }
+        
+        // 设置事件监听器
+        function setupEventListeners() {
+            startStreamBtn.addEventListener('click', startStreaming);
+            stopStreamBtn.addEventListener('click', stopStreaming);
+            settingsBtn.addEventListener('click', openSettings);
+            
+            // 监听PWA安装提示
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                pwaInstall.classList.add('show');
+            });
+            
+            installBtn.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') {
+                        pwaInstall.classList.remove('show');
+                    }
+                    deferredPrompt = null;
+                }
+            });
+        }
+        
+        // 设置标签页切换
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.sidebar-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // 移除所有活动标签
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // 添加活动类
+                    tab.classList.add('active');
+                    
+                    // 隐藏所有内容
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.style.display = 'none';
+                    });
+                    
+                    // 显示对应内容
+                    const tabName = tab.getAttribute('data-tab');
+                    document.getElementById(`${tabName}-tab`).style.display = 'block';
+                });
+            });
+        }
+        
+        // 设置音频控制
+        function setupAudioControls() {
+            // 音量控制
+            micVolume.addEventListener('input', () => {
+                const volume = micVolume.value / 100;
+                if (micGainNode) {
+                    micGainNode.gain.value = volume;
+                }
+            });
+            
+            // 静音按钮
+            micMute.addEventListener('click', () => {
+                micMute.classList.toggle('active');
+                const icon = micMute.querySelector('i');
+                icon.className = micMute.classList.contains('active') ? 
+                    'fas fa-volume-mute' : 'fas fa-volume-up';
+                
+                if (micGainNode) {
+                    if (micMute.classList.contains('active')) {
+                        micGainNode.gain.value = 0;
+                    } else {
+                        micGainNode.gain.value = micVolume.value / 100;
+                    }
+                }
+            });
+        }
+        
+        // 设置模态框
+        function setupModal() {
+            // 打开设置
+            settingsBtn.addEventListener('click', openSettings);
+            
+            // 关闭设置
+            modalClose.addEventListener('click', closeSettings);
+            settingsModal.addEventListener('click', (e) => {
+                if (e.target === settingsModal) {
+                    closeSettings();
+                }
+            });
+            
+            // 保存设置
+            saveSettingsBtn.addEventListener('click', saveSettings);
+        }
+        
+        // 打开设置
+        function openSettings() {
+            // 填充当前设置
+            streamPlatform.value = userSettings.platform;
+            streamKey.value = userSettings.streamKey;
+            videoQuality.value = userSettings.quality;
+            fps.value = userSettings.fps;
+            
+            settingsModal.classList.add('active');
+        }
+        
+        // 关闭设置
+        function closeSettings() {
+            settingsModal.classList.remove('active');
+        }
+        
+        // 保存设置
+        function saveSettings() {
+            const platform = streamPlatform.value;
+            const key = streamKey.value.trim();
+            const quality = videoQuality.value;
+            const frameRate = fps.value;
+            
+            if (!key) {
+                showNotification("请输入推流密钥", "error");
+                return;
+            }
+            
+            // 根据平台选择服务器
+            switch(platform) {
+                case 'bilibili':
+                    userSettings.server = "rtmp://live-push.bilivideo.com/live-bvc/";
+                    break;
+                case 'youtube':
+                    userSettings.server = "rtmp://a.rtmp.youtube.com/live2";
+                    break;
+                case 'twitch':
+                    userSettings.server = "rtmp://live.twitch.tv/app/";
+                    break;
+                case 'custom':
+                    // 用户自定义服务器
+                    userSettings.server = prompt("请输入自定义RTMP服务器地址:");
+                    break;
+            }
+            
+            userSettings.platform = platform;
+            userSettings.streamKey = key;
+            userSettings.quality = quality;
+            userSettings.fps = frameRate;
+            
+            // 保存到本地存储
+            localStorage.setItem('userSettings', JSON.stringify(userSettings));
+            
+            showNotification("设置已保存", "success");
+            closeSettings();
+        }
+        
+        // 加载设置
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('userSettings');
+            if (savedSettings) {
+                userSettings = JSON.parse(savedSettings);
+            }
+        }
+        
+        // 检查PWA是否可安装
+        function checkPWAInstallable() {
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                pwaInstall.style.display = 'none';
+            }
+        }
+        
+        // 开始推流
+        async function startStreaming() {
+            try {
+                // 确保已配置推流设置
+                if (!userSettings.streamKey) {
+                    showNotification("请先设置推流密钥", "error");
+                    openSettings();
+                    return;
+                }
+                
+                // 获取摄像头和麦克风权限
+                mediaStream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 },
+                        frameRate: { ideal: userSettings.fps }
+                    },
+                    audio: true
+                });
+                
+                previewVideo.srcObject = mediaStream;
+                
+                // 初始化音频分析器
+                initAudioAnalyzer(mediaStream);
+                
+                // 更新UI
+                startStreamBtn.disabled = true;
+                stopStreamBtn.disabled = false;
+                statusIndicator.classList.add('active');
+                statusText.textContent = '推流中';
+                micStatus.textContent = '启用';
+                cameraStatus.textContent = '启用';
+                streaming = true;
+                
+                // 开始推流
+                startRTMPStreaming();
+                
+                // 模拟比特率变化
+                simulateBitrate();
+                
+                showNotification('推流已开始', 'success');
+                
+            } catch (error) {
+                console.error('获取媒体设备失败:', error);
+                showNotification(`无法访问摄像头/麦克风: ${error.message}`, 'error');
+            }
+        }
+        
+        // 初始化音频分析器
+        function initAudioAnalyzer(stream) {
+            try {
+                // 创建音频上下文
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 256;
+                
+                const source = audioContext.createMediaStreamSource(stream);
+                
+                // 创建增益节点
+                micGainNode = audioContext.createGain();
+                micGainNode.gain.value = micVolume.value / 100;
+                
+                // 连接：source -> gainNode -> analyser
+                source.connect(micGainNode);
+                micGainNode.connect(analyser);
+                
+                // 创建数据数组
+                dataArray = new Uint8Array(analyser.frequencyBinCount);
+                
+            } catch (error) {
+                console.error('初始化音频分析器失败:', error);
+                showNotification('音频分析初始化失败', 'error');
+            }
+        }
+        
+        // RTMP推流实现
+        function startRTMPStreaming() {
+            // 创建完整的RTMP URL
+            const rtmpUrl = `${userSettings.server}${userSettings.streamKey}`;
+            
+            // 显示推流信息
+            showNotification(`开始推流到: ${userSettings.platform}`, 'info');
+            console.log("推流地址:", rtmpUrl);
+            
+            // 在实际应用中，这里会使用WebRTC或其他技术推流
+            // 由于浏览器限制，直接RTMP推流不可行，需要媒体服务器中转
+        }
+        
+        // 停止推流
+        function stopStreaming() {
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                previewVideo.srcObject = null;
+            }
+            
+            // 关闭音频上下文
+            if (audioContext) {
+                audioContext.close();
+                audioContext = null;
+                analyser = null;
+                dataArray = null;
+                micGainNode = null;
+            }
+            
+            // 更新UI
+            startStreamBtn.disabled = false;
+            stopStreamBtn.disabled = true;
+            statusIndicator.classList.remove('active');
+            statusText.textContent = '离线';
+            streaming = false;
+            
+            // 停止比特率模拟
+            clearInterval(bitrateInterval);
+            bitrateValue.textContent = '0';
+            
+            showNotification('推流已停止', 'info');
+        }
+        
+        // 模拟比特率变化
+        function simulateBitrate() {
+            let bitrate = 1500;
+            bitrateInterval = setInterval(() => {
+                if (streaming) {
+                    // 随机波动比特率
+                    bitrate += (Math.random() * 100) - 50;
+                    if (bitrate < 800) bitrate = 800;
+                    if (bitrate > 3000) bitrate = 3000;
+                    
+                    bitrateValue.textContent = Math.round(bitrate);
+                }
+            }, 1000);
+        }
+        
+        // 显示通知
+        function showNotification(message, type) {
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // 初始化应用
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
