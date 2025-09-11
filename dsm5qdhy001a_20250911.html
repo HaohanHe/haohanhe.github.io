@@ -620,6 +620,30 @@
             const resultArea = document.getElementById('result-area');
             resultArea.style.display = 'block';
             resultArea.scrollIntoView({ behavior: 'smooth' });
+            // 新增：生成AI可识别的精简分析文本及复制功能
+const aiText = `V:${currentVersion}|基:${currentVersion==='self'?`龄${document.getElementById('self-age').value},性${document.getElementById('self-gender').value},日${document.getElementById('self-date').value}`:`关${document.getElementById('informant-relation').value},时${document.getElementById('informant-hours').value},日${document.getElementById('informant-date').value}`}|高:[${highRiskDims.join(',')}]|分:I${dimScores.I},II${dimScores.II},III${dimScores.III},IV${dimScores.IV},V${dimScores.V},VI${dimScores.VI},VII${dimScores.VII},VIII${dimScores.VIII},IX${dimScores.IX},X${dimScores.X},XI${dimScores.XI},XII${dimScores.XII},XIII${dimScores.XIII}|导:${dimScores.VI>=2?'急诊(自伤)':highRiskDims.length>0?'速诊(高风险)':Object.values(dimScores).some(s=>s>=3)?'普诊(中风险)':'随访(低风险)'}`;
+
+// 添加入页面
+const aiTextContainer = document.createElement('div');
+aiTextContainer.style.marginTop = '20px';
+aiTextContainer.style.padding = '10px';
+aiTextContainer.style.backgroundColor = '#f0f4f8';
+aiTextContainer.style.borderRadius = '6px';
+aiTextContainer.innerHTML = `
+  <div style="font-size:14px; margin-bottom:8px;"><strong>AI分析文本：</strong></div>
+  <div id="ai-analysis-text" style="font-size:12px; word-break:break-all; margin-bottom:8px;">${aiText}</div>
+  <button id="copy-ai-text" style="padding:6px 12px; border:none; border-radius:4px; background:#4299e1; color:#fff; cursor:pointer; font-size:12px;">一键复制</button>
+`;
+resultArea.appendChild(aiTextContainer);
+
+// 复制功能
+document.getElementById('copy-ai-text').addEventListener('click', () => {
+  const text = document.getElementById('ai-analysis-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    alert('AI分析文本已复制！');
+  });
+});
+
         });
     </script>
 </body>
