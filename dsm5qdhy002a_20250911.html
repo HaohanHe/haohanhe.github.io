@@ -5,9 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DSM-5 水平1 症状评定量表（6-17岁儿童父母评定）免费测试 </title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Microsoft YaHei", Arial, sans-serif; }
-        body { padding: 15px; line-height: 1.8; background: #f5f7fa; }
-        .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            font-family: Arial, sans-serif; 
+        }
+        
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8); /* 初始背景色 */
+            padding: 10px 0;
+            transition: background-color 0.5s;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar ul {
+            list-style: none;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .navbar ul li {
+            display: inline;
+            margin: 0 20px;
+        }
+        
+        .navbar ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* 当页面滚动时，改变导航栏的透明度 */
+        .scrolled {
+            background-color: rgba(0, 0, 0, 0.5); /* 更透明的背景色 */
+        }
+        
+        main {
+            padding-top: 70px; /* 留出导航栏的空间 */
+        }
+        
+        section {
+            padding: 20px;
+            text-align: center;
+            min-height: 300px;
+        }
+        
+        .header-image {
+            background-image: url('https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover; /* 确保背景图片覆盖整个元素 */
+            background-position: center; /* 背景图片居中显示 */
+            height: 300px; /* 设置高度 */
+        }
+        
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        /* 原量表样式 */
+        .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 40px; }
         .title { text-align: center; font-size: 18px; font-weight: bold; color: #2d3748; margin-bottom: 25px; padding-bottom: 10px; border-bottom: 1px solid #e2e8f0; }
         
         /* 指导语样式 */
@@ -57,7 +133,21 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <ul>
+             <li><a href="https://hsyscn.top/ ">首页</a></li>  
+                <li><a href="https://hsyscn.top/qdhsyscninformation.html ">信息门户</a></li>  
+                <li><a href="https://hsyscn.top/team.html ">关于我们</a></li>  
+                <li><a href="https://hsyscn.top/pay.html ">支付与捐赠</a></li>  
+        </ul>
+    </nav>
+    
+    <!-- 头部图片区域 -->
+    <div class="大概.jpg"></div>
+    
+    <main>
+        <div class="container">
         <div class="title">DSM-5 水平1 症状评定量表（6-17岁儿童父母评定）免费测试</div>
 
         <!-- 指导语 -->
@@ -260,7 +350,7 @@
             <div class="dimension">
                 <div class="dimension-title">IX. 精神病性症状 <span class="required-mark">*</span></div>
                 <div class="question" data-dim="IX" data-score="">
-                    <div class="question-text">14. 说他/她听到有声音正在谈论他/她或告诉他/她要做什么或说他/她的坏话，但其实并没人在那里？</div>
+                    <div class="question-text">14. 说他/她听到有声音正在谈论他/她或告诉他做什么或说他/她的坏话，但其实并没人在那里？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无（一点也不）</div>
                         <div class="option" data-value="1">轻微（很少，少于1-2天）</div>
@@ -410,8 +500,13 @@
         <div class="warning">
             ⚠️ 重要提示：1. 本结果仅为DSM-5水平1症状筛查的初步参考，<strong>不能替代儿童精神科医生/临床心理学家的专业诊断</strong>；2. 若自杀风险（维度XII）得分≥2分（不清楚/是）或精神病性症状（维度IX）得分≥3分，需立即联系儿童精神科医疗机构或危机干预热线；3. 仅限儿童父母/法定监护人使用，非专业人士禁止用于他人评估。
         </div>
-        <a href="http://s01.flagcounter.com/more/JW1"><img src="https://s01.flagcounter.com/map/JW1/size_s/txt_000000/border_CCCCCC/pageviews_0/viewers_0/flags_0/" alt="Flag Counter" border="0"></a>
-        <a href="https://hsyscn.top/">回首页</a>
+        
+        <!-- 页脚链接 -->
+        <div class="footer-links">
+            <a href="http://s01.flagcounter.com/more/JW1"><img src="https://s01.flagcounter.com/map/JW1/size_s/txt_000000/border_CCCCCC/pageviews_0/viewers_0/flags_0/" alt="Flag Counter" border="0"></a>
+            <a href="https://hsyscn.top/">回首页</a>
+            <a href="https://hsyscn.top/qdhsyscninformation.html">综合数字化信息平台</a>
+        </div>
     </div>
 
     <script>
@@ -595,5 +690,18 @@
             });
         });
     </script>
-</body>
+        
+        <!-- 导航栏滚动效果脚本 -->
+        <script>
+            window.addEventListener('scroll', function() {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        </script>
+    </main>
+    </body>
 </html>
