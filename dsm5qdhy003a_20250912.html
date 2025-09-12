@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSM-5水平1-症状自评量表-11-17岁儿童</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 0;
+            transition: background-color 0.5s;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar ul {
+            list-style: none;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+        }
+        .navbar ul li {
+            display: inline;
+            margin: 0 20px;
+        }
+        .navbar ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* 当页面滚动时，改变导航栏的透明度 */
+        .scrolled {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        /* 头部图片区域 */
+        .header-image {
+            width: 100%;
+            height: 200px;
+            background-image: url('大概.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        /* 主内容区域 */
+        main {
+            padding-top: 70px;
+        }
+
+        /* 容器样式 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+
+        /* 标题样式 */
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        h2 {
+            color: #34495e;
+            margin: 30px 0 15px 0;
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+        h3 {
+            color: #7f8c8d;
+            margin: 20px 0 10px 0;
+            font-size: 1.2rem;
+            font-weight: 400;
+        }
+
+        /* 指导语样式 */
+        .instructions {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin-bottom: 30px;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        /* 基本信息区样式 */
+        .info-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+        }
+        .info-item label {
+            margin-right: 10px;
+            font-weight: 500;
+            min-width: 60px;
+        }
+        .info-item input[type="text"],
+        .info-item input[type="number"] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            flex: 1;
+            max-width: 150px;
+        }
+        .info-item input[type="radio"] {
+            margin-right: 5px;
+        }
+        .info-item .radio-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* 量表问题区样式 */
+        .scale-section {
+            margin-bottom: 30px;
+        }
+        .dimension {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        .dimension-header {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: white;
+            border: 1px solid #e1e1e1;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        .question:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .question-text {
+            margin-bottom: 15px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+        }
+        .option input[type="radio"] {
+            margin-right: 8px;
+        }
+        .option input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        .option label {
+            cursor: pointer;
+        }
+        .yes-no-options {
+            display: flex;
+            gap: 20px;
+        }
+        .scale-values {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .scale-value {
+            text-align: center;
+            width: 20%;
+        }
+
+        /* 按钮样式 */
+        .button-group {
+            text-align: center;
+            margin: 40px 0;
+        }
+        .btn {
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #3498db;
+            color: white;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* 结果区样式 */
+        .result-section {
+            margin-top: 40px;
+            padding: 25px;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            display: none;
+        }
+        .result-section.visible {
+            display: block;
+        }
+        .result-header {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2c3e50;
+        }
+        .result-info {
+            background-color: white;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            border: 1px solid #e1e1e1;
+        }
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .result-item {
+            padding: 15px;
+            background-color: white;
+            border-radius: 6px;
+            border: 1px solid #e1e1e1;
+        }
+        .result-item h4 {
+            margin-bottom: 10px;
+            color: #34495e;
+            font-size: 1.1rem;
+        }
+        .result-score {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+        .result-level {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+        .level-low {
+            background-color: #d5f4e6;
+            color: #27ae60;
+        }
+        .level-medium {
+            background-color: #ffeaa7;
+            color: #f39c12;
+        }
+        .level-high {
+            background-color: #ffcccc;
+            color: #e74c3c;
+        }
+        .result-description {
+            margin-top: 10px;
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* 警告样式 */
+        .warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-size: 0.95rem;
+        }
+        .danger {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* AI分析文本区样式 */
+        .ai-analysis {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            border-left: 4px solid #5dade2;
+        }
+        .ai-analysis h4 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+        .ai-text {
+            background-color: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            min-height: 100px;
+            line-height: 1.7;
+            font-size: 0.95rem;
+            color: #333;
+            white-space: pre-wrap;
+        }
+        .copy-button {
+            margin-top: 15px;
+            padding: 8px 20px;
+            background-color: #5dade2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+        .copy-button:hover {
+            background-color: #3498db;
+        }
+
+        /* 专业提示样式 */
+        .professional-tips {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #e1e1e1;
+        }
+        .professional-tips h4 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+        .professional-tips ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+        .professional-tips li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        /* 页脚样式 */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-links {
+            margin-top: 15px;
+        }
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar ul li {
+                margin: 0 8px;
+            }
+            .navbar ul li a {
+                font-size: 0.8rem;
+            }
+            .container {
+                padding: 15px;
+                margin-top: 10px;
+                margin-bottom: 20px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            h2 {
+                font-size: 1.3rem;
+            }
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+            .options {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .option {
+                margin-bottom: 5px;
+            }
+            .yes-no-options {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .header-image {
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <ul>
+            <li><a href="#">首页</a></li>
+            <li><a href="#">量表中心</a></li>
+            <li><a href="#">专业知识</a></li>
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">联系我们</a></li>
+        </ul>
+    </nav>
+
+    <!-- 头部图片区域 -->
+    <div class="header-image"></div>
+
+    <main>
+    <div class="container">
+        <h1>DSM-5水平1-症状自评量表-11-17岁儿童</h1>
+
+        <!-- 基本信息区 -->
+        <div class="info-section">
+            <div class="info-grid">
+                <div class="info-item">
+                    <label for="name">姓名：</label>
+                    <input type="text" id="name" placeholder="请输入姓名">
+                </div>
+                <div class="info-item">
+                    <label for="age">年龄：</label>
+                    <input type="number" id="age" min="11" max="17" placeholder="11-17">
+                </div>
+                <div class="info-item">
+                    <label>性别：</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="gender" value="男"> 男</label>
+                        <label><input type="radio" name="gender" value="女"> 女</label>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <label>日期：</label>
+                    <input type="number" id="year" placeholder="年" style="max-width: 80px;">
+                    <input type="number" id="month" placeholder="月" style="max-width: 60px;">
+                    <input type="number" id="day" placeholder="日" style="max-width: 60px;">
+                </div>
+            </div>
+        </div>
+
+        <!-- 指导语 -->
+        <div class="instructions">
+            <h3>指导语</h3>
+            <p>下面的问题会问一些可能困扰你的事情。对每个问题，圈出最能描述你在 过去2周内 被这个问题困扰的程度（或频率）的数字。</p>
+        </div>
+
+        <!-- 量表问题区 -->
+        <div class="scale-section">
+            <h3>在过去的2周内，你在多大程度（或多经常）……</h3>
+            
+            <!-- 维度I：躯体健康焦虑 -->
+            <div class="dimension">
+                <div class="dimension-header">I. 躯体健康焦虑</div>
+                <div class="question" data-dim="I" data-score="">
+                    <div class="question-text">1. 抱怨腹痛、头痛、或其他疼痛？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q1" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q1" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q1" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q1" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q1" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q1" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+                <div class="question" data-dim="I" data-score="">
+                    <div class="question-text">2. 担心自己的健康或担心自己生病？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q2" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q2" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q2" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q2" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q2" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q2" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度II：睡眠问题 -->
+            <div class="dimension">
+                <div class="dimension-header">II. 睡眠问题</div>
+                <div class="question" data-dim="II" data-score="">
+                    <div class="question-text">3. 被不能入睡，不能保持睡眠或醒来太早所困扰？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q3" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q3" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q3" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q3" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q3" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q3" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度III：注意力问题 -->
+            <div class="dimension">
+                <div class="dimension-header">III. 注意力问题</div>
+                <div class="question" data-dim="III" data-score="">
+                    <div class="question-text">4. 被不能专心于上课、做作业、读书或做游戏所困扰？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q4" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q4" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q4" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q4" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q4" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q4" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度IV：抑郁症状 -->
+            <div class="dimension">
+                <div class="dimension-header">IV. 抑郁症状</div>
+                <div class="question" data-dim="IV" data-score="">
+                    <div class="question-text">5. 相比以前，做事的乐趣减少？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q5" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q5" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q5" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q5" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q5" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q5" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+                <div class="question" data-dim="IV" data-score="">
+                    <div class="question-text">6. 持续几个小时地感到悲伤或沮丧？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q6" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q6" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q6" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q6" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q6" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q6" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度V&VI：愤怒/易激惹 -->
+            <div class="dimension">
+                <div class="dimension-header">V&VI. 愤怒/易激惹</div>
+                <div class="question" data-dim="V&VI" data-score="">
+                    <div class="question-text">7. 感觉比平时更烦躁或更容易被惹怒？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q7" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q7" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q7" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q7" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q7" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q7" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+                <div class="question" data-dim="V&VI" data-score="">
+                    <div class="question-text">8. 感到生气或者发脾气？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q8" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q8" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q8" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q8" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q8" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q8" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度VII：躁狂症状 -->
+            <div class="dimension">
+                <div class="dimension-header">VII. 躁狂症状</div>
+                <div class="question" data-dim="VII" data-score="">
+                    <div class="question-text">9. 比平常启动更多的项目或比平常做更多冒险的事情？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q9" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q9" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q9" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q9" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q9" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q9" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+                <div class="question" data-dim="VII" data-score="">
+                    <div class="question-text">10. 比平常睡得少但仍然精力充沛？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q10" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q10" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q10" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q10" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q10" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q10" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度VIII：焦虑症状 -->
+            <div class="dimension">
+                <div class="dimension-header">VIII. 焦虑症状</div>
+                <div class="question" data-dim="VIII" data-score="">
+                    <div class="question-text">11. 感到紧张、焦虑或害怕？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q11" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q11" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q11" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q11" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q11" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q11" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+                <div class="question" data-dim="VIII" data-score="">
+                    <div class="question-text">12. 不能停止担心？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q12" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q12" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q12" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q12" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q12" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q12" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+                <div class="question" data-dim="VIII" data-score="">
+                    <div class="question-text">13. 不能做你想做或本应该做的事，因为它们让你感到紧张？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q13" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q13" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q13" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q13" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q13" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q13" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度IX：精神病性症状 -->
+            <div class="dimension">
+                <div class="dimension-header">IX. 精神病性症状</div>
+                <div class="question" data-dim="IX" data-score="">
+                    <div class="question-text">14. 听到有声音正在谈论你或告诉你要做什么或说你的坏话，但其实并没人在那里？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q14" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q14" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q14" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q14" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q14" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q14" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+                <div class="question" data-dim="IX" data-score="">
+                    <div class="question-text">15. 在完全清醒时，眼前会呈现出一些人或事物，而这些人或事物是其他人看不到的？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q15" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q15" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q15" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q15" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q15" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q15" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度X：强迫症状 -->
+            <div class="dimension">
+                <div class="dimension-header">X. 强迫症状</div>
+                <div class="question" data-dim="X" data-score="">
+                    <div class="question-text">16. 你会有一些想法不断涌进脑海，这些想法是，你将会做一些不好的事或那些不好的事将发生在你或他人身上吗？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q16" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q16" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q16" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q16" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q16" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q16" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+                <div class="question" data-dim="X" data-score="">
+                    <div class="question-text">17. 感觉必须反复多次地检查某些事情，如是否锁了门或是否关了炉火？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q17" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q17" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q17" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q17" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q17" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q17" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+                <div class="question" data-dim="X" data-score="">
+                    <div class="question-text">18. 非常担心你接触到的东西是脏的或有细菌或是有毒的？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q18" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q18" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q18" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q18" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q18" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q18" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+                <div class="question" data-dim="X" data-score="">
+                    <div class="question-text">19. 感到不得不以一种特定的方式做事，比如数数或大声说特别的东西，来阻止不好的事情发生？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q19" value="0"><label>0 无</label></div>
+                        <div class="option"><input type="radio" name="q19" value="1"><label>1 一点也不</label></div>
+                        <div class="option"><input type="radio" name="q19" value="2"><label>2 轻微</label></div>
+                        <div class="option"><input type="radio" name="q19" value="3"><label>3 轻度</label></div>
+                        <div class="option"><input type="radio" name="q19" value="4"><label>4 中度</label></div>
+                        <div class="option"><input type="radio" name="q19" value="5"><label>5 重度</label></div>
+                    </div>
+                    <div class="scale-values">
+                        <div class="scale-value">无</div>
+                        <div class="scale-value">很少</div>
+                        <div class="scale-value">几天</div>
+                        <div class="scale-value">超过一周</div>
+                        <div class="scale-value">几乎每天</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>在过去的两周内，你是否……</h3>
+
+            <!-- 维度XI：物质使用 -->
+            <div class="dimension">
+                <div class="dimension-header">XI. 物质使用</div>
+                <div class="question" data-dim="XI" data-score="">
+                    <div class="question-text">20. 喝过一种酒精饮料（啤酒、红酒、含酒精饮料，等等）？</div>
+                    <div class="yes-no-options">
+                        <div class="option"><input type="radio" name="q20" value="是"><label>是</label></div>
+                        <div class="option"><input type="radio" name="q20" value="否"><label>否</label></div>
+                        <div class="option"><input type="radio" name="q20" value="不清楚"><label>不清楚</label></div>
+                    </div>
+                </div>
+                <div class="question" data-dim="XI" data-score="">
+                    <div class="question-text">21. 抽过烟、雪茄、烟斗或鼻吸或者咀嚼烟草？</div>
+                    <div class="yes-no-options">
+                        <div class="option"><input type="radio" name="q21" value="是"><label>是</label></div>
+                        <div class="option"><input type="radio" name="q21" value="否"><label>否</label></div>
+                        <div class="option"><input type="radio" name="q21" value="不清楚"><label>不清楚</label></div>
+                    </div>
+                </div>
+                <div class="question" data-dim="XI" data-score="">
+                    <div class="question-text">22. 使用毒品比如大麻、可卡因或霹雳可卡因、俱乐部毒品（如摇头丸）、致幻剂（如麦角酸二乙基酰胺）、海洛因、吸入剂或溶剂（如强力胶）、或冰毒（如快速丸）？</div>
+                    <div class="yes-no-options">
+                        <div class="option"><input type="radio" name="q22" value="是"><label>是</label></div>
+                        <div class="option"><input type="radio" name="q22" value="否"><label>否</label></div>
+                        <div class="option"><input type="radio" name="q22" value="不清楚"><label>不清楚</label></div>
+                    </div>
+                </div>
+                <div class="question" data-dim="XI" data-score="">
+                    <div class="question-text">23. 在没有医生处方的情况下使用任何药物（例如止痛药[如维柯丁]、兴奋剂[如利他林或阿得拉]、镇静剂或镇定剂[如安眠药或安定]或类固醇）？</div>
+                    <div class="yes-no-options">
+                        <div class="option"><input type="radio" name="q23" value="是"><label>是</label></div>
+                        <div class="option"><input type="radio" name="q23" value="否"><label>否</label></div>
+                        <div class="option"><input type="radio" name="q23" value="不清楚"><label>不清楚</label></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度XII：自杀风险 -->
+            <div class="dimension">
+                <div class="dimension-header">XII. 自杀风险</div>
+                <div class="question" data-dim="XII" data-score="">
+                    <div class="question-text">24. 在过去两周内，你是否考虑或计划过自杀？</div>
+                    <div class="yes-no-options">
+                        <div class="option"><input type="radio" name="q24" value="是"><label>是</label></div>
+                        <div class="option"><input type="radio" name="q24" value="否"><label>否</label></div>
+                        <div class="option"><input type="radio" name="q24" value="不清楚"><label>不清楚</label></div>
+                    </div>
+                </div>
+                <div class="question" data-dim="XII" data-score="">
+                    <div class="question-text">25. 你曾经是否尝试过自杀？</div>
+                    <div class="yes-no-options">
+                        <div class="option"><input type="radio" name="q25" value="是"><label>是</label></div>
+                        <div class="option"><input type="radio" name="q25" value="否"><label>否</label></div>
+                        <div class="option"><input type="radio" name="q25" value="不清楚"><label>不清楚</label></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 按钮区域 -->
+        <div class="button-group">
+            <button id="generateBtn" class="btn">生成评估结果</button>
+        </div>
+
+        <!-- 结果区 -->
+        <div id="resultSection" class="result-section">
+            <h2 class="result-header">评估结果</h2>
+            
+            <!-- 基本信息展示 -->
+            <div class="result-info">
+                <h3>基本信息</h3>
+                <p><strong>姓名：</strong><span id="resultName">未填写</span></p>
+                <p><strong>年龄：</strong><span id="resultAge">未填写</span></p>
+                <p><strong>性别：</strong><span id="resultGender">未填写</span></p>
+                <p><strong>评估日期：</strong><span id="resultDate">未填写</span></p>
+            </div>
+
+            <!-- 各维度结果 -->
+            <div class="result-grid">
+                <div class="result-item">
+                    <h4>I. 躯体健康焦虑</h4>
+                    <div class="result-score"><span id="scoreI">0</span>/10</div>
+                    <div class="result-level" id="levelI">低风险</div>
+                    <div class="result-description" id="descI">无明显躯体健康焦虑症状。</div>
+                </div>
+                <div class="result-item">
+                    <h4>II. 睡眠问题</h4>
+                    <div class="result-score"><span id="scoreII">0</span>/5</div>
+                    <div class="result-level" id="levelII">低风险</div>
+                    <div class="result-description" id="descII">睡眠质量良好，无明显睡眠困扰。</div>
+                </div>
+                <div class="result-item">
+                    <h4>III. 注意力问题</h4>
+                    <div class="result-score"><span id="scoreIII">0</span>/5</div>
+                    <div class="result-level" id="levelIII">低风险</div>
+                    <div class="result-description" id="descIII">注意力集中，能够专注于学习和活动。</div>
+                </div>
+                <div class="result-item">
+                    <h4>IV. 抑郁症状</h4>
+                    <div class="result-score"><span id="scoreIV">0</span>/10</div>
+                    <div class="result-level" id="levelIV">低风险</div>
+                    <div class="result-description" id="descIV">情绪稳定，积极向上，无明显抑郁倾向。</div>
+                </div>
+                <div class="result-item">
+                    <h4>V&VI. 愤怒/易激惹</h4>
+                    <div class="result-score"><span id="scoreVVI">0</span>/10</div>
+                    <div class="result-level" id="levelVVI">低风险</div>
+                    <div class="result-description" id="descVVI">情绪管理良好，不易被激怒，无明显愤怒情绪问题。</div>
+                </div>
+                <div class="result-item">
+                    <h4>VII. 躁狂症状</h4>
+                    <div class="result-score"><span id="scoreVII">0</span>/10</div>
+                    <div class="result-level" id="levelVII">低风险</div>
+                    <div class="result-description" id="descVII">行为和睡眠模式正常，无明显躁狂倾向。</div>
+                </div>
+                <div class="result-item">
+                    <h4>VIII. 焦虑症状</h4>
+                    <div class="result-score"><span id="scoreVIII">0</span>/15</div>
+                    <div class="result-level" id="levelVIII">低风险</div>
+                    <div class="result-description" id="descVIII">心态平和，能够有效应对压力，无明显焦虑症状。</div>
+                </div>
+                <div class="result-item">
+                    <h4>IX. 精神病性症状</h4>
+                    <div class="result-score"><span id="scoreIX">0</span>/10</div>
+                    <div class="result-level" id="levelIX">低风险</div>
+                    <div class="result-description" id="descIX">感知觉正常，无幻觉、妄想等异常精神症状。</div>
+                </div>
+                <div class="result-item">
+                    <h4>X. 强迫症状</h4>
+                    <div class="result-score"><span id="scoreX">0</span>/20</div>
+                    <div class="result-level" id="levelX">低风险</div>
+                    <div class="result-description" id="descX">思维和行为灵活，无明显强迫倾向。</div>
+                </div>
+                <div class="result-item">
+                    <h4>XI. 物质使用</h4>
+                    <div class="result-level" id="levelXI">无使用</div>
+                    <div class="result-description" id="descXI">无酒精、烟草或其他物质使用情况。</div>
+                </div>
+                <div class="result-item">
+                    <h4>XII. 自杀风险</h4>
+                    <div class="result-level" id="levelXII">无风险</div>
+                    <div class="result-description" id="descXII">无自杀观念或行为。</div>
+                </div>
+            </div>
+
+            <!-- 综合建议 -->
+            <div class="result-item" style="margin-top: 30px;">
+                <h4>综合建议</h4>
+                <div class="result-description" id="comprehensiveAdvice">
+                    根据评估结果，您的心理健康状况良好。建议继续保持健康的生活方式，包括均衡饮食、适量运动、充足睡眠和积极的社交活动。如果未来遇到心理困扰，建议及时寻求专业帮助。
+                </div>
+            </div>
+
+            <!-- 警告信息 -->
+            <div class="warning">
+                <p><strong>重要提示：</strong>本评估结果仅供参考，不能替代专业诊断。如果您有任何心理健康方面的担忧，请咨询专业心理医生或精神科医生。</p>
+            </div>
+
+            <!-- 高危预警 -->
+            <div id="highRiskWarning" class="danger" style="display: none;">
+                <p>⚠️ <strong>高危预警：</strong>评估结果显示存在较高的心理风险，建议立即寻求专业心理健康服务！</p>
+            </div>
+
+            <!-- AI分析文本区 -->
+            <div class="ai-analysis">
+                <h4>AI分析结果</h4>
+                <div id="aiText" class="ai-text">
+                    根据DSM-5水平1-症状自评量表（11-17岁儿童版）的评估结果，该儿童目前的心理健康状况整体良好。在各维度上均未发现明显的症状或风险因素。
+                    
+                    具体来看：
+                    - 躯体健康焦虑：无明显躯体不适或健康担忧。
+                    - 睡眠问题：睡眠质量良好，无入睡困难或早醒等问题。
+                    - 注意力问题：能够专注于学习和日常活动。
+                    - 抑郁症状：情绪稳定，积极向上，无兴趣减退或情绪低落的表现。
+                    - 愤怒/易激惹：情绪管理能力良好，不易被激怒或出现情绪爆发。
+                    - 躁狂症状：行为和睡眠模式正常，无过度活跃或精力充沛的异常表现。
+                    - 焦虑症状：能够应对日常压力，无过度担忧或紧张的情况。
+                    - 精神病性症状：感知觉和思维过程正常，无幻觉或妄想等异常。
+                    - 强迫症状：思维和行为灵活，无重复的、无法控制的想法或行为。
+                    - 物质使用：无酒精、烟草或其他物质使用的情况。
+                    - 自杀风险：无自杀观念或行为的风险。
+                    
+                    建议继续保持健康的生活方式，包括良好的饮食习惯、规律的作息时间、适量的体育锻炼和积极的社交活动。家长和学校应继续关注儿童的情绪变化和行为表现，提供支持和引导，帮助儿童健康成长。
+                </div>
+                <button id="copyBtn" class="copy-button">一键复制分析结果</button>
+            </div>
+        </div>
+
+        <!-- 专业提示 -->
+        <div class="professional-tips">
+            <h4>重要使用规范</h4>
+            <ul>
+                <li>本量表仅作为初步筛查工具，不能替代专业人员的诊断。</li>
+                <li>评估结果仅供参考，如有任何心理健康问题，请咨询专业心理医生。</li>
+                <li>请在填写时保持诚实，以便获得准确的评估结果。</li>
+                <li>本量表适用于11-17岁儿童的自我评估。</li>
+                <li>如发现评估者存在严重心理问题或自杀风险，请立即寻求专业帮助。</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <div class="footer">
+        <div class="footer-content">
+            <p>© 2025 DSM-5评估量表系统 | 心理健康评估工具</p>
+            <div class="footer-links">
+                <a href="#">使用条款</a>
+                <a href="#">隐私政策</a>
+                <a href="#">关于我们</a>
+                <a href="#">联系我们</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 等待DOM加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取所有单选题的选项
+            const radioOptions = document.querySelectorAll('input[type="radio"]');
+            
+            // 为每个选项添加事件监听
+            radioOptions.forEach(option => {
+                option.addEventListener('change', function() {
+                    // 获取当前问题的容器
+                    const question = this.closest('.question');
+                    // 设置该问题的得分
+                    question.dataset.score = this.value;
+                });
+            });
+
+            // 生成结果按钮点击事件
+            const generateBtn = document.getElementById('generateBtn');
+            const resultSection = document.getElementById('resultSection');
+            
+            generateBtn.addEventListener('click', function() {
+                // 验证必填项
+                const name = document.getElementById('name').value.trim();
+                const age = document.getElementById('age').value;
+                const genderElements = document.querySelectorAll('input[name="gender"]:checked');
+                const year = document.getElementById('year').value;
+                const month = document.getElementById('month').value;
+                const day = document.getElementById('day').value;
+                
+                if (!name) {
+                    alert('请填写姓名');
+                    return;
+                }
+                
+                if (!age || age < 11 || age > 17) {
+                    alert('请填写有效的年龄（11-17岁）');
+                    return;
+                }
+                
+                if (genderElements.length === 0) {
+                    alert('请选择性别');
+                    return;
+                }
+                
+                if (!year || !month || !day) {
+                    alert('请填写完整的评估日期');
+                    return;
+                }
+
+                // 验证所有问题是否已回答
+                const questions = document.querySelectorAll('.question');
+                let allAnswered = true;
+                
+                questions.forEach(question => {
+                    if (!question.dataset.score) {
+                        allAnswered = false;
+                    }
+                });
+                
+                if (!allAnswered) {
+                    alert('请完成所有问题的回答');
+                    return;
+                }
+
+                // 显示结果区域
+                resultSection.classList.add('visible');
+                
+                // 填充基本信息
+                document.getElementById('resultName').textContent = name;
+                document.getElementById('resultAge').textContent = age;
+                document.getElementById('resultGender').textContent = genderElements[0].value;
+                document.getElementById('resultDate').textContent = `${year}年${month}月${day}日`;
+
+                // 计算各维度得分
+                const dimensions = ['I', 'II', 'III', 'IV', 'V&VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+                const dimensionScores = {};
+                
+                // 初始化各维度得分
+                dimensions.forEach(dim => {
+                    dimensionScores[dim] = 0;
+                });
+                
+                // 累加各维度得分
+                questions.forEach(question => {
+                    const dim = question.dataset.dim;
+                    const score = question.dataset.score;
+                    
+                    // 处理不同类型的问题
+                    if (dim === 'XI' || dim === 'XII') {
+                        // 对于物质使用和自杀风险维度，记录答案而不是计算分数
+                        if (!dimensionScores[dim + '_answers']) {
+                            dimensionScores[dim + '_answers'] = [];
+                        }
+                        dimensionScores[dim + '_answers'].push(score);
+                    } else {
+                        // 对于其他维度，累加分数
+                        dimensionScores[dim] += parseInt(score, 10);
+                    }
+                });
+
+                // 设置各维度结果
+                
+                // I. 躯体健康焦虑
+                document.getElementById('scoreI').textContent = dimensionScores['I'];
+                if (dimensionScores['I'] <= 3) {
+                    document.getElementById('levelI').textContent = '低风险';
+                    document.getElementById('levelI').className = 'result-level level-low';
+                    document.getElementById('descI').textContent = '无明显躯体健康焦虑症状。';
+                } else if (dimensionScores['I'] <= 7) {
+                    document.getElementById('levelI').textContent = '中等风险';
+                    document.getElementById('levelI').className = 'result-level level-medium';
+                    document.getElementById('descI').textContent = '偶尔出现躯体不适或健康担忧，建议关注身体状况。';
+                } else {
+                    document.getElementById('levelI').textContent = '高风险';
+                    document.getElementById('levelI').className = 'result-level level-high';
+                    document.getElementById('descI').textContent = '频繁出现躯体不适和健康焦虑，建议咨询医生进行检查。';
+                }
+
+                // II. 睡眠问题
+                document.getElementById('scoreII').textContent = dimensionScores['II'];
+                if (dimensionScores['II'] <= 1) {
+                    document.getElementById('levelII').textContent = '低风险';
+                    document.getElementById('levelII').className = 'result-level level-low';
+                    document.getElementById('descII').textContent = '睡眠质量良好，无明显睡眠困扰。';
+                } else if (dimensionScores['II'] <= 3) {
+                    document.getElementById('levelII').textContent = '中等风险';
+                    document.getElementById('levelII').className = 'result-level level-medium';
+                    document.getElementById('descII').textContent = '偶尔出现睡眠问题，建议调整作息时间。';
+                } else {
+                    document.getElementById('levelII').textContent = '高风险';
+                    document.getElementById('levelII').className = 'result-level level-high';
+                    document.getElementById('descII').textContent = '存在明显的睡眠问题，影响日常生活，建议寻求专业帮助。';
+                }
+
+                // III. 注意力问题
+                document.getElementById('scoreIII').textContent = dimensionScores['III'];
+                if (dimensionScores['III'] <= 1) {
+                    document.getElementById('levelIII').textContent = '低风险';
+                    document.getElementById('levelIII').className = 'result-level level-low';
+                    document.getElementById('descIII').textContent = '注意力集中，能够专注于学习和活动。';
+                } else if (dimensionScores['III'] <= 3) {
+                    document.getElementById('levelIII').textContent = '中等风险';
+                    document.getElementById('levelIII').className = 'result-level level-medium';
+                    document.getElementById('descIII').textContent = '偶尔出现注意力不集中的情况，建议改善学习环境。';
+                } else {
+                    document.getElementById('levelIII').textContent = '高风险';
+                    document.getElementById('levelIII').className = 'result-level level-high';
+                    document.getElementById('descIII').textContent = '注意力严重不集中，影响学习和生活，建议寻求专业评估。';
+                }
+
+                // IV. 抑郁症状
+                document.getElementById('scoreIV').textContent = dimensionScores['IV'];
+                if (dimensionScores['IV'] <= 3) {
+                    document.getElementById('levelIV').textContent = '低风险';
+                    document.getElementById('levelIV').className = 'result-level level-low';
+                    document.getElementById('descIV').textContent = '情绪稳定，积极向上，无明显抑郁倾向。';
+                } else if (dimensionScores['IV'] <= 7) {
+                    document.getElementById('levelIV').textContent = '中等风险';
+                    document.getElementById('levelIV').className = 'result-level level-medium';
+                    document.getElementById('descIV').textContent = '存在一定的抑郁情绪，建议家人和朋友给予更多支持。';
+                } else {
+                    document.getElementById('levelIV').textContent = '高风险';
+                    document.getElementById('levelIV').className = 'result-level level-high';
+                    document.getElementById('descIV').textContent = '存在明显的抑郁症状，建议尽快寻求专业心理帮助。';
+                }
+
+                // V&VI. 愤怒/易激惹
+                document.getElementById('scoreVVI').textContent = dimensionScores['V&VI'];
+                if (dimensionScores['V&VI'] <= 3) {
+                    document.getElementById('levelVVI').textContent = '低风险';
+                    document.getElementById('levelVVI').className = 'result-level level-low';
+                    document.getElementById('descVVI').textContent = '情绪管理良好，不易被激怒，无明显愤怒情绪问题。';
+                } else if (dimensionScores['V&VI'] <= 7) {
+                    document.getElementById('levelVVI').textContent = '中等风险';
+                    document.getElementById('levelVVI').className = 'result-level level-medium';
+                    document.getElementById('descVVI').textContent = '情绪容易激动，偶尔出现愤怒行为，建议学习情绪管理技巧。';
+                } else {
+                    document.getElementById('levelVVI').textContent = '高风险';
+                    document.getElementById('levelVVI').className = 'result-level level-high';
+                    document.getElementById('descVVI').textContent = '存在严重的情绪管理问题，频繁出现愤怒和攻击行为，建议寻求专业帮助。';
+                }
+
+                // VII. 躁狂症状
+                document.getElementById('scoreVII').textContent = dimensionScores['VII'];
+                if (dimensionScores['VII'] <= 3) {
+                    document.getElementById('levelVII').textContent = '低风险';
+                    document.getElementById('levelVII').className = 'result-level level-low';
+                    document.getElementById('descVII').textContent = '行为和睡眠模式正常，无明显躁狂倾向。';
+                } else if (dimensionScores['VII'] <= 7) {
+                    document.getElementById('levelVII').textContent = '中等风险';
+                    document.getElementById('levelVII').className = 'result-level level-medium';
+                    document.getElementById('descVII').textContent = '偶尔出现精力异常充沛或行为冲动的情况，建议关注。';
+                } else {
+                    document.getElementById('levelVII').textContent = '高风险';
+                    document.getElementById('levelVII').className = 'result-level level-high';
+                    document.getElementById('descVII').textContent = '存在明显的躁狂症状，建议尽快寻求精神科专业评估。';
+                }
+
+                // VIII. 焦虑症状
+                document.getElementById('scoreVIII').textContent = dimensionScores['VIII'];
+                if (dimensionScores['VIII'] <= 4) {
+                    document.getElementById('levelVIII').textContent = '低风险';
+                    document.getElementById('levelVIII').className = 'result-level level-low';
+                    document.getElementById('descVIII').textContent = '心态平和，能够有效应对压力，无明显焦虑症状。';
+                } else if (dimensionScores['VIII'] <= 10) {
+                    document.getElementById('levelVIII').textContent = '中等风险';
+                    document.getElementById('levelVIII').className = 'result-level level-medium';
+                    document.getElementById('descVIII').textContent = '存在一定的焦虑情绪，建议学习放松技巧和压力管理方法。';
+                } else {
+                    document.getElementById('levelVIII').textContent = '高风险';
+                    document.getElementById('levelVIII').className = 'result-level level-high';
+                    document.getElementById('descVIII').textContent = '存在严重的焦虑症状，影响日常生活和学习，建议寻求专业心理帮助。';
+                }
+
+                // IX. 精神病性症状
+                document.getElementById('scoreIX').textContent = dimensionScores['IX'];
+                if (dimensionScores['IX'] <= 3) {
+                    document.getElementById('levelIX').textContent = '低风险';
+                    document.getElementById('levelIX').className = 'result-level level-low';
+                    document.getElementById('descIX').textContent = '感知觉正常，无幻觉、妄想等异常精神症状。';
+                } else if (dimensionScores['IX'] <= 7) {
+                    document.getElementById('levelIX').textContent = '中等风险';
+                    document.getElementById('levelIX').className = 'result-level level-medium';
+                    document.getElementById('descIX').textContent = '偶尔出现异常感知或思维，建议关注并寻求专业评估。';
+                } else {
+                    document.getElementById('levelIX').textContent = '高风险';
+                    document.getElementById('levelIX').className = 'result-level level-high';
+                    document.getElementById('descIX').textContent = '存在明显的精神病性症状，建议立即寻求精神科专业帮助。';
+                }
+
+                // X. 强迫症状
+                document.getElementById('scoreX').textContent = dimensionScores['X'];
+                if (dimensionScores['X'] <= 6) {
+                    document.getElementById('levelX').textContent = '低风险';
+                    document.getElementById('levelX').className = 'result-level level-low';
+                    document.getElementById('descX').textContent = '思维和行为灵活，无明显强迫倾向。';
+                } else if (dimensionScores['X'] <= 13) {
+                    document.getElementById('levelX').textContent = '中等风险';
+                    document.getElementById('levelX').className = 'result-level level-medium';
+                    document.getElementById('descX').textContent = '存在一定的强迫思维或行为，建议学习放松技巧。';
+                } else {
+                    document.getElementById('levelX').textContent = '高风险';
+                    document.getElementById('levelX').className = 'result-level level-high';
+                    document.getElementById('descX').textContent = '存在严重的强迫症状，影响日常生活，建议寻求专业心理帮助。';
+                }
+
+                // XI. 物质使用
+                const substanceAnswers = dimensionScores['XI_answers'] || [];
+                const hasSubstanceUse = substanceAnswers.some(answer => answer === '是');
+                
+                if (hasSubstanceUse) {
+                    document.getElementById('levelXI').textContent = '有使用';
+                    document.getElementById('levelXI').className = 'result-level level-high';
+                    
+                    let substanceTypes = [];
+                    if (substanceAnswers[0] === '是') substanceTypes.push('酒精');
+                    if (substanceAnswers[1] === '是') substanceTypes.push('烟草');
+                    if (substanceAnswers[2] === '是') substanceTypes.push('毒品');
+                    if (substanceAnswers[3] === '是') substanceTypes.push('非处方药物');
+                    
+                    document.getElementById('descXI').textContent = `存在${substanceTypes.join('、')}使用情况，建议寻求专业的物质使用咨询和帮助。`;
+                } else {
+                    document.getElementById('levelXI').textContent = '无使用';
+                    document.getElementById('levelXI').className = 'result-level level-low';
+                    document.getElementById('descXI').textContent = '无酒精、烟草或其他物质使用情况。';
+                }
+
+                // XII. 自杀风险
+                const suicideAnswers = dimensionScores['XII_answers'] || [];
+                const hasCurrentSuicideRisk = suicideAnswers[0] === '是';
+                const hasHistorySuicideRisk = suicideAnswers[1] === '是';
+                
+                if (hasCurrentSuicideRisk) {
+                    document.getElementById('levelXII').textContent = '高风险';
+                    document.getElementById('levelXII').className = 'result-level level-high';
+                    document.getElementById('descXII').textContent = '最近两周内有自杀观念或计划，存在严重的自杀风险！';
+                    document.getElementById('highRiskWarning').style.display = 'block';
+                } else if (hasHistorySuicideRisk) {
+                    document.getElementById('levelXII').textContent = '中度风险';
+                    document.getElementById('levelXII').className = 'result-level level-medium';
+                    document.getElementById('descXII').textContent = '曾经有过自杀尝试史，需要密切关注情绪变化。';
+                } else {
+                    document.getElementById('levelXII').textContent = '无风险';
+                    document.getElementById('levelXII').className = 'result-level level-low';
+                    document.getElementById('descXII').textContent = '无自杀观念或行为。';
+                }
+
+                // 生成综合建议
+                let highRiskDimensions = [];
+                let mediumRiskDimensions = [];
+                
+                // 检查各维度风险等级
+                if (dimensionScores['I'] > 7) highRiskDimensions.push('躯体健康焦虑');
+                else if (dimensionScores['I'] > 3) mediumRiskDimensions.push('躯体健康焦虑');
+                
+                if (dimensionScores['II'] > 3) highRiskDimensions.push('睡眠问题');
+                else if (dimensionScores['II'] > 1) mediumRiskDimensions.push('睡眠问题');
+                
+                if (dimensionScores['III'] > 3) highRiskDimensions.push('注意力问题');
+                else if (dimensionScores['III'] > 1) mediumRiskDimensions.push('注意力问题');
+                
+                if (dimensionScores['IV'] > 7) highRiskDimensions.push('抑郁症状');
+                else if (dimensionScores['IV'] > 3) mediumRiskDimensions.push('抑郁症状');
+                
+                if (dimensionScores['V&VI'] > 7) highRiskDimensions.push('愤怒/易激惹');
+                else if (dimensionScores['V&VI'] > 3) mediumRiskDimensions.push('愤怒/易激惹');
+                
+                if (dimensionScores['VII'] > 7) highRiskDimensions.push('躁狂症状');
+                else if (dimensionScores['VII'] > 3) mediumRiskDimensions.push('躁狂症状');
+                
+                if (dimensionScores['VIII'] > 10) highRiskDimensions.push('焦虑症状');
+                else if (dimensionScores['VIII'] > 4) mediumRiskDimensions.push('焦虑症状');
+                
+                if (dimensionScores['IX'] > 7) highRiskDimensions.push('精神病性症状');
+                else if (dimensionScores['IX'] > 3) mediumRiskDimensions.push('精神病性症状');
+                
+                if (dimensionScores['X'] > 13) highRiskDimensions.push('强迫症状');
+                else if (dimensionScores['X'] > 6) mediumRiskDimensions.push('强迫症状');
+                
+                if (hasSubstanceUse) highRiskDimensions.push('物质使用');
+                if (hasCurrentSuicideRisk) highRiskDimensions.push('自杀风险');
+                else if (hasHistorySuicideRisk) mediumRiskDimensions.push('自杀风险');
+
+                // 根据风险维度生成综合建议
+                let comprehensiveAdvice = '';
+                
+                if (highRiskDimensions.length > 0) {
+                    comprehensiveAdvice += `评估结果显示在${highRiskDimensions.join('、')}方面存在较高风险，建议立即寻求专业心理健康服务！`;
+                } else if (mediumRiskDimensions.length > 0) {
+                    comprehensiveAdvice += `评估结果显示在${mediumRiskDimensions.join('、')}方面存在一定风险，建议关注相关症状变化，必要时寻求专业帮助。`;
+                } else {
+                    comprehensiveAdvice += '根据评估结果，您的心理健康状况良好。建议继续保持健康的生活方式，包括均衡饮食、适量运动、充足睡眠和积极的社交活动。如果未来遇到心理困扰，建议及时寻求专业帮助。';
+                }
+                
+                document.getElementById('comprehensiveAdvice').textContent = comprehensiveAdvice;
+
+                // 生成AI分析结果
+                let aiAnalysis = `根据DSM-5水平1-症状自评量表（11-17岁儿童版）的评估结果，该儿童目前的心理健康状况分析如下：\n\n`;
+                
+                aiAnalysis += `基本信息：\n`;
+                aiAnalysis += `- 姓名：${name}\n`;
+                aiAnalysis += `- 年龄：${age}岁\n`;
+                aiAnalysis += `- 性别：${genderElements[0].value}\n`;
+                aiAnalysis += `- 评估日期：${year}年${month}月${day}日\n\n`;
+                
+                aiAnalysis += `各维度评估结果：\n`;
+                aiAnalysis += `- I. 躯体健康焦虑：得分${dimensionScores['I']}/10，风险等级${document.getElementById('levelI').textContent}\n`;
+                aiAnalysis += `- II. 睡眠问题：得分${dimensionScores['II']}/5，风险等级${document.getElementById('levelII').textContent}\n`;
+                aiAnalysis += `- III. 注意力问题：得分${dimensionScores['III']}/5，风险等级${document.getElementById('levelIII').textContent}\n`;
+                aiAnalysis += `- IV. 抑郁症状：得分${dimensionScores['IV']}/10，风险等级${document.getElementById('levelIV').textContent}\n`;
+                aiAnalysis += `- V&VI. 愤怒/易激惹：得分${dimensionScores['V&VI']}/10，风险等级${document.getElementById('levelVVI').textContent}\n`;
+                aiAnalysis += `- VII. 躁狂症状：得分${dimensionScores['VII']}/10，风险等级${document.getElementById('levelVII').textContent}\n`;
+                aiAnalysis += `- VIII. 焦虑症状：得分${dimensionScores['VIII']}/15，风险等级${document.getElementById('levelVIII').textContent}\n`;
+                aiAnalysis += `- IX. 精神病性症状：得分${dimensionScores['IX']}/10，风险等级${document.getElementById('levelIX').textContent}\n`;
+                aiAnalysis += `- X. 强迫症状：得分${dimensionScores['X']}/20，风险等级${document.getElementById('levelX').textContent}\n`;
+                aiAnalysis += `- XI. 物质使用：${document.getElementById('levelXI').textContent}\n`;
+                aiAnalysis += `- XII. 自杀风险：${document.getElementById('levelXII').textContent}\n\n`;
+                
+                aiAnalysis += `综合评价：\n${comprehensiveAdvice}\n\n`;
+                
+                aiAnalysis += `建议：\n`;
+                if (highRiskDimensions.length > 0) {
+                    aiAnalysis += `- 立即寻求精神科医生或心理治疗师的专业帮助\n`;
+                    aiAnalysis += `- 家人和学校应密切关注儿童的情绪和行为变化\n`;
+                    aiAnalysis += `- 必要时考虑住院评估和治疗\n`;
+                } else if (mediumRiskDimensions.length > 0) {
+                    aiAnalysis += `- 建立良好的生活习惯，保证充足的睡眠和合理的饮食\n`;
+                    aiAnalysis += `- 学习情绪管理和压力应对技巧\n`;
+                    aiAnalysis += `- 定期进行心理健康监测，如症状加重应及时寻求专业帮助\n`;
+                } else {
+                    aiAnalysis += `- 继续保持健康的生活方式和积极的心态\n`;
+                    aiAnalysis += `- 建立良好的社会支持系统，与家人和朋友保持良好沟通\n`;
+                    aiAnalysis += `- 培养健康的兴趣爱好，丰富课余生活\n`;
+                }
+                
+                aiAnalysis += `\n重要提示：本评估结果仅供参考，不能替代专业诊断。如对评估结果有任何疑问或担忧，请咨询专业心理医生或精神科医生。`;
+                
+                document.getElementById('aiText').textContent = aiAnalysis;
+            });
+
+            // 一键复制功能
+            const copyBtn = document.getElementById('copyBtn');
+            
+            copyBtn.addEventListener('click', function() {
+                const aiText = document.getElementById('aiText').textContent;
+                
+                // 创建临时文本区域
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = aiText;
+                document.body.appendChild(tempTextArea);
+                
+                // 选择并复制文本
+                tempTextArea.select();
+                document.execCommand('copy');
+                
+                // 移除临时文本区域
+                document.body.removeChild(tempTextArea);
+                
+                // 提示复制成功
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = '已复制！';
+                
+                setTimeout(function() {
+                    copyBtn.textContent = originalText;
+                }, 2000);
+            });
+        });
+    </script>
+    
+    <!-- 导航栏滚动效果脚本 -->
+    <script>
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</main>
+</body>
+</html>
