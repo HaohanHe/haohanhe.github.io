@@ -483,7 +483,7 @@
     </nav>
 
     <!-- 头部图片区域 -->
-    <div class="大概.jpg"></div>
+    <div class="https://hsyscn.top/%E5%A4%A7%E6%A6%82.jpg"></div>
 
     <main>
     <div class="container">
@@ -1121,10 +1121,10 @@
         <div class="footer-content">
             <p>© 2025 DSM-5评估量表系统 | 心理健康评估工具</p>
             <div class="footer-links">
-                <a href="#">使用条款</a>
-                <a href="#">隐私政策</a>
-                <a href="#">关于我们</a>
-                <a href="#">联系我们</a>
+                <a href="https://hsyscn.top/ ">首页</a>
+               <a href="https://hsyscn.top/qdhsyscninformation.html ">信息门户</a>
+               <a href="https://hsyscn.top/team.html ">关于我们</a>
+                <a href="https://hsyscn.top/pay.html ">支付与捐赠</a>
             </div>
         </div>
     </div>
@@ -1465,46 +1465,66 @@
                 
                 document.getElementById('comprehensiveAdvice').textContent = comprehensiveAdvice;
 
-                // 生成AI分析结果
-                let aiAnalysis = `根据DSM-5水平1-症状自评量表（11-17岁儿童版）的评估结果，该儿童目前的心理健康状况分析如下：\n\n`;
+                // 生成结构化的AI分析结果，适合智能体在无前提背景下读懂
+                let aiAnalysis = `V:CP|基:名${name},龄${age},性${genderElements[0].value},日${year}${month}${day}|`;
                 
-                aiAnalysis += `基本信息：\n`;
-                aiAnalysis += `- 姓名：${name}\n`;
-                aiAnalysis += `- 年龄：${age}岁\n`;
-                aiAnalysis += `- 性别：${genderElements[0].value}\n`;
-                aiAnalysis += `- 评估日期：${year}年${month}月${day}日\n\n`;
+                // 添加高风险维度
+                let highRisk = [];
+                if (document.getElementById('levelI').textContent.includes('高风险')) highRisk.push('I');
+                if (document.getElementById('levelII').textContent.includes('高风险')) highRisk.push('II');
+                if (document.getElementById('levelIII').textContent.includes('高风险')) highRisk.push('III');
+                if (document.getElementById('levelIV').textContent.includes('高风险')) highRisk.push('IV');
+                if (document.getElementById('levelVVI').textContent.includes('高风险')) highRisk.push('V&VI');
+                if (document.getElementById('levelVII').textContent.includes('高风险')) highRisk.push('VII');
+                if (document.getElementById('levelVIII').textContent.includes('高风险')) highRisk.push('VIII');
+                if (document.getElementById('levelIX').textContent.includes('高风险')) highRisk.push('IX');
+                if (document.getElementById('levelX').textContent.includes('高风险')) highRisk.push('X');
+                if (document.getElementById('levelXI').textContent.includes('有')) highRisk.push('XI');
+                if (document.getElementById('levelXII').textContent.includes('高风险')) highRisk.push('XII');
                 
-                aiAnalysis += `各维度评估结果：\n`;
-                aiAnalysis += `- I. 躯体健康焦虑：得分${dimensionScores['I']}/10，风险等级${document.getElementById('levelI').textContent}\n`;
-                aiAnalysis += `- II. 睡眠问题：得分${dimensionScores['II']}/5，风险等级${document.getElementById('levelII').textContent}\n`;
-                aiAnalysis += `- III. 注意力问题：得分${dimensionScores['III']}/5，风险等级${document.getElementById('levelIII').textContent}\n`;
-                aiAnalysis += `- IV. 抑郁症状：得分${dimensionScores['IV']}/10，风险等级${document.getElementById('levelIV').textContent}\n`;
-                aiAnalysis += `- V&VI. 愤怒/易激惹：得分${dimensionScores['V&VI']}/10，风险等级${document.getElementById('levelVVI').textContent}\n`;
-                aiAnalysis += `- VII. 躁狂症状：得分${dimensionScores['VII']}/10，风险等级${document.getElementById('levelVII').textContent}\n`;
-                aiAnalysis += `- VIII. 焦虑症状：得分${dimensionScores['VIII']}/15，风险等级${document.getElementById('levelVIII').textContent}\n`;
-                aiAnalysis += `- IX. 精神病性症状：得分${dimensionScores['IX']}/10，风险等级${document.getElementById('levelIX').textContent}\n`;
-                aiAnalysis += `- X. 强迫症状：得分${dimensionScores['X']}/20，风险等级${document.getElementById('levelX').textContent}\n`;
-                aiAnalysis += `- XI. 物质使用：${document.getElementById('levelXI').textContent}\n`;
-                aiAnalysis += `- XII. 自杀风险：${document.getElementById('levelXII').textContent}\n\n`;
+                aiAnalysis += `高:[${highRisk.join(',')}]|`;
                 
-                aiAnalysis += `综合评价：\n${comprehensiveAdvice}\n\n`;
+                // 添加中风险维度
+                let mediumRisk = [];
+                if (document.getElementById('levelI').textContent.includes('中风险')) mediumRisk.push('I');
+                if (document.getElementById('levelII').textContent.includes('中风险')) mediumRisk.push('II');
+                if (document.getElementById('levelIII').textContent.includes('中风险')) mediumRisk.push('III');
+                if (document.getElementById('levelIV').textContent.includes('中风险')) mediumRisk.push('IV');
+                if (document.getElementById('levelVVI').textContent.includes('中风险')) mediumRisk.push('V&VI');
+                if (document.getElementById('levelVII').textContent.includes('中风险')) mediumRisk.push('VII');
+                if (document.getElementById('levelVIII').textContent.includes('中风险')) mediumRisk.push('VIII');
+                if (document.getElementById('levelIX').textContent.includes('中风险')) mediumRisk.push('IX');
+                if (document.getElementById('levelX').textContent.includes('中风险')) mediumRisk.push('X');
                 
-                aiAnalysis += `建议：\n`;
-                if (highRiskDimensions.length > 0) {
-                    aiAnalysis += `- 立即寻求精神科医生或心理治疗师的专业帮助\n`;
-                    aiAnalysis += `- 家人和学校应密切关注儿童的情绪和行为变化\n`;
-                    aiAnalysis += `- 必要时考虑住院评估和治疗\n`;
+                aiAnalysis += `中:[${mediumRisk.join(',')}]|`;
+                
+                // 添加各维度得分
+                aiAnalysis += `分:I${dimensionScores['I']},II${dimensionScores['II']},III${dimensionScores['III']},IV${dimensionScores['IV']},V&VI${dimensionScores['V&VI']},VII${dimensionScores['VII']},VIII${dimensionScores['VIII']},IX${dimensionScores['IX']},X${dimensionScores['X']}|`;
+                
+                // 添加指导建议
+                let guidance = '';
+                if (highRiskDimensions.includes('XII')) {
+                    guidance = '急诊(自杀)';
+                } else if (highRiskDimensions.length > 0) {
+                    guidance = '速诊(高风险)';
                 } else if (mediumRiskDimensions.length > 0) {
-                    aiAnalysis += `- 建立良好的生活习惯，保证充足的睡眠和合理的饮食\n`;
-                    aiAnalysis += `- 学习情绪管理和压力应对技巧\n`;
-                    aiAnalysis += `- 定期进行心理健康监测，如症状加重应及时寻求专业帮助\n`;
+                    guidance = '普诊(中风险)';
                 } else {
-                    aiAnalysis += `- 继续保持健康的生活方式和积极的心态\n`;
-                    aiAnalysis += `- 建立良好的社会支持系统，与家人和朋友保持良好沟通\n`;
-                    aiAnalysis += `- 培养健康的兴趣爱好，丰富课余生活\n`;
+                    guidance = '随访(低风险)';
                 }
+                aiAnalysis += `导:${guidance}|`;
                 
-                aiAnalysis += `\n重要提示：本评估结果仅供参考，不能替代专业诊断。如对评估结果有任何疑问或担忧，请咨询专业心理医生或精神科医生。`;
+                // 推荐下一步量表
+                let recommendedScale = '';
+                if (dimensionScores['IV'] >= 3) recommendedScale += '水平2-抑郁(11-17岁儿童)';
+                else if (dimensionScores['VIII'] >= 3) recommendedScale += '水平2-焦虑(11-17岁儿童)';
+                else if (dimensionScores['X'] >= 6) recommendedScale += '水平2-重复性思维和行为(11-17岁儿童)';
+                else if (dimensionScores['V&VI'] >= 3) recommendedScale += '水平2-易激惹(11-17岁儿童)';
+                else if (dimensionScores['II'] >= 2) recommendedScale += '水平2-睡眠问题(11-17岁儿童)';
+                else if (dimensionScores['I'] >= 3) recommendedScale += '水平2-躯体症状(11-17岁儿童)';
+                else recommendedScale = '无特殊推荐';
+                
+                aiAnalysis += `推:${recommendedScale}`;
                 
                 document.getElementById('aiText').textContent = aiAnalysis;
             });
