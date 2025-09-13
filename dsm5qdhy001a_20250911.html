@@ -6,7 +6,49 @@
     <title>DSM-5 水平1 症状自评量表（成人版）免费测试 </title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Microsoft YaHei", Arial, sans-serif; }
-        body { padding: 15px; line-height: 1.8; background: #f5f7fa; }
+        body { padding: 15px; line-height: 1.8; background: #f5f7fa; padding-top: 60px; }
+        
+        /* 导航栏样式 */
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 0;
+            transition: background-color 0.5s;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar ul {
+            list-style: none;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+        }
+        .navbar ul li {
+            display: inline;
+            margin: 0 20px;
+        }
+        .navbar ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* 当页面滚动时，改变导航栏的透明度 */
+        .scrolled {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        /* 响应式设计 - 导航栏 */
+        @media (max-width: 768px) {
+            .navbar ul li {
+                margin: 0 8px;
+            }
+            .navbar ul li a {
+                font-size: 0.8rem;
+            }
+        }
         .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
         .title { text-align: center; font-size: 18px; font-weight: bold; color: #2d3748; margin-bottom: 25px; padding-bottom: 10px; border-bottom: 1px solid #e2e8f0; }
         
@@ -53,6 +95,15 @@
     </style>
 </head>
 <body>
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <ul>
+               <li><a href="https://hsyscn.top/ ">首页</a></li>  
+                <li><a href="https://hsyscn.top/qdhsyscninformation.html ">信息门户</a></li>  
+                <li><a href="https://hsyscn.top/team.html ">关于我们</a></li>  
+                <li><a href="https://hsyscn.top/pay.html ">支付与捐赠</a></li>  
+        </ul>
+    </nav>
     <div class="container">
         <div class="title">DSM-5 水平1 症状自评量表（成人版）</div>
 
@@ -615,15 +666,50 @@
                 totalSuggestion = '综合评估：各维度均为低风险，无明显临床症状困扰，建议每3个月进行一次自我筛查，保持健康生活方式（规律作息、适度运动、良好社交）。';
             }
 
-            // 第六步：填充并显示结果
+            // 第五步：识别中风险维度
+            let midRiskDims = [];
+            Object.keys(dimScores).forEach(dim => {
+                const score = dimScores[dim];
+                const name = dimNames[dim];
+                
+                if (dim === 'VI' && score < 2) {
+                    // 自伤风险维度不设中风险
+                } else if (score >= 3 && score < 7) {
+                    midRiskDims.push(name);
+                }
+            });
+            
+            // 第六步：生成推荐量表
+            let recommendedScales = [];
+            if (highRiskDims.includes('自伤风险相关') || dimScores.VI >= 2) {
+                recommendedScales.push('自杀意念量表(SIQ)');
+            }
+            if (highRiskDims.includes('抑郁相关症状') || midRiskDims.includes('抑郁相关症状')) {
+                recommendedScales.push('患者健康问卷(PHQ-9)');
+            }
+            if (highRiskDims.includes('焦虑相关症状') || midRiskDims.includes('焦虑相关症状')) {
+                recommendedScales.push('广泛性焦虑障碍量表(GAD-7)');
+            }
+            if (highRiskDims.includes('精神病性相关症状') || midRiskDims.includes('精神病性相关症状')) {
+                recommendedScales.push('简明精神评定量表(BPRS)');
+            }
+            if (highRiskDims.includes('物质使用相关症状') || midRiskDims.includes('物质使用相关症状')) {
+                recommendedScales.push('酒精使用障碍识别测验(AUDIT)');
+            }
+            if (highRiskDims.includes('强迫相关症状') || midRiskDims.includes('强迫相关症状')) {
+                recommendedScales.push('耶鲁-布朗强迫量表(Y-BOCS)');
+            }
+            
+            // 第七步：填充并显示结果
             document.getElementById('basic-info-display').innerHTML = basicInfoHtml;
             document.getElementById('dimension-results').innerHTML = dimensionResultsHtml;
             document.getElementById('total-result').textContent = totalSuggestion;
             const resultArea = document.getElementById('result-area');
             resultArea.style.display = 'block';
             resultArea.scrollIntoView({ behavior: 'smooth' });
-            // 新增：生成AI可识别的精简分析文本及复制功能
-const aiText = `V:${currentVersion}|基:${currentVersion==='self'?`龄${document.getElementById('self-age').value},性${document.getElementById('self-gender').value},日${document.getElementById('self-date').value}`:`关${document.getElementById('informant-relation').value},时${document.getElementById('informant-hours').value},日${document.getElementById('informant-date').value}`}|高:[${highRiskDims.join(',')}]|分:I${dimScores.I},II${dimScores.II},III${dimScores.III},IV${dimScores.IV},V${dimScores.V},VI${dimScores.VI},VII${dimScores.VII},VIII${dimScores.VIII},IX${dimScores.IX},X${dimScores.X},XI${dimScores.XI},XII${dimScores.XII},XIII${dimScores.XIII}|导:${dimScores.VI>=2?'急诊(自伤)':highRiskDims.length>0?'速诊(高风险)':Object.values(dimScores).some(s=>s>=3)?'普诊(中风险)':'随访(低风险)'}`;
+            
+            // 生成AI可识别的精简分析文本
+            const aiText = `V:CP|${currentVersion==='self'?'自:':'知:'}基:${currentVersion==='self'?`龄${document.getElementById('self-age').value},性${document.getElementById('self-gender').value},日${document.getElementById('self-date').value}`:`关${document.getElementById('informant-relation').value},时${document.getElementById('informant-hours').value},日${document.getElementById('informant-date').value}`}|高:[${highRiskDims.join(',')}]|中:[${midRiskDims.join(',')}]|分:I${dimScores.I},II${dimScores.II},III${dimScores.III},IV${dimScores.IV},V${dimScores.V},VI${dimScores.VI},VII${dimScores.VII},VIII${dimScores.VIII},IX${dimScores.IX},X${dimScores.X},XI${dimScores.XI},XII${dimScores.XII},XIII${dimScores.XIII}|导:${dimScores.VI>=2?'急诊(自伤)':highRiskDims.length>0?'速诊(高风险)':midRiskDims.length>0?'普诊(中风险)':'随访(低风险)'}|推:[${recommendedScales.join(',')}]`;
 
 // 添加入页面
 const aiTextContainer = document.createElement('div');
@@ -646,6 +732,18 @@ document.getElementById('copy-ai-text').addEventListener('click', () => {
   });
 });
 
+        });
+    </script>
+    
+    <!-- 导航栏滚动效果脚本 -->
+    <script>
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
         });
     </script>
 </body>
