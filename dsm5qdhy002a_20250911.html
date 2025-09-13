@@ -55,7 +55,7 @@
         }
         
         .header-image {
-            background-image: url('https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-image: url('https://hsyscn.top/%E5%A4%A7%E6%A6%82.jpg');
             background-size: cover; /* 确保背景图片覆盖整个元素 */
             background-position: center; /* 背景图片居中显示 */
             height: 300px; /* 设置高度 */
@@ -136,15 +136,16 @@
     <!-- 导航栏 -->
     <nav class="navbar" id="navbar">
         <ul>
-             <li><a href="https://hsyscn.top/ ">首页</a></li>  
-                <li><a href="https://hsyscn.top/qdhsyscninformation.html ">信息门户</a></li>  
-                <li><a href="https://hsyscn.top/team.html ">关于我们</a></li>  
-                <li><a href="https://hsyscn.top/pay.html ">支付与捐赠</a></li>  
+            <li><a href="#">首页</a></li>
+            <li><a href="#">量表中心</a></li>
+            <li><a href="#">专业知识</a></li>
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">联系我们</a></li>
         </ul>
     </nav>
     
     <!-- 头部图片区域 -->
-    <div class="大概.jpg"></div>
+    <div class="header-image"></div>
     
     <main>
         <div class="container">
@@ -656,18 +657,55 @@
                 `;
             });
 
-            // 第五步：生成综合建议
+            // 第五步：生成综合建议和识别中风险维度
             let totalSuggestion = '';
+            let midRiskDims = [];
+            
+            // 识别中风险维度
+            Object.keys(dimScores).forEach(dim => {
+                const score = dimScores[dim];
+                const name = dimNames[dim];
+                
+                if (dim === 'IX' && score >= 2 && score < 3) { // 轻度精神病性症状
+                    midRiskDims.push(name);
+                } else if (dim === 'XI' && score >= 2 && score < 4) { // 物质使用中风险
+                    midRiskDims.push(name);
+                } else if (!['IX', 'XI', 'XII'].includes(dim) && score >= 3 && score < 7) { // 其他维度中风险
+                    midRiskDims.push(name);
+                }
+            });
+            
             if (highRiskDims.length > 0) {
                 totalSuggestion = `综合评估：儿童存在高风险维度（${highRiskDims.join('、')}），情况紧急，<strong>请立即带儿童前往儿童精神科医疗机构就诊</strong>，避免延误干预时机。`;
-            } else if (Object.values(dimScores).some(score => score >= 3)) {
+            } else if (midRiskDims.length > 0) {
                 totalSuggestion = '综合评估：儿童存在中风险症状维度，建议1个月内完成儿童心理医生咨询或精神科筛查，明确症状性质并制定干预方案。';
             } else {
                 totalSuggestion = '综合评估：儿童各维度均为低风险，无明显临床症状困扰，建议每3个月进行一次筛查，保持规律作息、适度运动及良好家庭支持环境。';
             }
 
-            // 第六步：生成AI可识别精简文本
-            const aiText = `V:CP|基:龄${age},性${gender},日${date}|高:[${highRiskDims.join(',')}]|分:I${dimScores.I},II${dimScores.II},III${dimScores.III},IV${dimScores.IV},VVI${dimScores.VVI},VII${dimScores.VII},VIII${dimScores.VIII},IX${dimScores.IX},X${dimScores.X},XI${dimScores.XI},XII${dimScores.XII}|导:${dimScores.XII>=2?'急诊(自杀)':highRiskDims.length>0?'速诊(高风险)':Object.values(dimScores).some(s=>s>=3)?'普诊(中风险)':'随访(低风险)'}`;
+            // 第六步：生成推荐量表
+            let recommendedScales = [];
+            if (highRiskDims.includes('自杀风险') || dimScores.XII >= 2) {
+                recommendedScales.push('儿童自杀意念量表(CSIQ)');
+            }
+            if (highRiskDims.includes('精神病性症状') || midRiskDims.includes('精神病性症状')) {
+                recommendedScales.push('儿童简明精神评定量表(BPRS-C)');
+            }
+            if (highRiskDims.includes('物质使用') || midRiskDims.includes('物质使用')) {
+                recommendedScales.push('青少年物质使用筛查量表(SASSI-A2)');
+            }
+            if (highRiskDims.includes('抑郁症状') || midRiskDims.includes('抑郁症状')) {
+                recommendedScales.push('儿童抑郁量表(CDI)');
+            }
+            if (highRiskDims.includes('焦虑症状') || midRiskDims.includes('焦虑症状')) {
+                recommendedScales.push('儿童焦虑量表(SCARED)');
+            }
+            if (highRiskDims.includes('注意力问题') || midRiskDims.includes('注意力问题')) {
+                recommendedScales.push('注意缺陷多动障碍评定量表(ADHD-RS)');
+            }
+
+            // 第七步：生成AI可识别精简文本
+            const aiText = `V:CP|基:龄${age},性${gender},日${date}|高:[${highRiskDims.join(',')}]|中:[${midRiskDims.join(',')}]|分:I${dimScores.I},II${dimScores.II},III${dimScores.III},IV${dimScores.IV},VVI${dimScores.VVI},VII${dimScores.VII},VIII${dimScores.VIII},IX${dimScores.IX},X${dimScores.X},XI${dimScores.XI},XII${dimScores.XII}|导:${dimScores.XII>=2?'急诊(自杀)':highRiskDims.length>0?'速诊(高风险)':midRiskDims.length>0?'普诊(中风险)':'随访(低风险)'}|推:[${recommendedScales.join(',')}]`;
 
             // 第七步：填充结果并显示
             document.getElementById('basic-info-display').innerHTML = basicInfoHtml;
