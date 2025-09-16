@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DSM-5水平1-症状自评量表-11-17岁儿童</title>
+    <link rel="stylesheet" href="./DSM-5水平1-症状自评量表-11-17岁儿童_files/qdhys_custom.css">
     <style>
         /* 全局样式 */
         * {
@@ -20,38 +20,6 @@
             line-height: 1.6;
             color: #333;
             background-color: #FDDDE8;
-        }
-
-        /* 导航栏样式 */
-        .navbar {
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px 0;
-            transition: background-color 0.5s;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-        .navbar ul {
-            list-style: none;
-            text-align: center;
-            padding: 0;
-            margin: 0;
-        }
-        .navbar ul li {
-            display: inline;
-            margin: 0 20px;
-        }
-        .navbar ul li a {
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-        }
-        
-        /* 当页面滚动时，改变导航栏的透明度 */
-        .scrolled {
-            background-color: rgba(0, 0, 0, 0.5);
         }
 
         /* 头部图片区域 */
@@ -191,21 +159,36 @@
         .options {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
-            align-items: center;
+            gap: 5px;
         }
         .option {
+            flex: 1;
+            min-width: 60px;
+            text-align: center;
+            padding: 6px 0;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            cursor: pointer;
             display: flex;
             align-items: center;
+            justify-content: center;
         }
-        .option input[type="radio"] {
-            margin-right: 8px;
+        .option:hover {
+            background: #edf2f7;
         }
+        .option.selected {
+            background: #4299e1;
+            color: #fff;
+            border-color: #4299e1;
+        }
+        .option input[type="radio"],
         .option input[type="checkbox"] {
-            margin-right: 8px;
+            display: none;
         }
         .option label {
             cursor: pointer;
+            width: 100%;
+            text-align: center;
         }
         .yes-no-options {
             display: flex;
@@ -223,29 +206,22 @@
             width: 20%;
         }
 
-        /* 按钮样式 */
-        .button-group {
+        /* 按钮样式 - 与001a保持一致 */
+        .btn-area {
             text-align: center;
-            margin: 40px 0;
+            margin: 25px 0;
         }
-        .btn {
+        #calculate-btn {
             padding: 12px 30px;
-            font-size: 1rem;
-            font-weight: 500;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
+            background: #2b6cb0;
+            color: #fff;
+            font-size: 16px;
             cursor: pointer;
-            transition: all 0.3s;
-            background-color: #3498db;
-            color: white;
         }
-        .btn:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
-        }
-        .btn:active {
-            transform: translateY(0);
+        #calculate-btn:hover {
+            background: #2c5282;
         }
 
         /* 结果区样式 */
@@ -473,12 +449,12 @@
 </head>
 <body>
     <!-- 导航栏 -->
-    <nav class="navbar" id="navbar">
+    <nav class="navbar scrolled" id="navbar">
         <ul>
-             <li><a href="https://hsyscn.top/ ">首页</a></li>  
-                <li><a href="https://hsyscn.top/qdhsyscninformation.html ">信息门户</a></li>  
-                <li><a href="https://hsyscn.top/team.html ">关于我们</a></li>  
-                <li><a href="https://hsyscn.top/pay.html ">支付与捐赠</a></li>  
+             <li><a href="https://hsyscn.top/">首页</a></li>  
+                <li><a href="https://hsyscn.top/qdhsyscninformation.html">信息门户</a></li>  
+                <li><a href="https://hsyscn.top/team.html">关于我们</a></li>  
+                <li><a href="https://hsyscn.top/pay.html">支付与捐赠</a></li>  
         </ul>
     </nav>
 
@@ -508,10 +484,8 @@
                     </div>
                 </div>
                 <div class="info-item">
-                    <label>日期：</label>
-                    <input type="number" id="year" placeholder="年" style="max-width: 80px;">
-                    <input type="number" id="month" placeholder="月" style="max-width: 60px;">
-                    <input type="number" id="day" placeholder="日" style="max-width: 60px;">
+                    <label for="date">评估日期：</label>
+                    <input type="date" id="date" required="">
                 </div>
             </div>
         </div>
@@ -656,8 +630,8 @@
 
             <!-- 维度V&VI：愤怒/易激惹 -->
             <div class="dimension">
-                <div class="dimension-header">V&VI. 愤怒/易激惹</div>
-                <div class="question" data-dim="V&VI" data-score="">
+                <div class="dimension-header">V&amp;VI. 愤怒/易激惹</div>
+                <div class="question" data-dim="V&amp;VI" data-score="">
                     <div class="question-text">7. 感觉比平时更烦躁或更容易被惹怒？</div>
                     <div class="options">
                         <div class="option"><input type="radio" name="q7" value="0"><label>0 无</label></div>
@@ -675,7 +649,7 @@
                         <div class="scale-value">几乎每天</div>
                     </div>
                 </div>
-                <div class="question" data-dim="V&VI" data-score="">
+                <div class="question" data-dim="V&amp;VI" data-score="">
                     <div class="question-text">8. 感到生气或者发脾气？</div>
                     <div class="options">
                         <div class="option"><input type="radio" name="q8" value="0"><label>0 无</label></div>
@@ -975,8 +949,8 @@
         </div>
 
         <!-- 按钮区域 -->
-        <div class="button-group">
-            <button id="generateBtn" class="btn">生成评估结果</button>
+        <div class="btn-area">
+            <button id="calculate-btn">生成评估结果</button>
         </div>
 
         <!-- 结果区 -->
@@ -1019,7 +993,7 @@
                     <div class="result-description" id="descIV">情绪稳定，积极向上，无明显抑郁倾向。</div>
                 </div>
                 <div class="result-item">
-                    <h4>V&VI. 愤怒/易激惹</h4>
+                    <h4>V&amp;VI. 愤怒/易激惹</h4>
                     <div class="result-score"><span id="scoreVVI">0</span>/10</div>
                     <div class="result-level" id="levelVVI">低风险</div>
                     <div class="result-description" id="descVVI">情绪管理良好，不易被激怒，无明显愤怒情绪问题。</div>
@@ -1121,10 +1095,10 @@
         <div class="footer-content">
             <p>© 2025 DSM-5评估量表系统 | 心理健康评估工具</p>
             <div class="footer-links">
-                <a href="https://hsyscn.top/ ">首页</a>
-               <a href="https://hsyscn.top/qdhsyscninformation.html ">信息门户</a>
-               <a href="https://hsyscn.top/team.html ">关于我们</a>
-                <a href="https://hsyscn.top/pay.html ">支付与捐赠</a>
+                <a href="https://hsyscn.top/">首页</a>
+               <a href="https://hsyscn.top/qdhsyscninformation.html">信息门户</a>
+               <a href="https://hsyscn.top/team.html">关于我们</a>
+                <a href="https://hsyscn.top/pay.html">支付与捐赠</a>
             </div>
         </div>
     </div>
@@ -1144,19 +1118,20 @@
                     question.dataset.score = this.value;
                 });
             });
+            
+            // 初始化选项点击事件
+            initOptionEvents();
 
             // 生成结果按钮点击事件
-            const generateBtn = document.getElementById('generateBtn');
+            const calculateBtn = document.getElementById('calculate-btn');
             const resultSection = document.getElementById('resultSection');
             
-            generateBtn.addEventListener('click', function() {
+            calculateBtn.addEventListener('click', function() {
                 // 验证必填项
                 const name = document.getElementById('name').value.trim();
                 const age = document.getElementById('age').value;
                 const genderElements = document.querySelectorAll('input[name="gender"]:checked');
-                const year = document.getElementById('year').value;
-                const month = document.getElementById('month').value;
-                const day = document.getElementById('day').value;
+                const date = document.getElementById('date').value;
                 
                 if (!name) {
                     alert('请填写姓名');
@@ -1173,10 +1148,12 @@
                     return;
                 }
                 
-                if (!year || !month || !day) {
-                    alert('请填写完整的评估日期');
+                if (!date) {
+                    alert('请选择评估日期');
                     return;
                 }
+                
+                const [year, month, day] = date.split('-');
 
                 // 验证所有问题是否已回答
                 const questions = document.querySelectorAll('.question');
@@ -1556,6 +1533,34 @@
                 }, 2000);
             });
         });
+        
+        // 初始化选项点击事件
+        function initOptionEvents() {
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    const input = this.querySelector('input');
+                    const name = input.name;
+                    
+                    // 对于单选按钮，移除同组其他选项的选中状态
+                    if (input.type === 'radio') {
+                        document.querySelectorAll(`input[name="${name}"]`).forEach(radio => {
+                            radio.closest('.option').classList.remove('selected');
+                        });
+                    }
+                    
+                    // 切换当前选项的选中状态
+                    input.checked = !input.checked;
+                    this.classList.toggle('selected', input.checked);
+                    
+                    // 如果是切换为选中状态，更新问题得分
+                    if (input.checked) {
+                        const question = this.closest('.question');
+                        question.dataset.score = input.value;
+                    }
+                });
+            });
+        }
     </script>
     
     <!-- 导航栏滚动效果脚本 -->
@@ -1570,5 +1575,6 @@
         });
     </script>
 </main>
-</body>
-</html>
+
+
+</body></html>
