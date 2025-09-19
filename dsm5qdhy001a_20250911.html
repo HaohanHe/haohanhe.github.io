@@ -1,708 +1,742 @@
-
-<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DSM-5 水平1 症状自评量表（成人版）免费测试</title>
-    <link rel="stylesheet" href="./qdhys_custom.css">
+    <title>DSM-5 水平1 症状自评量表（成人版）免费测试 </title>
     <style>
-        /* 全局样式 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-                sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            line-height: 1.6;
-            color: #333;
-            background-color: #FDDDE8;
-            padding-top: 70px;
-        }
-
-        /* 头部图片区域 */
-        .header-image {
-            width: 100%;
-            height: 200px;
-            background-image: url('https://hsyscn.top/%E5%A4%A7%E6%A6%82.jpg');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Microsoft YaHei", Arial, sans-serif; }
+        body { padding: 15px; line-height: 1.8; background: #f5f7fa; padding-top: 60px; }
+        
+        /* 导航栏样式 */
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8);
             color: white;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            padding: 10px 0;
+            transition: background-color 0.5s;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar ul {
+            list-style: none;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+        }
+        .navbar ul li {
+            display: inline;
+            margin: 0 20px;
+        }
+        .navbar ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
         }
         
-        /* 主内容区域 */
-        main {
-            padding-top: 70px;
-        }
-
-        /* 容器样式 */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            margin-top: 20px;
-            margin-bottom: 40px;
-        }
-
-        /* 标题样式 */
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #2c3e50;
-            font-size: 2rem;
-            font-weight: 600;
-        }
-        h2 {
-            color: #34495e;
-            margin: 30px 0 15px 0;
-            font-size: 1.5rem;
-            font-weight: 500;
-        }
-        h3 {
-            color: #7f8c8d;
-            margin: 20px 0 10px 0;
-            font-size: 1.2rem;
-            font-weight: 400;
-        }
-
-        /* 指导语样式 */
-        .instructions {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-left: 4px solid #3498db;
-            margin-bottom: 30px;
-            font-size: 1rem;
-            line-height: 1.8;
-        }
-
-        /* 基本信息区样式 */
-        .info-section {
-            margin-bottom: 30px;
-            padding: 20px;
-            border: 1px solid #e1e1e1;
-            border-radius: 8px;
-            background-color: #fafafa;
-        }
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-        .info-item {
-            display: flex;
-            align-items: center;
-        }
-        .info-item label {
-            margin-right: 10px;
-            font-weight: 500;
-            min-width: 60px;
-        }
-        .info-item input[type="text"],
-        .info-item input[type="number"],
-        .info-item select,
-        .info-item input[type="date"] {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            flex: 1;
-            max-width: 150px;
-        }
-        .info-item input[type="radio"] {
-            margin-right: 5px;
-        }
-        .info-item .radio-group {
-            display: flex;
-            gap: 15px;
-        }
-        .required-mark {
-            color: #e53e3e;
-            margin-left: 2px;
-        }
-
-        /* 版本切换 */
-        .version-switch {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .version-btn {
-            padding: 8px 16px;
-            margin: 0 5px;
-            border: 1px solid #4299e1;
-            border-radius: 6px;
-            background: #fff;
-            color: #4299e1;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .version-btn.active {
-            background: #4299e1;
-            color: #fff;
-        }
-
-        /* 量表问题区样式 */
-        .scale-section {
-            margin-bottom: 30px;
-        }
-        .dimension {
-            margin-bottom: 30px;
-            padding: 20px;
-            border: 1px solid #e1e1e1;
-            border-radius: 8px;
-            background-color: #fafafa;
-        }
-        .dimension-header {
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #2c3e50;
-            font-size: 1.1rem;
-        }
-        .question {
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: white;
-            border: 1px solid #e1e1e1;
-            border-radius: 6px;
-            transition: all 0.3s;
-        }
-        .question:hover {
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .question-text {
-            margin-bottom: 15px;
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-        .options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-        .option {
-            flex: 1;
-            min-width: 60px;
-            text-align: center;
-            padding: 6px 0;
-            border: 1px solid #cbd5e0;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .option:hover {
-            background: #edf2f7;
-        }
-        .option.selected {
-            background: #4299e1;
-            color: #fff;
-            border-color: #4299e1;
-        }
-        .option input[type="radio"],
-        .option input[type="checkbox"] {
-            display: none;
-        }
-        .option label {
-            cursor: pointer;
-            width: 100%;
-            text-align: center;
-        }
-        .yes-no-options {
-            display: flex;
-            gap: 20px;
-        }
-        .scale-values {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            color: #666;
-        }
-        .scale-value {
-            text-align: center;
-            width: 20%;
-        }
-        .footnote {
-            font-size: 0.9rem;
-            color: #718096;
-            margin-top: 8px;
-        }
-
-        /* 按钮样式 */
-        .btn-area {
-            text-align: center;
-            margin: 25px 0;
-        }
-        #calculate-btn {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 8px;
-            background: #2b6cb0;
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        #calculate-btn:hover {
-            background: #2c5282;
-        }
-
-        /* 结果区样式 */
-        .result-section {
-            margin-top: 40px;
-            padding: 25px;
-            border: 2px solid #3498db;
-            border-radius: 8px;
-            background-color: #f8f9fa;
-            display: none;
-        }
-        .result-section.visible {
-            display: block;
-        }
-        .result-header {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #2c3e50;
-        }
-        .result-info {
-            background-color: white;
-            padding: 20px;
-            border-radius: 6px;
-            margin-bottom: 25px;
-            border: 1px solid #e1e1e1;
-        }
-        .result-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .result-item {
-            padding: 15px;
-            background-color: white;
-            border-radius: 6px;
-            border: 1px solid #e1e1e1;
-        }
-        .result-item h4 {
-            margin-bottom: 10px;
-            color: #34495e;
-            font-size: 1.1rem;
-        }
-        .result-score {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #e74c3c;
-            margin-bottom: 10px;
-        }
-        .result-level {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            display: inline-block;
-        }
-        .level-low {
-            background-color: #d5f4e6;
-            color: #27ae60;
-        }
-        .level-medium {
-            background-color: #ffeaa7;
-            color: #f39c12;
-        }
-        .level-high {
-            background-color: #ffcccc;
-            color: #e74c3c;
-        }
-        .result-description {
-            margin-top: 10px;
-            font-size: 0.95rem;
-            color: #555;
-            line-height: 1.6;
-        }
-
-        /* 警告样式 */
-        .warning {
-            background-color: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 20px;
-            font-size: 0.95rem;
-        }
-        .danger {
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 10px;
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-
-        /* AI分析文本区样式 */
-        .ai-analysis {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f0f4f8;
-            border-radius: 8px;
-            border-left: 4px solid #5dade2;
-        }
-        .ai-analysis h4 {
-            margin-bottom: 15px;
-            color: #2c3e50;
-            font-size: 1.1rem;
-        }
-        .ai-text {
-            background-color: white;
-            padding: 15px;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-            min-height: 100px;
-            line-height: 1.7;
-            font-size: 0.95rem;
-            color: #333;
-            white-space: pre-wrap;
-        }
-        .copy-button {
-            margin-top: 15px;
-            padding: 8px 20px;
-            background-color: #5dade2;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: background-color 0.3s;
-        }
-        .copy-button:hover {
-            background-color: #3498db;
-        }
-
-        /* 专业提示样式 */
-        .professional-tips {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            border: 1px solid #e1e1e1;
-        }
-        .professional-tips h4 {
-            margin-bottom: 15px;
-            color: #2c3e50;
-            font-size: 1.1rem;
-        }
-        .professional-tips ul {
-            padding-left: 20px;
-            margin-bottom: 0;
-        }
-        .professional-tips li {
-            margin-bottom: 8px;
-            line-height: 1.6;
-            font-size: 0.95rem;
-            color: #555;
-        }
-
-        /* 页脚样式 */
-        .footer {
-            background-color: #2c3e50;
-            color: white;
-            padding: 30px 20px;
-            text-align: center;
-        }
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .footer-links {
-            margin-top: 15px;
-        }
-        .footer-links a {
-            color: #bdc3c7;
-            text-decoration: none;
-            margin: 0 10px;
-            transition: color 0.3s;
-        }
-        .footer-links a:hover {
-            color: white;
-        }
-
-        /* 响应式设计 */
+        /* 当页面滚动时，改变导航栏的透明度 */
+        .scrolled {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        /* 响应式设计 - 导航栏 */
         @media (max-width: 768px) {
             .navbar ul li {
-                margin: 0 10px;
+                margin: 0 8px;
             }
             .navbar ul li a {
-                font-size: 0.9rem;
-            }
-            .container {
-                padding: 15px;
-            }
-            h1 {
-                font-size: 1.5rem;
-            }
-            h2 {
-                font-size: 1.3rem;
-            }
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-            .result-grid {
-                grid-template-columns: 1fr;
-            }
-            .options {
-                flex-direction: column;
-            }
-            .yes-no-options {
-                flex-direction: column;
-            }
-            .option {
-                min-width: 100%;
-                margin-bottom: 5px;
+                font-size: 0.8rem;
             }
         }
+        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .title { text-align: center; font-size: 18px; font-weight: bold; color: #2d3748; margin-bottom: 25px; padding-bottom: 10px; border-bottom: 1px solid #e2e8f0; }
+        
+        /* 版本切换 */
+        .version-switch { margin-bottom: 20px; text-align: center; }
+        .version-btn { padding: 8px 16px; margin: 0 5px; border: 1px solid #4299e1; border-radius: 6px; background: #fff; color: #4299e1; cursor: pointer; }
+        .version-btn.active { background: #4299e1; color: #fff; }
+        
+        /* 基本信息区 */
+        .info-area { margin-bottom: 25px; padding: 15px; background: #f7fafc; border-radius: 8px; }
+        .info-row { margin: 10px 0; display: flex; flex-wrap: wrap; gap: 10px; }
+        .info-label { min-width: 80px; color: #4a5568; }
+        .info-input { flex: 1; min-width: 200px; padding: 8px; border: 1px solid #cbd5e0; border-radius: 6px; }
+        .required-mark { color: #e53e3e; margin-left: 2px; }
+        
+        /* 量表问题区 */
+        .scale-area { margin-bottom: 25px; }
+        .dimension { margin-bottom: 20px; padding: 15px; border-radius: 8px; background: #f7fafc; }
+        .dimension-title { font-size: 16px; font-weight: bold; color: #2b6cb0; margin-bottom: 12px; }
+        .question { margin: 15px 0; padding-left: 10px; border-left: 3px solid #4299e1; }
+        .question-text { margin-bottom: 8px; color: #2d3748; }
+        .option-group { display: flex; flex-wrap: wrap; gap: 5px; }
+        .option { flex: 1; min-width: 60px; text-align: center; padding: 6px 0; border: 1px solid #cbd5e0; border-radius: 4px; cursor: pointer; }
+        .option:hover { background: #edf2f7; }
+        .option.selected { background: #4299e1; color: #fff; border-color: #4299e1; }
+        .footnote { font-size: 12px; color: #718096; margin-top: 5px; }
+        
+        /* 结果区 */
+        .result-area { display: none; margin: 25px 0; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .result-title { font-size: 16px; font-weight: bold; color: #2d3748; margin-bottom: 15px; text-align: center; }
+        .dimension-result { margin: 10px 0; padding: 8px; border-radius: 4px; }
+        .risk-low { background: #e6fffa; color: #00796b; }
+        .risk-mid { background: #fff8e6; color: #c25100; }
+        .risk-high { background: #fed7d7; color: #c53030; }
+        .total-result { margin-top: 20px; padding: 12px; background: #edf2f7; border-radius: 6px; font-weight: bold; }
+        
+        /* 按钮样式 */
+        .btn-area { text-align: center; margin: 25px 0; }
+        #calculate-btn { padding: 12px 30px; border: none; border-radius: 8px; background: #2b6cb0; color: #fff; font-size: 16px; cursor: pointer; }
+        #calculate-btn:hover { background: #2c5282; }
+        
+        /* 专业提示 */
+        .warning { margin-top: 30px; padding: 12px; background: #fff5f5; color: #c53030; border-radius: 8px; font-size: 13px; border: 1px solid #fed7d7; }
     </style>
 </head>
 <body>
     <!-- 导航栏 -->
     <nav class="navbar" id="navbar">
         <ul>
-             <li><a href="https://hsyscn.top/ ">首页</a></li>  
+               <li><a href="https://hsyscn.top/ ">首页</a></li>  
                 <li><a href="https://hsyscn.top/qdhsyscninformation.html ">信息门户</a></li>  
                 <li><a href="https://hsyscn.top/team.html ">关于我们</a></li>  
                 <li><a href="https://hsyscn.top/pay.html ">支付与捐赠</a></li>  
         </ul>
     </nav>
-    
-    <!-- 头部图片区域 -->
-    <div class="header-image"></div>
-    
-    <main>
-        <div class="container">
-        
-        <h1>DSM-5 水平1 症状自评量表（成人版）免费测试</h1>
+    <div class="container">
+        <div class="title">DSM-5 水平1 症状自评量表（成人版）</div>
 
         <!-- 版本切换 -->
         <div class="version-switch">
-            <button class="version-btn active" id="short-version">简短版</button>
-            <button class="version-btn" id="full-version">完整版</button>
+            <button class="version-btn active" data-version="self">成人自我报告版</button>
+            <button class="version-btn" data-version="informant">成人知情者版</button>
         </div>
 
-        <!-- 指导语 -->
-        <div class="instructions">
-            <strong>指导语：</strong>以下问题将询问一些可能困扰您的事情。对每个问题，请选择最能描述您在过去2周内被这个问题困扰的程度（或频率）的选项；“是/否/不清楚”类问题请直接选择对应结果。
-        </div>
-
-        <!-- 基本信息区 -->
-        <div class="info-section">
-            <div class="info-grid">
-                <div class="info-item">
-                    <label>姓名：</label>
-                    <input type="text" id="user-name" placeholder="可选：请输入您的姓名">
-                </div>
-                <div class="info-item">
-                    <label>年龄：<span class="required-mark">*</span></label>
-                    <input type="number" min="18" max="120" id="user-age" placeholder="必填：请输入您的年龄">
-                </div>
-                <div class="info-item">
-                    <label>性别：<span class="required-mark">*</span></label>
-                    <select id="user-gender">
-                        <option value="">必填：请选择</option>
-                        <option value="男">男</option>
-                        <option value="女">女</option>
-                        <option value="其他">其他</option>
-                    </select>
-                </div>
-                <div class="info-item">
-                    <label>评估日期：<span class="required-mark">*</span></label>
-                    <input type="date" id="assessment-date">
-                </div>
+        <!-- 基本信息区（标注必填项，除姓名外均为必填） -->
+        <div class="info-area" id="self-info">
+            <div class="info-row">
+                <span class="info-label">姓名：</span>
+                <input type="text" class="info-input" id="self-name" placeholder="可选：请输入您的姓名">
+            </div>
+            <div class="info-row">
+                <span class="info-label">年龄：<span class="required-mark">*</span></span>
+                <input type="number" class="info-input" id="self-age" placeholder="必填：请输入您的年龄（如18）">
+            </div>
+            <div class="info-row">
+                <span class="info-label">性别：<span class="required-mark">*</span></span>
+                <select class="info-input" id="self-gender">
+                    <option value="">必填：请选择</option>
+                    <option value="男">男</option>
+                    <option value="女">女</option>
+                </select>
+            </div>
+            <div class="info-row">
+                <span class="info-label">日期：<span class="required-mark">*</span></span>
+                <input type="date" class="info-input" id="self-date">
             </div>
         </div>
 
-        <!-- 量表问题区 -->
-        <div class="scale-section" id="short-scale">
-            <!-- 维度I：躯体健康焦虑 -->
+        <div class="info-area" id="informant-info" style="display: none;">
+            <div class="info-row">
+                <span class="info-label">来访者姓名：</span>
+                <input type="text" class="info-input" id="informant-name" placeholder="可选：请输入来访者姓名">
+            </div>
+            <div class="info-row">
+                <span class="info-label">您与来访者关系：<span class="required-mark">*</span></span>
+                <input type="text" class="info-input" id="informant-relation" placeholder="必填：如家人、朋友、同事">
+            </div>
+            <div class="info-row">
+                <span class="info-label">每周相处时间：<span class="required-mark">*</span></span>
+                <input type="number" class="info-input" id="informant-hours" placeholder="必填：请输入小时数（如10）">
+                <span class="info-label">小时/周</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">评估日期：<span class="required-mark">*</span></span>
+                <input type="date" class="info-input" id="informant-date">
+            </div>
+        </div>
+
+        <!-- 量表问题区（23题，均为必填） -->
+        <div class="scale-area">
+            <!-- 维度I：抑郁相关 -->
             <div class="dimension">
-                <div class="dimension-header">I. 躯体健康焦虑 <span class="required-mark">*</span></div>
+                <div class="dimension-title">I. 抑郁相关症状 <span class="required-mark">*</span></div>
                 <div class="question" data-dim="I" data-score="">
-                    <div class="question-text">1. 抱怨腹痛、头痛、或其他疼痛？</div>
-                    <div class="options">
-                        <div class="option" data-value="0">无（一点也不）</div>
-                        <div class="option" data-value="1">轻微（很少，少于1-2天）</div>
-                        <div class="option" data-value="2">轻度（几天）</div>
-                        <div class="option" data-value="3">中度（超过一周）</div>
-                        <div class="option" data-value="4">重度（几乎每天）</div>
+                    <div class="question-text">1. 做事情没有兴趣或没有愉悦感？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
                     </div>
                 </div>
                 <div class="question" data-dim="I" data-score="">
-                    <div class="question-text">2. 担心自己的健康或担心自己生病？</div>
-                    <div class="options">
-                        <div class="option" data-value="0">无（一点也不）</div>
-                        <div class="option" data-value="1">轻微（很少，少于1-2天）</div>
-                        <div class="option" data-value="2">轻度（几天）</div>
-                        <div class="option" data-value="3">中度（超过一周）</div>
-                        <div class="option" data-value="4">重度（几乎每天）</div>
+                    <div class="question-text">2. 感到低落，抑郁或无望？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
                     </div>
                 </div>
             </div>
 
-            <!-- 维度II：内化问题 -->
+            <!-- 维度II：愤怒相关 -->
             <div class="dimension">
-                <div class="dimension-header">II. 内化问题 <span class="required-mark">*</span></div>
+                <div class="dimension-title">II. 愤怒相关症状 <span class="required-mark">*</span></div>
                 <div class="question" data-dim="II" data-score="">
-                    <div class="question-text">3. 看起来悲伤、沮丧或空虚？</div>
-                    <div class="options">
-                        <div class="option" data-value="0">无（一点也不）</div>
-                        <div class="option" data-value="1">轻微（很少，少于1-2天）</div>
-                        <div class="option" data-value="2">轻度（几天）</div>
-                        <div class="option" data-value="3">中度（超过一周）</div>
-                        <div class="option" data-value="4">重度（几乎每天）</div>
-                    </div>
-                </div>
-                <div class="question" data-dim="II" data-score="">
-                    <div class="question-text">4. 对做事情没有兴趣，或不像以前那样享受做事情？</div>
-                    <div class="options">
-                        <div class="option" data-value="0">无（一点也不）</div>
-                        <div class="option" data-value="1">轻微（很少，少于1-2天）</div>
-                        <div class="option" data-value="2">轻度（几天）</div>
-                        <div class="option" data-value="3">中度（超过一周）</div>
-                        <div class="option" data-value="4">重度（几乎每天）</div>
+                    <div class="question-text">3. 比平时更易感到烦躁、不满或愤怒？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
                     </div>
                 </div>
             </div>
 
-            <!-- 维度III：外化问题 -->
+            <!-- 维度III：躁狂相关 -->
             <div class="dimension">
-                <div class="dimension-header">III. 外化问题 <span class="required-mark">*</span></div>
+                <div class="dimension-title">III. 躁狂相关症状 <span class="required-mark">*</span></div>
                 <div class="question" data-dim="III" data-score="">
-                    <div class="question-text">5. 难以保持专注或注意力？</div>
-                    <div class="options">
-                        <div class="option" data-value="0">无（一点也不）</div>
-                        <div class="option" data-value="1">轻微（很少，少于1-2天）</div>
-                        <div class="option" data-value="2">轻度（几天）</div>
-                        <div class="option" data-value="3">中度（超过一周）</div>
-                        <div class="option" data-value="4">重度（几乎每天）</div>
+                    <div class="question-text">4. 睡的比平常少，但仍很有精力？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
                     </div>
                 </div>
                 <div class="question" data-dim="III" data-score="">
-                    <div class="question-text">6. 坐立不安，不能安静地坐着？</div>
-                    <div class="options">
-                        <div class="option" data-value="0">无（一点也不）</div>
-                        <div class="option" data-value="1">轻微（很少，少于1-2天）</div>
-                        <div class="option" data-value="2">轻度（几天）</div>
-                        <div class="option" data-value="3">中度（超过一周）</div>
-                        <div class="option" data-value="4">重度（几乎每天）</div>
+                    <div class="question-text">5. 比平常启动更多的项目或比平常做更多冒险的事情？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
                     </div>
                 </div>
             </div>
 
-            <!-- 这里应该包含所有量表问题 -->
-            <!-- 为了简洁，我只保留了部分问题作为示例 -->
+            <!-- 维度IV：焦虑相关 -->
+            <div class="dimension">
+                <div class="dimension-title">IV. 焦虑相关症状 <span class="required-mark">*</span></div>
+                <div class="question" data-dim="IV" data-score="">
+                    <div class="question-text">6. 感到紧张、焦虑、害怕、担忧或惴惴不安？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
+                    </div>
+                </div>
+                <div class="question" data-dim="IV" data-score="">
+                    <div class="question-text">7. 感到恐慌或害怕？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
+                    </div>
+                </div>
+                <div class="question" data-dim="IV" data-score="">
+                    <div class="question-text">8. 避免使你（来访者）焦虑的情境？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度V：躯体症状 -->
+            <div class="dimension">
+                <div class="dimension-title">V. 躯体相关症状 <span class="required-mark">*</span></div>
+                <div class="question" data-dim="V" data-score="">
+                    <div class="question-text">9. 不明原因的疼痛(如头、背、关节、腹部、腿部)？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
+                    </div>
+                </div>
+                <div class="question" data-dim="V" data-score="">
+                    <div class="question-text">10. 感到自己（来访者）的疾病没有得到足够的重视？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度VI：自伤风险 -->
+            <div class="dimension">
+                <div class="dimension-title">VI. 自伤风险相关 <span class="required-mark">*</span></div>
+                <div class="question" data-dim="VI" data-score="">
+                    <div class="question-text">11. 有真的想去伤害自己（来访者）的想法吗？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度VII：精神病性症状 -->
+            <div class="dimension">
+                <div class="dimension-title">VII. 精神病性相关症状 <span class="required-mark">*</span></div>
+                <div class="question" data-dim="VII" data-score="">
+                    <div class="question-text">12. 听到别人听不到的东西，比如周围没人的时候听到有人说话？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
+                    </div>
+                </div>
+                <div class="question" data-dim="VII" data-score="">
+                    <div class="question-text">13. 感觉有人能够听到自己（来访者）的想法，或者自己（来访者）可以听到别人在想什么？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度VIII：睡眠问题 -->
+            <div class="dimension">
+                <div class="dimension-title">VIII. 睡眠相关症状 <span class="required-mark">*</span></div>
+                <div class="question" data-dim="VIII" data-score="">
+                    <div class="question-text">14. 总的来说，睡眠问题影响了你的（来访者的）睡眠质量？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度IX：认知问题 -->
+            <div class="dimension">
+                <div class="dimension-title">IX. 认知相关症状 <span class="required-mark">*</span></div>
+                <div class="question" data-dim="IX" data-score="">
+                    <div class="question-text">15. 记忆问题（如学习新信息）或定位问题（如找到回家的路）？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度X：强迫症状 -->
+            <div class="dimension">
+                <div class="dimension-title">X. 强迫相关症状 <span class="required-mark">*</span></div>
+                <div class="question" data-dim="X" data-score="">
+                    <div class="question-text">16. 不愉快的想法、冲动或图像重复地进入你的（来访者的）脑海？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
+                    </div>
+                </div>
+                <div class="question" data-dim="X" data-score="">
+                    <div class="question-text">17. 感到被驱使着去一遍遍地进行某些行为或者心理活动？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度XI：解离症状 -->
+            <div class="dimension">
+                <div class="dimension-title">XI. 解离相关症状 <span class="required-mark">*</span></div>
+                <div class="question" data-dim="XI" data-score="">
+                    <div class="question-text">18. 你（来访者）会感觉与自己、自己的身体、周遭环境、记忆相疏离或有距离吗？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度XII：身份认同问题 -->
+            <div class="dimension">
+                <div class="dimension-title">XII. 身份认同相关症状 <span class="required-mark">*</span></div>
+                <div class="question" data-dim="XII" data-score="">
+                    <div class="question-text">19. 不知道真实的自己（来访者）是谁，也不知道自己（来访者）想从生活中获得什么？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
+                    </div>
+                </div>
+                <div class="question" data-dim="XII" data-score="">
+                    <div class="question-text">20. 感觉跟他人不亲近，或不享受与他人之间的关系？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度XIII：物质使用问题 -->
+            <div class="dimension">
+                <div class="dimension-title">XIII. 物质使用相关症状 <span class="required-mark">*</span></div>
+                <div class="question" data-dim="XIII" data-score="">
+                    <div class="question-text">21. 在一天之内至少4次饮用任何种类的酒精饮料？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
+                    </div>
+                </div>
+                <div class="question" data-dim="XIII" data-score="">
+                    <div class="question-text">22. 吸任何香烟、雪茄、烟斗或使用鼻烟或咀嚼烟草？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
+                    </div>
+                </div>
+                <div class="question" data-dim="XIII" data-score="">
+                    <div class="question-text">23. 私自使用任何下列药物（无处方/超剂量/超期使用）：止痛药（如维柯丁）、兴奋剂（如利他林或阿德拉）、镇静剂（如安眠药或安定）、毒品（大麻、可卡因、摇头丸、LSD、海洛因、吸入剂如强力胶、甲基苯丙胺等）？</div>
+                    <div class="option-group">
+                        <div class="option" data-value="0">无</div>
+                        <div class="option" data-value="1">轻微</div>
+                        <div class="option" data-value="2">轻度</div>
+                        <div class="option" data-value="3">中度</div>
+                        <div class="option" data-value="4">重度</div>
+                    </div>
+                    <div class="footnote">注：强力胶是一种毒品，非生活中常见的固体或液体胶。</div>
+                </div>
+            </div>
         </div>
 
-        <!-- 完整版量表问题区（默认隐藏） -->
-        <div class="scale-section" id="full-scale" style="display: none;">
-            <!-- 完整版问题将在JavaScript中动态加载 -->
-        </div>
-
-        <!-- 按钮区域 -->
+        <!-- 计算按钮 -->
         <div class="btn-area">
-            <button id="calculate-btn">计算结果</button>
+            <button id="calculate-btn">生成评估结果</button>
         </div>
 
-        <!-- 结果展示区域 -->
-        <div class="result-section" id="result-area">
-            <div class="result-header">
-                <h2>评估结果</h2>
-            </div>
-            <div class="result-info">
-                <p id="assessment-info">姓名：[姓名]，年龄：[年龄]岁，性别：[性别]，评估日期：[评估日期]</p>
-            </div>
-            <div class="result-grid">
-                <div class="result-item" id="result-dim-I">
-                    <h4>I. 躯体健康焦虑</h4>
-                    <div class="result-score">得分：<span id="score-dim-I">0</span></div>
-                    <div class="result-level level-low" id="level-dim-I">低风险</div>
-                    <div class="result-description">
-                        <p>该维度评估您对自身健康的担忧程度和躯体症状的表现频率。</p>
-                    </div>
-                </div>
-                <div class="result-item" id="result-dim-II">
-                    <h4>II. 内化问题</h4>
-                    <div class="result-score">得分：<span id="score-dim-II">0</span></div>
-                    <div class="result-level level-low" id="level-dim-II">低风险</div>
-                    <div class="result-description">
-                        <p>该维度评估您的情绪状态，包括抑郁、焦虑等内化情绪问题。</p>
-                    </div>
-                </div>
-                <div class="result-item" id="result-dim-III">
-                    <h4>III. 外化问题</h4>
-                    <div class="result-score">得分：<span id="score-dim-III">0</span></div>
-                    <div class="result-level level-low" id="level-dim-III">低风险</div>
-                    <div class="result-description">
-                        <p>该维度评估您的行为问题，包括注意力不集中、多动、冲动等外化行为。</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- AI分析文本区 -->
-            <div class="ai-analysis">
-                <h4>AI评估分析</h4>
-                <div class="ai-text" id="ai-analysis-text">
-                    基于您的评估结果，AI生成了以下分析：
-                    
-                    1. 躯体健康焦虑评估：[详细分析内容]
-                    
-                    2. 内化问题评估：[详细分析内容]
-                    
-                    3. 外化问题评估：[详细分析内容]
-                    
-                    4. 综合建议：[详细建议内容]
-                </div>
-                <button class="copy-button" id="copy-ai-text">复制分析结果</button>
-            </div>
-
-            <!-- 专业提示 -->
-            <div class="professional-tips">
-                <h4>专业提示</h4>
-                <ul>
-                    <li>本量表结果仅供参考，不能替代专业医师的诊断。</li>
-                    <li>如果您的得分显示中高风险，请及时咨询专业心理医师。</li>
-                    <li>定期进行评估，观察自己的变化趋势更为重要。</li>
-                    <li>保持健康的生活方式，包括良好的睡眠、饮食和运动习惯。</li>
-                </ul>
-            </div>
+        <!-- 结果区 -->
+        <div class="result-area" id="result-area">
+            <div class="result-title">DSM-5 水平1 症状自评结果</div>
+            <div id="basic-info-display"></div> <!-- 基本信息展示 -->
+            <div id="dimension-results"></div> <!-- 各维度结果 -->
+            <div class="total-result" id="total-result"></div> <!-- 综合建议 -->
         </div>
 
-        <!-- 警告信息 -->
+        <!-- 专业提示 -->
         <div class="warning">
-            <strong>注意：</strong>本测试结果仅供参考，不能作为诊断依据。如有需要，请咨询专业医疗机构。
+            ⚠️ 重要提示：1. 本结果仅为DSM-5水平1症状筛查的初步参考，<strong>不能替代精神科医生/临床心理学家的专业诊断</strong>；2. 若自伤风险（维度VI）得分≥2分，或存在明显精神病性症状（维度VII），请立即联系精神科医疗机构或危机干预热线；3. 非专业人士禁止用于他人评估。
         </div>
-        </div>
-    </main>
-    
-    <footer class="footer">
-        <div class="footer-content">
-            <p>© 2025 DSM-5 评估量表系统. 版权所有.</p>
-            <div class="footer-links">
-                <a href="https://hsyscn.top/">首页</a>
-                <a href="https://hsyscn.top/qdhsyscninformation.html">信息门户</a>
-                <a href="https://hsyscn.top/team.html">关于我们</a>
-                <a href="https://hsyscn.top/pay.html">支付与捐赠</a>
-            </div>
-        </div>
-    </footer>
+        <a href="http://s01.flagcounter.com/more/JW1"><img src="https://s01.flagcounter.com/map/JW1/size_s/txt_000000/border_CCCCCC/pageviews_0/viewers_0/flags_0/" alt="Flag Counter" border="0"></a>
+        <a href="https://hsyscn.top/">回首页</a>
+    </div>
 
     <script>
-        // 页面滚动时改变导航栏透明度
+        // 1. 版本切换功能
+        const versionBtns = document.querySelectorAll('.version-btn');
+        const selfInfo = document.getElementById('self-info');
+        const informantInfo = document.getElementById('informant-info');
+        let currentVersion = 'self'; // 默认自我报告版
+
+        versionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // 切换按钮状态
+                versionBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                // 切换信息区
+                currentVersion = btn.dataset.version;
+                if (currentVersion === 'self') {
+                    selfInfo.style.display = 'block';
+                    informantInfo.style.display = 'none';
+                } else {
+                    selfInfo.style.display = 'none';
+                    informantInfo.style.display = 'block';
+                }
+                // 隐藏结果区
+                document.getElementById('result-area').style.display = 'none';
+            });
+        });
+
+        // 2. 选项选择与得分绑定
+        const questions = document.querySelectorAll('.question');
+        questions.forEach(question => {
+            const options = question.querySelectorAll('.option');
+            options.forEach(option => {
+                option.addEventListener('click', () => {
+                    // 清除当前问题的其他选项选中状态
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    // 选中当前选项
+                    option.classList.add('selected');
+                    // 记录得分（非空）
+                    question.dataset.score = option.dataset.value;
+                });
+            });
+        });
+
+        // 3. 新增：严格鉴权函数（检查必填项）
+        function checkRequiredFields() {
+            const missingFields = [];
+
+            // 检查基本信息（除姓名外均必填）
+            if (currentVersion === 'self') {
+                const age = document.getElementById('self-age').value.trim();
+                const gender = document.getElementById('self-gender').value;
+                const date = document.getElementById('self-date').value;
+
+                if (!age) missingFields.push('年龄（自我报告版）');
+                if (!gender) missingFields.push('性别（自我报告版）');
+                if (!date) missingFields.push('评估日期（自我报告版）');
+            } else {
+                const relation = document.getElementById('informant-relation').value.trim();
+                const hours = document.getElementById('informant-hours').value.trim();
+                const date = document.getElementById('informant-date').value;
+
+                if (!relation) missingFields.push('与来访者关系（知情者版）');
+                if (!hours) missingFields.push('每周相处时间（知情者版）');
+                if (!date) missingFields.push('评估日期（知情者版）');
+            }
+
+            // 检查所有23题是否都已作答（data-score不能为空）
+            questions.forEach((question, index) => {
+                if (!question.dataset.score) {
+                    missingFields.push(`第${index + 1}题（症状题）`);
+                }
+            });
+
+            // 返回漏填项（空数组即无漏填）
+            return missingFields;
+        }
+
+        // 4. 结果计算与提交（含鉴权）
+        const calculateBtn = document.getElementById('calculate-btn');
+        calculateBtn.addEventListener('click', () => {
+            // 第一步：执行鉴权，检查必填项
+            const missing = checkRequiredFields();
+            if (missing.length > 0) {
+                // 弹窗提示漏填项，禁止提交
+                alert(`请完成以下必填项后再提交：\n\n${missing.join('\n')}`);
+                return; // 终止后续流程
+            }
+
+            // 第二步：鉴权通过，获取基本信息
+            let basicInfoHtml = '';
+            if (currentVersion === 'self') {
+                const name = document.getElementById('self-name').value.trim() || '未填写';
+                const age = document.getElementById('self-age').value.trim();
+                const gender = document.getElementById('self-gender').value;
+                const date = document.getElementById('self-date').value;
+
+                basicInfoHtml = `
+                    <div class="info-row"><strong>评估对象：</strong>${name}</div>
+                    <div class="info-row"><strong>年龄：</strong>${age}岁</div>
+                    <div class="info-row"><strong>性别：</strong>${gender}</div>
+                    <div class="info-row"><strong>评估日期：</strong>${date}</div>
+                `;
+            } else {
+                const name = document.getElementById('informant-name').value.trim() || '未填写';
+                const relation = document.getElementById('informant-relation').value.trim();
+                const hours = document.getElementById('informant-hours').value.trim();
+                const date = document.getElementById('informant-date').value;
+
+                basicInfoHtml = `
+                    <div class="info-row"><strong>来访者姓名：</strong>${name}</div>
+                    <div class="info-row"><strong>评估者与来访者关系：</strong>${relation}</div>
+                    <div class="info-row"><strong>每周相处时间：</strong>${hours}小时</div>
+                    <div class="info-row"><strong>评估日期：</strong>${date}</div>
+                `;
+            }
+
+            // 第三步：按维度统计得分
+            const dimScores = {
+                'I': 0, 'II': 0, 'III': 0, 'IV': 0, 'V': 0,
+                'VI': 0, 'VII': 0, 'VIII': 0, 'IX': 0, 'X': 0,
+                'XI': 0, 'XII': 0, 'XIII': 0
+            };
+            const dimNames = {
+                'I': '抑郁相关症状', 'II': '愤怒相关症状', 'III': '躁狂相关症状',
+                'IV': '焦虑相关症状', 'V': '躯体相关症状', 'VI': '自伤风险相关',
+                'VII': '精神病性相关症状', 'VIII': '睡眠相关症状', 'IX': '认知相关症状',
+                'X': '强迫相关症状', 'XI': '解离相关症状', 'XII': '身份认同相关症状',
+                'XIII': '物质使用相关症状'
+            };
+
+            questions.forEach(question => {
+                const dim = question.dataset.dim;
+                dimScores[dim] += parseInt(question.dataset.score);
+            });
+
+            // 第四步：生成各维度结果
+            let dimensionResultsHtml = '';
+            let highRiskDims = [];
+            Object.keys(dimScores).forEach(dim => {
+                const score = dimScores[dim];
+                const name = dimNames[dim];
+                let riskClass = 'risk-low';
+                let riskText = '低风险';
+                let suggestion = '无明显症状困扰，建议保持当前积极状态，定期自我觉察。';
+
+                // 特殊维度：自伤风险（VI）
+                if (dim === 'VI') {
+                    if (score >= 2) {
+                        riskClass = 'risk-high';
+                        riskText = '高风险';
+                        suggestion = '存在明显自伤想法，需立即寻求精神科医生或危机干预帮助！';
+                        highRiskDims.push(name);
+                    } else {
+                        riskClass = 'risk-low';
+                        riskText = '低风险';
+                        suggestion = '无明显自伤想法，建议持续关注情绪状态。';
+                    }
+                } 
+                // 其他维度
+                else {
+                    if (score >= 7) {
+                        riskClass = 'risk-high';
+                        riskText = '高风险';
+                        suggestion = '症状明显且持续，严重影响生活，建议尽快前往精神科医疗机构就诊。';
+                        highRiskDims.push(name);
+                    } else if (score >= 3) {
+                        riskClass = 'risk-mid';
+                        riskText = '中风险';
+                        suggestion = '存在一定症状困扰，建议寻求心理咨询师帮助，必要时转诊精神科。';
+                    }
+                }
+
+                dimensionResultsHtml += `
+                    <div class="dimension-result ${riskClass}">
+                        <strong>${dim}. ${name}</strong>：得分 ${score} 分（${riskText}）
+                        <br>建议：${suggestion}
+                    </div>
+                `;
+            });
+
+            // 第五步：生成综合建议
+            let totalSuggestion = '';
+            if (highRiskDims.length > 0) {
+                totalSuggestion = `综合评估：存在高风险维度（${highRiskDims.join('、')}），情况紧急，<strong>请立即联系精神科医生或专业危机干预机构</strong>，避免延误干预时机。`;
+            } else if (Object.values(dimScores).some(score => score >= 3)) {
+                totalSuggestion = '综合评估：存在中风险症状维度，建议1个月内完成专业心理咨询或精神科筛查，明确症状性质并制定干预方案。';
+            } else {
+                totalSuggestion = '综合评估：各维度均为低风险，无明显临床症状困扰，建议每3个月进行一次自我筛查，保持健康生活方式（规律作息、适度运动、良好社交）。';
+            }
+
+            // 第五步：识别中风险维度
+            let midRiskDims = [];
+            Object.keys(dimScores).forEach(dim => {
+                const score = dimScores[dim];
+                const name = dimNames[dim];
+                
+                if (dim === 'VI' && score < 2) {
+                    // 自伤风险维度不设中风险
+                } else if (score >= 3 && score < 7) {
+                    midRiskDims.push(name);
+                }
+            });
+            
+            // 第六步：生成推荐量表
+            let recommendedScales = [];
+            if (highRiskDims.includes('自伤风险相关') || dimScores.VI >= 2) {
+                recommendedScales.push('自杀意念量表(SIQ)');
+            }
+            if (highRiskDims.includes('抑郁相关症状') || midRiskDims.includes('抑郁相关症状')) {
+                recommendedScales.push('患者健康问卷(PHQ-9)');
+            }
+            if (highRiskDims.includes('焦虑相关症状') || midRiskDims.includes('焦虑相关症状')) {
+                recommendedScales.push('广泛性焦虑障碍量表(GAD-7)');
+            }
+            if (highRiskDims.includes('精神病性相关症状') || midRiskDims.includes('精神病性相关症状')) {
+                recommendedScales.push('简明精神评定量表(BPRS)');
+            }
+            if (highRiskDims.includes('物质使用相关症状') || midRiskDims.includes('物质使用相关症状')) {
+                recommendedScales.push('酒精使用障碍识别测验(AUDIT)');
+            }
+            if (highRiskDims.includes('强迫相关症状') || midRiskDims.includes('强迫相关症状')) {
+                recommendedScales.push('耶鲁-布朗强迫量表(Y-BOCS)');
+            }
+            
+            // 第七步：填充并显示结果
+            document.getElementById('basic-info-display').innerHTML = basicInfoHtml;
+            document.getElementById('dimension-results').innerHTML = dimensionResultsHtml;
+            document.getElementById('total-result').textContent = totalSuggestion;
+            const resultArea = document.getElementById('result-area');
+            resultArea.style.display = 'block';
+            resultArea.scrollIntoView({ behavior: 'smooth' });
+            
+            // 生成AI可识别的精简分析文本
+            const aiText = `V:CP|${currentVersion==='self'?'自:':'知:'}基:${currentVersion==='self'?`龄${document.getElementById('self-age').value},性${document.getElementById('self-gender').value},日${document.getElementById('self-date').value}`:`关${document.getElementById('informant-relation').value},时${document.getElementById('informant-hours').value},日${document.getElementById('informant-date').value}`}|高:[${highRiskDims.join(',')}]|中:[${midRiskDims.join(',')}]|分:I${dimScores.I},II${dimScores.II},III${dimScores.III},IV${dimScores.IV},V${dimScores.V},VI${dimScores.VI},VII${dimScores.VII},VIII${dimScores.VIII},IX${dimScores.IX},X${dimScores.X},XI${dimScores.XI},XII${dimScores.XII},XIII${dimScores.XIII}|导:${dimScores.VI>=2?'急诊(自伤)':highRiskDims.length>0?'速诊(高风险)':midRiskDims.length>0?'普诊(中风险)':'随访(低风险)'}|推:[${recommendedScales.join(',')}]`;
+
+// 添加入页面
+const aiTextContainer = document.createElement('div');
+aiTextContainer.style.marginTop = '20px';
+aiTextContainer.style.padding = '10px';
+aiTextContainer.style.backgroundColor = '#f0f4f8';
+aiTextContainer.style.borderRadius = '6px';
+aiTextContainer.innerHTML = `
+  <div style="font-size:14px; margin-bottom:8px;"><strong>AI分析文本：</strong></div>
+  <div id="ai-analysis-text" style="font-size:12px; word-break:break-all; margin-bottom:8px;">${aiText}</div>
+  <button id="copy-ai-text" style="padding:6px 12px; border:none; border-radius:4px; background:#4299e1; color:#fff; cursor:pointer; font-size:12px;">一键复制</button>
+`;
+resultArea.appendChild(aiTextContainer);
+
+// 复制功能
+document.getElementById('copy-ai-text').addEventListener('click', () => {
+  const text = document.getElementById('ai-analysis-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    alert('AI分析文本已复制！');
+  });
+});
+
+        });
+    </script>
+    
+    <!-- 导航栏滚动效果脚本 -->
+    <script>
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
             if (window.scrollY > 50) {
@@ -711,153 +745,6 @@
                 navbar.classList.remove('scrolled');
             }
         });
-
-        // 页面加载完成后执行
-        document.addEventListener('DOMContentLoaded', function() {
-            // 版本切换功能
-            const shortVersionBtn = document.getElementById('short-version');
-            const fullVersionBtn = document.getElementById('full-version');
-            const shortScale = document.getElementById('short-scale');
-            const fullScale = document.getElementById('full-scale');
-            
-            shortVersionBtn.addEventListener('click', function() {
-                shortVersionBtn.classList.add('active');
-                fullVersionBtn.classList.remove('active');
-                shortScale.style.display = 'block';
-                fullScale.style.display = 'none';
-            });
-            
-            fullVersionBtn.addEventListener('click', function() {
-                fullVersionBtn.classList.add('active');
-                shortVersionBtn.classList.remove('active');
-                fullScale.style.display = 'block';
-                shortScale.style.display = 'none';
-                
-                // 这里可以添加加载完整版问题的逻辑
-                loadFullVersionQuestions();
-            });
-
-            // 选项选择功能
-            const options = document.querySelectorAll('.option');
-            options.forEach(option => {
-                option.addEventListener('click', function() {
-                    // 移除同组其他选项的选中状态
-                    const question = this.closest('.question');
-                    const siblings = question.querySelectorAll('.option');
-                    siblings.forEach(sib => sib.classList.remove('selected'));
-                    
-                    // 添加当前选项的选中状态
-                    this.classList.add('selected');
-                    
-                    // 设置分数
-                    question.dataset.score = this.dataset.value;
-                });
-            });
-
-            // 计算结果按钮点击事件
-            const calculateBtn = document.getElementById('calculate-btn');
-            const resultArea = document.getElementById('result-area');
-            
-            calculateBtn.addEventListener('click', function() {
-                // 验证基本信息
-                const userName = document.getElementById('user-name').value;
-                const userAge = document.getElementById('user-age').value;
-                const userGender = document.getElementById('user-gender').value;
-                const assessmentDate = document.getElementById('assessment-date').value;
-                
-                if (!userAge || !userGender || !assessmentDate) {
-                    alert('请填写完整的必填信息！');
-                    return;
-                }
-                
-                // 验证所有问题是否已回答
-                const questions = document.querySelectorAll('.question');
-                let allAnswered = true;
-                
-                questions.forEach(question => {
-                    if (!question.dataset.score) {
-                        allAnswered = false;
-                        // 可以添加高亮显示未回答的问题
-                    }
-                });
-                
-                if (!allAnswered) {
-                    alert('请完成所有问题的回答！');
-                    return;
-                }
-                
-                // 计算各维度得分
-                const dimensions = ['I', 'II', 'III'];
-                const dimensionScores = {};
-                
-                dimensions.forEach(dim => {
-                    const dimQuestions = document.querySelectorAll(`.question[data-dim="${dim}"]`);
-                    let score = 0;
-                    
-                    dimQuestions.forEach(q => {
-                        score += parseInt(q.dataset.score) || 0;
-                    });
-                    
-                    dimensionScores[dim] = score;
-                    
-                    // 更新结果显示
-                    document.getElementById(`score-dim-${dim}`).textContent = score;
-                    
-                    // 设置风险等级
-                    const levelElement = document.getElementById(`level-dim-${dim}`);
-                    levelElement.className = 'result-level';
-                    
-                    if (score <= 3) {
-                        levelElement.classList.add('level-low');
-                        levelElement.textContent = '低风险';
-                    } else if (score <= 6) {
-                        levelElement.classList.add('level-medium');
-                        levelElement.textContent = '中风险';
-                    } else {
-                        levelElement.classList.add('level-high');
-                        levelElement.textContent = '高风险';
-                    }
-                });
-                
-                // 更新评估信息
-                document.getElementById('assessment-info').textContent =
-                    `姓名：${userName || '未提供'}，年龄：${userAge}岁，性别：${userGender}，评估日期：${assessmentDate}`;
-                
-                // 显示结果区域
-                resultArea.classList.add('visible');
-                
-                // 滚动到结果区域
-                resultArea.scrollIntoView({ behavior: 'smooth' });
-            });
-
-            // 复制AI分析文本功能
-            const copyBtn = document.getElementById('copy-ai-text');
-            const aiText = document.getElementById('ai-analysis-text');
-            
-            copyBtn.addEventListener('click', function() {
-                navigator.clipboard.writeText(aiText.textContent)
-                    .then(() => {
-                        copyBtn.textContent = '已复制！';
-                        setTimeout(() => {
-                            copyBtn.textContent = '复制分析结果';
-                        }, 2000);
-                    })
-                    .catch(err => {
-                        console.error('无法复制文本:', err);
-                    });
-            });
-
-            // 加载完整版问题的函数
-            function loadFullVersionQuestions() {
-                // 这里可以根据需要加载完整版问题
-                // 由于是演示，这里只添加一个提示
-                if (fullScale.children.length === 0) {
-                    const placeholder = document.createElement('div');
-                    placeholder.className = 'instructions';
-                    placeholder.textContent = '完整版问题将在实际应用中加载';
-                    fullScale.appendChild(placeholder);
-                }
-            }
-        });
     </script>
-</body></html>
+</body>
+</html>
