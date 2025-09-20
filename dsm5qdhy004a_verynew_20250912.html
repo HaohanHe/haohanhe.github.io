@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSM-5水平2-抑郁—成人版</title>
+    <link rel="stylesheet" href="./qdhys_custom.css">
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.6;
+            color: #333;
+            background-color: #FDDDE8;
+        }
+
+        /* 头部图片区域 */
+        .header-image {
+            width: 100%;
+            height: 200px;
+            background-image: url('https://hsyscn.top/%E5%A4%A7%E6%A6%82.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        /* 主内容区域 */
+        main {
+            padding-top: 70px;
+        }
+
+        /* 容器样式 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+
+        /* 标题样式 */
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        h2 {
+            color: #34495e;
+            margin: 30px 0 15px 0;
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+        h3 {
+            color: #7f8c8d;
+            margin: 20px 0 10px 0;
+            font-size: 1.2rem;
+            font-weight: 400;
+        }
+
+        /* 版本切换器样式 */
+        .version-selector {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e1e1e1;
+        }
+        .version-selector h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .version-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .version-tab {
+            padding: 10px 25px;
+            border: 2px solid #3498db;
+            background-color: white;
+            color: #3498db;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .version-tab:hover {
+            background-color: #e3f2fd;
+        }
+        .version-tab.active {
+            background-color: #3498db;
+            color: white;
+        }
+
+        /* 指导语样式 */
+        .instructions {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin-bottom: 30px;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        /* 基本信息区样式 */
+        .info-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+        }
+        .info-item label {
+            margin-right: 10px;
+            font-weight: 500;
+            min-width: 60px;
+        }
+        .info-item input[type="text"],
+        .info-item input[type="number"],
+        .info-item input[type="date"] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            flex: 1;
+            max-width: 150px;
+        }
+        .info-item input[type="radio"] {
+            margin-right: 5px;
+        }
+        .info-item .radio-group {
+            display: flex;
+            gap: 15px;
+        }
+        .informant-info {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e1e1e1;
+        }
+        .informant-info .info-item {
+            margin-bottom: 10px;
+        }
+
+        /* 量表问题区样式 */
+        .scale-section {
+            margin-bottom: 30px;
+        }
+        .dimension {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        .dimension-header {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: white;
+            border: 1px solid #e1e1e1;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        .question:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .question-text {
+            margin-bottom: 15px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .option {
+            flex: 1;
+            min-width: 60px;
+            text-align: center;
+            padding: 6px 0;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .option:hover {
+            background: #edf2f7;
+        }
+        .option.selected {
+            background: #4299e1;
+            color: #fff;
+            border-color: #4299e1;
+        }
+        .option input[type="radio"] {
+            display: none;
+        }
+        .option label {
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+        .scale-values {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .scale-value {
+            text-align: center;
+            width: 20%;
+        }
+
+        /* 按钮样式 */
+        .btn-area {
+            text-align: center;
+            margin: 25px 0;
+        }
+        #calculate-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            background: #2b6cb0;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #calculate-btn:hover {
+            background: #2c5282;
+        }
+
+        /* 结果区样式 */
+        .result-section {
+            margin-top: 40px;
+            padding: 25px;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            display: none;
+        }
+        .result-section.visible {
+            display: block;
+        }
+        .result-header {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2c3e50;
+        }
+        .result-info {
+            background-color: white;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            border: 1px solid #e1e1e1;
+        }
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .result-item {
+            padding: 15px;
+            background-color: white;
+            border-radius: 6px;
+            border: 1px solid #e1e1e1;
+        }
+        .result-item h4 {
+            margin-bottom: 10px;
+            color: #34495e;
+            font-size: 1.1rem;
+        }
+        .result-score {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+        .result-level {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+        .level-low {
+            background-color: #d5f4e6;
+            color: #27ae60;
+        }
+        .level-medium {
+            background-color: #ffeaa7;
+            color: #f39c12;
+        }
+        .level-high {
+            background-color: #ffcccc;
+            color: #e74c3c;
+        }
+        .result-description {
+            margin-top: 10px;
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* 警告样式 */
+        .warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-size: 0.95rem;
+        }
+        .danger {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* AI分析文本区样式 */
+        .ai-analysis {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            border-left: 4px solid #5dade2;
+        }
+        .ai-analysis h4 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+        .ai-text {
+            background-color: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            min-height: 100px;
+            line-height: 1.7;
+            font-size: 0.95rem;
+            color: #333;
+            white-space: pre-wrap;
+        }
+        .copy-button {
+            margin-top: 15px;
+            padding: 8px 20px;
+            background-color: #5dade2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+        .copy-button:hover {
+            background-color: #3498db;
+        }
+
+        /* 专业提示样式 */
+        .professional-tips {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #e1e1e1;
+        }
+        .professional-tips h4 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+        .professional-tips ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+        .professional-tips li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        /* 页脚样式 */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-links {
+            margin-top: 15px;
+        }
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* 量表版本容器样式 */
+        .scale-version {
+            display: none;
+        }
+        .scale-version.active {
+            display: block;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar ul li {
+                margin: 0 8px;
+            }
+            .navbar ul li a {
+                font-size: 0.8rem;
+            }
+            .container {
+                padding: 15px;
+                margin-top: 10px;
+                margin-bottom: 20px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            h2 {
+                font-size: 1.3rem;
+            }
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+            .options {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .option {
+                margin-bottom: 5px;
+            }
+            .header-image {
+                height: 150px;
+            }
+            .version-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            .version-tab {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar scrolled" id="navbar">
+        <ul>
+            <li><a href="https://hsyscn.top/">首页</a></li>  
+            <li><a href="https://hsyscn.top/qdhsyscninformation.html">信息门户</a></li>  
+            <li><a href="https://hsyscn.top/team.html">关于我们</a></li>  
+            <li><a href="https://hsyscn.top/pay.html">支付与捐赠</a></li>  
+        </ul>
+    </nav>
+
+    <!-- 头部图片区域 -->
+    <div class="header-image"></div>
+
+    <main>
+    <div class="container">
+        <h1>DSM-5水平2-抑郁—成人版</h1>
+        <h2>PROMIS 情绪痛苦—抑郁—简版</h2>
+
+        <!-- 版本选择器 -->
+        <div class="version-selector">
+            <h3>请选择评估版本</h3>
+            <div class="version-tabs">
+                <div class="version-tab active" data-version="self">自我报告版</div>
+                <div class="version-tab" data-version="informant">知情者版</div>
+            </div>
+        </div>
+
+        <!-- 自我报告版 -->
+        <div class="scale-version active" id="self-version">
+            <!-- 基本信息区 -->
+            <div class="info-section">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label for="self-name">姓名：</label>
+                        <input type="text" id="self-name" placeholder="请输入姓名">
+                    </div>
+                    <div class="info-item">
+                        <label for="self-age">年龄：</label>
+                        <input type="number" id="self-age" min="18" placeholder="18+">
+                    </div>
+                    <div class="info-item">
+                        <label>性别：</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="self-gender" value="男"> 男</label>
+                            <label><input type="radio" name="self-gender" value="女"> 女</label>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <label for="self-date">评估日期：</label>
+                        <input type="date" id="self-date" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 指导语 -->
+            <div class="instructions">
+                <h3>指导语</h3>
+                <p>在刚刚完成的DSM-5水平1的初测问卷中，你表示在过去两周内在某种程度上被"做事没有兴趣或不感到快乐"和/或"感到低落、抑郁、或者无望"所困扰。下面这些问题是对这些感觉更加细节性地询问，特别是在过去七天内你受这一系列症状困扰的频率。答题时，请在每一行的选项方块上打（√或×）。</p>
+            </div>
+
+            <!-- 量表问题区 -->
+            <div class="scale-section">
+                <h3>在过去七天内 ....</h3>
+                
+                <!-- 抑郁症状维度 -->
+                <div class="dimension">
+                    <div class="dimension-header">抑郁症状评分</div>
+                    
+                    <div class="question self-question" data-dim="D" data-score="">
+                        <div class="question-text">1. 我感到没有价值。</div>
+                        <div class="options">
+                            <div class="option"><input type="radio" name="self-q1" value="1"><label>1 从未</label></div>
+                            <div class="option"><input type="radio" name="self-q1" value="2"><label>2 很少</label></div>
+                            <div class="option"><input type="radio" name="self-q1" value="3"><label>3 有时</label></div>
+                            <div class="option"><input type="radio" name="self-q1" value="4"><label>4 经常</label></div>
+                            <div class="option"><input type="radio" name="self-q1" value="5"><label>5 总是</label></div>
+                        </div>
+                    </div>
+                    
+                    <div class="question self-question" data-dim="D" data-score="">
+                        <div class="question-text">2. 我没有什么可期待的。</div>
+                        <div class="options">
+                            <div class="option"><input type="radio" name="self-q2" value="1"><label>1 从未</label></div>
+                            <div class="option"><input type="radio" name="self-q2" value="2"><label>2 很少</label></div>
+                            <div class="option"><input type="radio" name="self-q2" value="3"><label>3 有时</label></div>
+                            <div class="option"><input type="radio" name="self-q2" value="4"><label>4 经常</label></div>
+                            <div class="option"><input type="radio" name="self-q2" value="5"><label>5 总是</label></div>
+                        </div>
+                    </div>
+                    
+                    <div class="question self-question" data-dim="D" data-score="">
+                        <div class="question-text">3. 我感到无助。</div>
+                        <div class="options">
+                            <div class="option"><input type="radio" name="self-q3" value="1"><label>1 从未</label></div>
+                            <div class="option"><input type="radio" name="self-q3" value="2"><label>2 很少</label></div>
+                            <div class="option"><input type="radio" name="self-q3" value="3"><label>3 有时</label></div>
+                            <div class="option"><input type="radio" name="self-q3" value="4"><label>4 经常</label></div>
+                            <div class="option"><input type="radio" name="self-q3" value="5"><label>5 总是</label></div>
+                        </div>
+                    </div>
+                    
+                    <div class="question self-question" data-dim="D" data-score="">
+                        <div class="question-text">4. 我感到悲伤。</div>
+                        <div class="options">
+                            <div class="option"><input type="radio" name="self-q4" value="1"><label>1 从未</label></div>
+                            <div class="option"><input type="radio" name="self-q4" value="2"><label>2 很少</label></div>
+                            <div class="option"><input type="radio" name="self-q4" value="3"><label>3 有时</label></div>
+                            <div class="option"><input type="radio" name="self-q4" value="4"><label>4 经常</label></div>
+                            <div class="option"><input type="radio" name="self-q4" value="5"><label>5 总是</label></div>
+                        </div>
+                    </div>
+                    
+                    <div class="question self-question" data-dim="D" data-score="">
+                        <div class="question-text">5. 我感到很失败。</div>
+                        <div class="options">
+                            <div class="option"><input type="radio" name="self-q5" value="1"><label>1 从未</label></div>
+                            <div class="option"><input type="radio" name="self-q5" value="2"><label>2 很少</label></div>
+                            <div class="option"><input type="radio" name="self-q5" value="3"><label>3 有时</label></div>
+                            <div class="option"><input type="radio" name="self-q5" value="4"><label>4 经常</label></div>
+                            <div class="option"><input type="radio" name="self-q5" value="5"><label>5 总是</label></div>
+                        </div>
+                    </div>
+                    
+                    <div class="question self-question" data-dim="D" data-score="">
+                        <div class="question-text">6. 我感到抑郁。</div>
+                        <div class="options">
+                            <div class="option"><input type="radio" name="self-q6" value="1"><label>1 从未</label></div>
+                            <div class="option"><input type="radio" name="self-q6" value="2"><label>2 很少</label></div>
+                            <div class="option"><input type="radio" name="self-q6" value="3"><label>3 有时</label></div>
+                            <div class="option"><input type="radio" name="self-q6" value="4"><label>4 经常</label></div>
+                            <div class="option"><input type="radio" name="self-q6" value="5"><label>5 总是</label></div>
+                        </div>
+                    </div>
+                    
+                    <div class="question self-question" data-dim="D" data-score="">
+                        <div class="question-text">7. 我感到不高兴。</div>
+                        <div class="options">
+                            <div class="option"><input type="radio" name="self-q7" value="1"><label>1 从未</label></div>
+                            <div class="option"><input type="radio" name="self-q7" value="2"><label>2 很少</label></div>
+                            <div class="option"><input type="radio" name="self-q7" value="3"><label>3 有时</label></div>
+                            <div class="option"><input type="radio" name="self-q7" value="4"><label>4 经常</label></div>
+                            <div class="option"><input type="radio" name="self-q7" value="5"><label>5 总是</label></div>
+                        </div>
+                    </div>
+                    
+                    <div class="question self-question" data-dim="D" data-score="">
+                        <div class="question-text">8. 我感到没有希望。</div>
+                        <div class="options">
+                            <div class="option"><input type="radio" name="self-q8" value="1"><label>1 从未</label></div>
+                            <div class="option"><input type="radio" name="self-q8" value="2"><label>2 很少</label></div>
+                            <div class="option"><input type="radio" name="self-q8" value="3"><label>3 有时</label></div>
+                            <div class="option"><input type="radio" name="self-q8" value="4"><label>4 经常</label></div>
+                            <div class="option"><input type="radio" name="self-q8" value="5"><label>5 总是</label></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 知情者版 -->
+        <div class="scale-version" id="informant-version">
+            <!-- 基本信息区 -->
+            <div class="info-section">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label for="informant-name">姓名：</label>
+                        <input type="text" id="informant-name" placeholder="请输入姓名">
+                    </div>
+                    <div class="info-item">
+                        <label for="informant-age">年龄：</label>
+                        <input type="number" id="informant-age" min="18" placeholder="18+">
+                    </div>
+                    <div class="info-item">
+                        <label>性别：</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="informant-gender" value="男"> 男</label>
+                            <label><input type="radio" name="informant-gender" value="女"> 女</label>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <label for="informant-date">评估日期：</label>
+                        <input type="date" id="informant-date" required>
+                    </div>
+                </div>
+                
+                <!-- 知情人信息 -->
+                <div class="informant-info">
+                    <h3>知情人信息</h3>
+                    <div class="info-item">
+                        <label for="relationship">您和来访者是什么关系？</label>
+                        <input type="text" id="relationship" placeholder="如：配偶、父母、子女、朋友等">
+                    </div>
+                    <div class="info-item">
+                        <label for="time-together">在通常的一周内，您大约会和来访者在一起多久？</label>
+                        <input type="number" id="time-together" placeholder="请输入小时数">
+                        <span style="margin-left: 5px;">小时/周</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 指导语 -->
+            <div class="instructions">
+                <h3>指导语</h3>
+                <p>在刚刚完成的DSM-5水平1的初测问卷中，来访者表示在过去两周内，会在某种程度上被"做事没有兴趣或不感到快乐"和/或"感到低落、抑郁、或者无望"所困扰。下面这些问题是对这些感觉更加细节性地询问，特别是在过去七天内来访者受这一系列症状困扰的频率。答题时，请在每一行的选项方块上打（√或×）。</p>
+            </div>
+
+            <!-- 量表问题区 -->
+            <div class="scale-section">
+                <h3>在过去七天内 ....</h3>
+                
+                <!-- 抑郁症状维度 -->
+                <div class="dimension">
+                    <div class="dimension-header">抑郁症状评分</div>
+                    
+                    <div class="question informant-question" data-dim="D" data-score="">
+                        <div class="question-text">1. 他/她感到没有价值。</div>
+                        <div class="options">
+                            <div class="option"><input type="radio" name="informant-q1" value="1"><label>1 从未</label></div>
+                            <div class="option"><input type="radio" name="informant-q1" value="2"><label>2 很少</label></div>
+                            <div class="option"><input type="radio" name="informant-q1" value="3"><label>3 有时</label></div>
+                            <div class="option"><input type="radio" name="informant-q1" value="4"><label>4 经常</label></div>
+                            <div class="option"><input type="radio" name="informant-q1" value="5"><label>5 总是</label></div>
+                        </div>
+                    </div>
+                    
+                    <div class="question informant-question" data-dim="D" data-score="">
+                        <div class="question-text">2. 他/她没有什么可期待的。</div>
+                        <div class="options">
+                            <div class="option"><input type="radio" name="informant-q2" value="1"><label>1 从未</label></div>
+                            <div class="option"><input type="radio" name="informant-q2" value="2"><label>2 很少</label></div>
+                            <div class="option"><input type="radio" name="informant-q2" value="3"><label>3 有时</label></div>
+                            <div class="option"><input type="radio" name="informant-q2" value="4"><label>4 经常</label></div>
+                            <div class="option"><input type="radio" name="informant-q2" value="5"><label>5 总是</label></div>
+                        </div>
+                    </div>
+                    
+                    <div class="question informant-question" data-dim="D" data-score="">
+                        <div class="question-text">3. 他/她感到无助。</div>
+                        <div class="options">
+                            <div class="option"><input type="radio" name="informant-q3" value="1"><label>1 从未</label></div>
+                            <div class="option"><input type="radio" name="informant-q3" value="2"><label>2 很少</label></div>
+                            <div class="option"><input type="radio" name="informant-q3" value="3"><label>3 有时</label></div>
+                            <div class="option"><input type="radio" name="informant-q3" value="4"><label>4 经常</label></div>
+                            <div class="option"><input type="radio" name="informant-q3" value="5"><label>5 总是</label></div>
+                        </div>
+                    </div>
+                    
+                    <div class="question informant-question" data-dim="D" data-score="">
+                        <div class="question-text">4. 他/她感到悲伤。</div>
+                        <div class="options">
+                            <div class="option"><input type="radio" name="informant-q4" value="1"><label>1 从未</label></div>
+                            <div class="option"><input type="radio" name="informant-q4" value="2"><label>2 很少</label></div>
+                            <div class="option"><input type="radio" name="informant-q4" value="3"><label>3 有时</label></div>
+                            <div class="option"><input type="radio" name="informant-q4" value="4"><label>4 经常</label></div>
+                            <div class="option"><input type="radio" name="informant-q4" value="5"><label>5 总是</label></div>
+                        </div>
+                    </div>
+                    
+                    <div class="question informant-question" data-dim="D" data-score="">
+                        <div class="question-text">5. 他/她感到很失败。</div>
+                        <div class="options">
+                            <div class="option"><input type="radio" name="informant-q5" value="1"><label>1 从未</label></div>
+                            <div class="option"><input type="radio" name="informant-q5" value="2"><label>2 很少</label></div>
+                            <div class="option"><input type="radio" name="informant-q5" value="3"><label>3 有时</label></div>
+                            <div class="option"><input type="radio" name="informant-q5" value="4"><label>4 经常</label></div>
+                            <div class="option"><input type="radio" name="informant-q5" value="5"><label>5 总是</label></div>
+                        </div>
+                    </div>
+                    
+                    <div class="question informant-question" data-dim="D" data-score="">
+                        <div class="question-text">6. 他/她感到抑郁。</div>
+                        <div class="options">
+                            <div class="option"><input type="radio" name="informant-q6" value="1"><label>1 从未</label></div>
+                            <div class="option"><input type="radio" name="informant-q6" value="2"><label>2 很少</label></div>
+                            <div class="option"><input type="radio" name="informant-q6" value="3"><label>3 有时</label></div>
+                            <div class="option"><input type="radio" name="informant-q6" value="4"><label>4 经常</label></div>
+                            <div class="option"><input type="radio" name="informant-q6" value="5"><label>5 总是</label></div>
+                        </div>
+                    </div>
+                    
+                    <div class="question informant-question" data-dim="D" data-score="">
+                        <div class="question-text">7. 他/她感到不高兴。</div>
+                        <div class="options">
+                            <div class="option"><input type="radio" name="informant-q7" value="1"><label>1 从未</label></div>
+                            <div class="option"><input type="radio" name="informant-q7" value="2"><label>2 很少</label></div>
+                            <div class="option"><input type="radio" name="informant-q7" value="3"><label>3 有时</label></div>
+                            <div class="option"><input type="radio" name="informant-q7" value="4"><label>4 经常</label></div>
+                            <div class="option"><input type="radio" name="informant-q7" value="5"><label>5 总是</label></div>
+                        </div>
+                    </div>
+                    
+                    <div class="question informant-question" data-dim="D" data-score="">
+                        <div class="question-text">8. 他/她感到没有希望。</div>
+                        <div class="options">
+                            <div class="option"><input type="radio" name="informant-q8" value="1"><label>1 从未</label></div>
+                            <div class="option"><input type="radio" name="informant-q8" value="2"><label>2 很少</label></div>
+                            <div class="option"><input type="radio" name="informant-q8" value="3"><label>3 有时</label></div>
+                            <div class="option"><input type="radio" name="informant-q8" value="4"><label>4 经常</label></div>
+                            <div class="option"><input type="radio" name="informant-q8" value="5"><label>5 总是</label></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 按钮区域 -->
+        <div class="btn-area">
+            <button id="calculate-btn">生成评估结果</button>
+        </div>
+
+        <!-- 结果展示区 -->
+        <div class="result-section" id="resultSection">
+            <h3 class="result-header">评估结果</h3>
+            
+            <!-- 基本信息结果 -->
+            <div class="result-info">
+                <h4>基本信息</h4>
+                <div id="basicInfo"></div>
+            </div>
+            
+            <!-- 维度结果 -->
+            <div class="result-grid">
+                <div class="result-item">
+                    <h4>抑郁症状评估</h4>
+                    <div class="result-score">总原始分: <span id="totalScore"></span></div>
+                    <div class="result-score">比例原始总分: <span id="proportionScore"></span></div>
+                    <div class="result-score">T-分数: <span id="tScore"></span></div>
+                    <div>风险等级: <span id="levelD" class="result-level"></span></div>
+                    <div class="result-description" id="descD"></div>
+                </div>
+            </div>
+            
+            <!-- 综合建议 -->
+            <div class="result-item">
+                <h4>综合建议</h4>
+                <div id="comprehensiveAdvice"></div>
+            </div>
+            
+            <!-- 警告信息 -->
+            <div id="highRiskWarning" class="danger" style="display: none;">
+                警告：评估结果显示存在较高的抑郁风险，建议尽快寻求专业心理健康服务！
+            </div>
+            
+            <!-- AI分析文本区 -->
+            <div class="ai-analysis">
+                <h4>AI分析结果</h4>
+                <div id="aiText" class="ai-text"></div>
+                <button id="copyBtn" class="copy-button">复制结果</button>
+            </div>
+            
+            <!-- 专业提示 -->
+            <div class="professional-tips">
+                <h4>专业提示</h4>
+                <ul id="professionalTips"></ul>
+            </div>
+        </div>
+    </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 心理评估系统 | 仅供专业人士参考使用</p>
+            <div class="footer-links">
+                <a href="https://hsyscn.top/">首页</a>
+                <a href="https://hsyscn.top/privacy.html">隐私政策</a>
+                <a href="https://hsyscn.top/terms.html">使用条款</a>
+                <a href="https://hsyscn.top/contact.html">联系我们</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 当前激活的版本
+            let activeVersion = 'self';
+            
+            // 初始化选项点击事件
+            initOptionEvents();
+            
+            // 结果计算按钮事件
+            const calculateBtn = document.getElementById('calculate-btn');
+            calculateBtn.addEventListener('click', function() {
+                calculateResults();
+            });
+            
+            // 复制按钮事件
+            const copyBtn = document.getElementById('copyBtn');
+            copyBtn.addEventListener('click', function() {
+                const aiText = document.getElementById('aiText').textContent;
+                
+                // 创建临时文本区域
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = aiText;
+                document.body.appendChild(tempTextArea);
+                
+                // 选择并复制文本
+                tempTextArea.select();
+                document.execCommand('copy');
+                
+                // 移除临时文本区域
+                document.body.removeChild(tempTextArea);
+                
+                // 提示复制成功
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = '已复制！';
+                
+                setTimeout(function() {
+                    copyBtn.textContent = originalText;
+                }, 2000);
+            });
+            
+            // 版本切换事件
+            const versionTabs = document.querySelectorAll('.version-tab');
+            versionTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const version = this.dataset.version;
+                    if (version !== activeVersion) {
+                        // 隐藏所有版本
+                        document.querySelectorAll('.scale-version').forEach(scaleVersion => {
+                            scaleVersion.classList.remove('active');
+                        });
+                        
+                        // 移除所有标签的激活状态
+                        versionTabs.forEach(t => {
+                            t.classList.remove('active');
+                        });
+                        
+                        // 显示选中的版本
+                        document.getElementById(`${version}-version`).classList.add('active');
+                        
+                        // 激活选中的标签
+                        this.classList.add('active');
+                        
+                        // 更新当前激活的版本
+                        activeVersion = version;
+                        
+                        // 隐藏结果区域
+                        document.getElementById('resultSection').classList.remove('visible');
+                    }
+                });
+            });
+        });
+        
+        // 初始化选项点击事件
+        function initOptionEvents() {
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    const input = this.querySelector('input');
+                    const name = input.name;
+                    
+                    // 对于单选按钮，移除同组其他选项的选中状态
+                    if (input.type === 'radio') {
+                        document.querySelectorAll(`input[name="${name}"]`).forEach(radio => {
+                            radio.closest('.option').classList.remove('selected');
+                        });
+                    }
+                    
+                    // 切换当前选项的选中状态
+                    input.checked = !input.checked;
+                    this.classList.toggle('selected', input.checked);
+                    
+                    // 如果是切换为选中状态，更新问题得分
+                    if (input.checked) {
+                        const question = this.closest('.question');
+                        question.dataset.score = input.value;
+                    }
+                });
+            });
+        }
+        
+        // 计算评估结果
+        function calculateResults() {
+            // 当前激活的版本
+            const activeVersion = document.querySelector('.version-tab.active').dataset.version;
+            
+            // 获取基本信息
+            let name, age, gender, date;
+            
+            if (activeVersion === 'self') {
+                name = document.getElementById('self-name').value || '未提供';
+                age = document.getElementById('self-age').value || '未提供';
+                const genderElements = document.querySelectorAll('input[name="self-gender"]:checked');
+                gender = genderElements.length > 0 ? genderElements[0].value : '未提供';
+                date = document.getElementById('self-date').value || '未提供';
+            } else {
+                name = document.getElementById('informant-name').value || '未提供';
+                age = document.getElementById('informant-age').value || '未提供';
+                const genderElements = document.querySelectorAll('input[name="informant-gender"]:checked');
+                gender = genderElements.length > 0 ? genderElements[0].value : '未提供';
+                date = document.getElementById('informant-date').value || '未提供';
+            }
+            
+            // 获取日期格式化
+            let formattedDate = date;
+            if (date !== '未提供') {
+                const dateObj = new Date(date);
+                formattedDate = `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDate()}日`;
+                const year = dateObj.getFullYear();
+                const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                const day = String(dateObj.getDate()).padStart(2, '0');
+            }
+            
+            // 验证所有问题是否都已回答
+            const questions = document.querySelectorAll(`.${activeVersion}-question`);
+            let allAnswered = true;
+            
+            questions.forEach(question => {
+                if (!question.dataset.score) {
+                    allAnswered = false;
+                    question.style.borderColor = '#e74c3c';
+                    setTimeout(() => {
+                        question.style.borderColor = '#e1e1e1';
+                    }, 1000);
+                }
+            });
+            
+            if (!allAnswered) {
+                alert('请完成所有问题后再提交！');
+                return;
+            }
+            
+            // 计算维度得分
+            const dimensionScores = {};
+            
+            // 抑郁症状维度得分
+            let depressionScore = 0;
+            
+            questions.forEach(question => {
+                depressionScore += parseInt(question.dataset.score);
+            });
+            
+            dimensionScores['D'] = depressionScore;
+            
+            // 计算比例原始总分和T分数
+            // 注：这里使用简化的转换公式，实际应用中应使用PROMIS官方转换表
+            const proportionScore = depressionScore;
+            const tScore = 50 + ((depressionScore - 16) / 8) * 10; // 简化转换公式
+            
+            // 显示基本信息
+            let basicInfoHTML = `
+                <p>姓名: ${name}</p>
+                <p>年龄: ${age}</p>
+                <p>性别: ${gender}</p>
+                <p>评估日期: ${formattedDate}</p>
+            `;
+            
+            if (activeVersion === 'informant') {
+                const relationship = document.getElementById('relationship').value || '未提供';
+                const timeTogether = document.getElementById('time-together').value || '未提供';
+                basicInfoHTML += `
+                    <p>知情人关系: ${relationship}</p>
+                    <p>每周相处时间: ${timeTogether}小时</p>
+                `;
+            }
+            
+            document.getElementById('basicInfo').innerHTML = basicInfoHTML;
+            
+            // 显示抑郁症状结果
+            document.getElementById('totalScore').textContent = depressionScore;
+            document.getElementById('proportionScore').textContent = proportionScore;
+            document.getElementById('tScore').textContent = tScore.toFixed(1);
+            
+            // 根据版本显示不同的描述
+            if (tScore < 55) {
+                document.getElementById('levelD').textContent = '低风险';
+                document.getElementById('levelD').className = 'result-level level-low';
+                if (activeVersion === 'self') {
+                    document.getElementById('descD').textContent = '当前情绪状态良好，无明显抑郁症状。建议保持积极的生活方式和良好的社交支持。';
+                } else {
+                    document.getElementById('descD').textContent = '根据知情人观察，来访者情绪状态良好，无明显抑郁症状。建议保持积极的生活方式和良好的社交支持。';
+                }
+            } else if (tScore < 65) {
+                document.getElementById('levelD').textContent = '中等风险';
+                document.getElementById('levelD').className = 'result-level level-medium';
+                if (activeVersion === 'self') {
+                    document.getElementById('descD').textContent = '存在轻度至中度的抑郁症状，建议关注情绪变化，尝试放松技巧和压力管理方法，必要时寻求心理咨询帮助。';
+                } else {
+                    document.getElementById('descD').textContent = '根据知情人观察，来访者存在轻度至中度的抑郁症状，建议关注其情绪变化，鼓励其尝试放松技巧和压力管理方法，必要时寻求心理咨询帮助。';
+                }
+            } else {
+                document.getElementById('levelD').textContent = '高风险';
+                document.getElementById('levelD').className = 'result-level level-high';
+                if (activeVersion === 'self') {
+                    document.getElementById('descD').textContent = '存在明显的抑郁症状，建议尽快寻求精神科专业评估和治疗。';
+                } else {
+                    document.getElementById('descD').textContent = '根据知情人观察，来访者存在明显的抑郁症状，建议尽快鼓励其寻求精神科专业评估和治疗。';
+                }
+                document.getElementById('highRiskWarning').style.display = 'block';
+            }
+            
+            // 生成综合建议
+            let comprehensiveAdvice = '';
+            
+            if (tScore >= 65) {
+                if (activeVersion === 'self') {
+                    comprehensiveAdvice += '评估结果显示存在较高的抑郁风险，建议立即寻求专业心理健康服务！';
+                } else {
+                    comprehensiveAdvice += '评估结果显示存在较高的抑郁风险，建议立即鼓励来访者寻求专业心理健康服务！作为知情人，您可以提供情感支持，但请避免尝试自行治疗。';
+                }
+            } else if (tScore >= 55) {
+                if (activeVersion === 'self') {
+                    comprehensiveAdvice += '评估结果显示存在一定的抑郁倾向，建议关注情绪变化，尝试积极的应对策略，必要时寻求专业帮助。';
+                } else {
+                    comprehensiveAdvice += '评估结果显示存在一定的抑郁倾向，建议关注来访者的情绪变化，鼓励其尝试积极的应对策略，提供支持性的环境，必要时寻求专业帮助。';
+                }
+            } else {
+                if (activeVersion === 'self') {
+                    comprehensiveAdvice += '根据评估结果，您的情绪状态良好。建议继续保持健康的生活方式，包括均衡饮食、适量运动、充足睡眠和积极的社交活动。如果未来遇到情绪困扰，建议及时寻求专业帮助。';
+                } else {
+                    comprehensiveAdvice += '根据评估结果，来访者的情绪状态良好。建议继续保持健康的生活方式，包括均衡饮食、适量运动、充足睡眠和积极的社交活动。如果未来观察到来访者出现情绪困扰，建议及时鼓励其寻求专业帮助。';
+                }
+            }
+            
+            document.getElementById('comprehensiveAdvice').textContent = comprehensiveAdvice;
+            
+            // 生成结构化的AI分析结果
+            let aiAnalysis = `V:CP|基:名${name},龄${age},性${gender},日${formattedDate}`;
+            
+            if (activeVersion === 'informant') {
+                const relationship = document.getElementById('relationship').value || '未提供';
+                const timeTogether = document.getElementById('time-together').value || '未提供';
+                aiAnalysis += `,关${relationship},相${timeTogether}`;
+            }
+            
+            aiAnalysis += '|';
+            
+            // 添加风险等级
+            let riskLevel = '';
+            if (tScore >= 65) riskLevel = '高';
+            else if (tScore >= 55) riskLevel = '中';
+            else riskLevel = '低';
+            
+            aiAnalysis += `风:${riskLevel}|`;
+            
+            // 添加得分信息
+            aiAnalysis += `分:原始${depressionScore},比例${proportionScore},T${tScore.toFixed(1)}|`;
+            
+            // 添加指导建议
+            let guidance = '';
+            if (tScore >= 65) {
+                guidance = '速诊(高风险)';
+            } else if (tScore >= 55) {
+                guidance = '普诊(中风险)';
+            } else {
+                guidance = '随访(低风险)';
+            }
+            
+            aiAnalysis += `导:${guidance}`;
+            
+            document.getElementById('aiText').textContent = aiAnalysis;
+            
+            // 设置专业提示
+            let professionalTipsHTML = '';
+            if (activeVersion === 'self') {
+                professionalTipsHTML = `
+                    <li>本评估量表仅供参考，不能替代专业诊断。</li>
+                    <li>如果您或您认识的人正在经历严重的抑郁症状，请立即寻求专业帮助。</li>
+                    <li>心理健康专业人员可以提供全面评估和适当的治疗方案。</li>
+                    <li>保持良好的生活习惯，包括规律作息、均衡饮食和适度运动，有助于维持心理健康。</li>
+                    <li>与亲友保持良好沟通，建立支持系统，对于应对抑郁情绪非常重要。</li>
+                `;
+            } else {
+                professionalTipsHTML = `
+                    <li>本评估量表仅供参考，不能替代专业诊断。</li>
+                    <li>如果来访者正在经历严重的抑郁症状，请鼓励其立即寻求专业帮助。</li>
+                    <li>心理健康专业人员可以提供全面评估和适当的治疗方案。</li>
+                    <li>作为知情人，您可以提供情感支持，但应避免尝试自行治疗来访者。</li>
+                    <li>创建一个支持性的环境，鼓励来访者表达感受并寻求专业帮助。</li>
+                `;
+            }
+            
+            document.getElementById('professionalTips').innerHTML = professionalTipsHTML;
+            
+            // 显示结果区域
+            document.getElementById('resultSection').classList.add('visible');
+            
+            // 滚动到结果区域
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+    
+    <!-- 导航栏滚动效果脚本 -->
+    <script>
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
