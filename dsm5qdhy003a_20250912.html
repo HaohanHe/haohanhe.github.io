@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+<!-- saved from url=(0153)file:///C:/Users/xxhzb/OneDrive/Desktop/DSM-5%20%E8%AF%84%E4%BC%B0%E9%87%8F%E8%A1%A8%20(%E4%B8%AD%E6%96%87%E7%89%88)(1)/dsm5qdhy003a_20250912_backup.html -->
 <html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DSM-5水平1-症状自评量表-11-17岁儿童</title>
-    <link rel="stylesheet" href="qdhys_custom.css">
+    <link rel="stylesheet" href="./DSM-5水平1-症状自评量表-11-17岁儿童_files/qdhys_custom.css">
     <style>
         /* 全局样式 */
         * {
@@ -1440,68 +1441,51 @@
                     comprehensiveAdvice += '根据评估结果，您的心理健康状况良好。建议继续保持健康的生活方式，包括均衡饮食、适量运动、充足睡眠和积极的社交活动。如果未来遇到心理困扰，建议及时寻求专业帮助。';
                 }
                 
+                // 在综合建议中添加问题抛给用户的文本
+                comprehensiveAdvice += '\n\n请问您需要我为您提供哪方面的分析或建议？您可以告诉我您最关心的问题。';
                 document.getElementById('comprehensiveAdvice').textContent = comprehensiveAdvice;
 
-                // 生成结构化的AI分析结果，适合智能体在无前提背景下读懂
-                let aiAnalysis = `V:CP|基:名${name},龄${age},性${genderElements[0].value},日${year}${month}${day}|`;
+                // 生成符合001a风格的AI分析文本
+                const scaleName = 'DSM-5 水平1 症状自评量表';
                 
-                // 添加高风险维度
-                let highRisk = [];
-                if (document.getElementById('levelI').textContent.includes('高风险')) highRisk.push('I');
-                if (document.getElementById('levelII').textContent.includes('高风险')) highRisk.push('II');
-                if (document.getElementById('levelIII').textContent.includes('高风险')) highRisk.push('III');
-                if (document.getElementById('levelIV').textContent.includes('高风险')) highRisk.push('IV');
-                if (document.getElementById('levelVVI').textContent.includes('高风险')) highRisk.push('V&VI');
-                if (document.getElementById('levelVII').textContent.includes('高风险')) highRisk.push('VII');
-                if (document.getElementById('levelVIII').textContent.includes('高风险')) highRisk.push('VIII');
-                if (document.getElementById('levelIX').textContent.includes('高风险')) highRisk.push('IX');
-                if (document.getElementById('levelX').textContent.includes('高风险')) highRisk.push('X');
-                if (document.getElementById('levelXI').textContent.includes('有')) highRisk.push('XI');
-                if (document.getElementById('levelXII').textContent.includes('高风险')) highRisk.push('XII');
-                
-                aiAnalysis += `高:[${highRisk.join(',')}]|`;
-                
-                // 添加中风险维度
-                let mediumRisk = [];
-                if (document.getElementById('levelI').textContent.includes('中风险')) mediumRisk.push('I');
-                if (document.getElementById('levelII').textContent.includes('中风险')) mediumRisk.push('II');
-                if (document.getElementById('levelIII').textContent.includes('中风险')) mediumRisk.push('III');
-                if (document.getElementById('levelIV').textContent.includes('中风险')) mediumRisk.push('IV');
-                if (document.getElementById('levelVVI').textContent.includes('中风险')) mediumRisk.push('V&VI');
-                if (document.getElementById('levelVII').textContent.includes('中风险')) mediumRisk.push('VII');
-                if (document.getElementById('levelVIII').textContent.includes('中风险')) mediumRisk.push('VIII');
-                if (document.getElementById('levelIX').textContent.includes('中风险')) mediumRisk.push('IX');
-                if (document.getElementById('levelX').textContent.includes('中风险')) mediumRisk.push('X');
-                
-                aiAnalysis += `中:[${mediumRisk.join(',')}]|`;
+                // 构建AI分析文本
+                let aiAnalysis = `我是一名${age}岁${genderElements[0].value}性测试者，测了${scaleName}，各维度得分如下：\n`;
                 
                 // 添加各维度得分
-                aiAnalysis += `分:I${dimensionScores['I']},II${dimensionScores['II']},III${dimensionScores['III']},IV${dimensionScores['IV']},V&VI${dimensionScores['V&VI']},VII${dimensionScores['VII']},VIII${dimensionScores['VIII']},IX${dimensionScores['IX']},X${dimensionScores['X']}|`;
+                aiAnalysis += `I. 躯体健康焦虑：${dimensionScores['I']}分\n`;
+                aiAnalysis += `II. 睡眠问题：${dimensionScores['II']}分\n`;
+                aiAnalysis += `III. 注意力问题：${dimensionScores['III']}分\n`;
+                aiAnalysis += `IV. 抑郁症状：${dimensionScores['IV']}分\n`;
+                aiAnalysis += `V&VI. 愤怒/易激惹：${dimensionScores['V&VI']}分\n`;
+                aiAnalysis += `VII. 躁狂症状：${dimensionScores['VII']}分\n`;
+                aiAnalysis += `VIII. 焦虑症状：${dimensionScores['VIII']}分\n`;
+                aiAnalysis += `IX. 精神病性症状：${dimensionScores['IX']}分\n`;
+                aiAnalysis += `X. 强迫症状：${dimensionScores['X']}分\n`;
                 
-                // 添加指导建议
-                let guidance = '';
-                if (highRiskDimensions.includes('XII')) {
-                    guidance = '急诊(自杀)';
-                } else if (highRiskDimensions.length > 0) {
-                    guidance = '速诊(高风险)';
-                } else if (mediumRiskDimensions.length > 0) {
-                    guidance = '普诊(中风险)';
+                // 添加物质使用情况
+                if (hasSubstanceUse) {
+                    aiAnalysis += `XI. 物质使用：存在${substanceTypes.join('、')}使用情况\n`;
                 } else {
-                    guidance = '随访(低风险)';
+                    aiAnalysis += `XI. 物质使用：无使用\n`;
                 }
-                aiAnalysis += `导:${guidance}|`;
                 
-                // 推荐下一步量表
-                let recommendedScale = '';
-                if (dimensionScores['IV'] >= 3) recommendedScale += '水平2-抑郁(11-17岁儿童)';
-                else if (dimensionScores['VIII'] >= 3) recommendedScale += '水平2-焦虑(11-17岁儿童)';
-                else if (dimensionScores['X'] >= 6) recommendedScale += '水平2-重复性思维和行为(11-17岁儿童)';
-                else if (dimensionScores['V&VI'] >= 3) recommendedScale += '水平2-易激惹(11-17岁儿童)';
-                else if (dimensionScores['II'] >= 2) recommendedScale += '水平2-睡眠问题(11-17岁儿童)';
-                else if (dimensionScores['I'] >= 3) recommendedScale += '水平2-躯体症状(11-17岁儿童)';
-                else recommendedScale = '无特殊推荐';
+                // 添加自杀风险情况
+                if (hasCurrentSuicideRisk) {
+                    aiAnalysis += `XII. 自杀风险：高风险（最近两周内有自杀观念或计划）\n`;
+                } else if (hasHistorySuicideRisk) {
+                    aiAnalysis += `XII. 自杀风险：中度风险（曾经有过自杀尝试史）\n`;
+                } else {
+                    aiAnalysis += `XII. 自杀风险：无风险\n`;
+                }
                 
-                aiAnalysis += `推:${recommendedScale}`;
+                // 添加综合评估结果
+                aiAnalysis += '\n综合评估结果：' + comprehensiveAdvice.split('\n')[0] + '\n';
+                
+                // 添加分析请求
+                aiAnalysis += '\n请你为我分析，并给我推荐下一步建设性的操作指示或下一步应选择的量表。如果必要，请详细与我进行交谈来获取更多信息或其他操作';
+                
+                // 保持原有的问题引导文本
+                aiAnalysis += '\n\n请问您需要我为您提供哪方面的分析或建议？您可以告诉我您最关心的问题。';
                 
                 document.getElementById('aiText').textContent = aiAnalysis;
             });
