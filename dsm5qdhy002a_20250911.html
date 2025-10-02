@@ -675,36 +675,40 @@
             });
             
             if (highRiskDims.length > 0) {
-                totalSuggestion = `综合评估：儿童存在高风险维度（${highRiskDims.join('、')}），情况紧急，<strong>请立即带儿童前往儿童精神科医疗机构就诊</strong>，避免延误干预时机。`;
+                totalSuggestion = `综合评估：儿童存在高风险维度（${highRiskDims.join('、')}），情况紧急，建议尽快安排专业精神卫生评估，以便及时获得适当的支持和干预。`;
             } else if (midRiskDims.length > 0) {
                 totalSuggestion = '综合评估：儿童存在中风险症状维度，建议1个月内完成儿童心理医生咨询或精神科筛查，明确症状性质并制定干预方案。';
             } else {
                 totalSuggestion = '综合评估：儿童各维度均为低风险，无明显临床症状困扰，建议每3个月进行一次筛查，保持规律作息、适度运动及良好家庭支持环境。';
             }
 
-            // 第六步：生成推荐量表
-            let recommendedScales = [];
-            if (highRiskDims.includes('自杀风险') || dimScores.XII >= 2) {
-                recommendedScales.push('儿童自杀意念量表(CSIQ)');
+            // 第六步：生成AI分析文本（符合001a风格的自然语言格式）
+            totalSuggestion += '\n\n请问您需要我为您提供哪方面的分析或建议？您可以告诉我您最关心的问题。';
+            
+            // 获取量表名称
+            const scaleName = 'DSM-5 水平1 症状评定量表（6-17岁儿童父母评定）';
+            
+            // 生成符合001a风格的AI分析文本
+            let aiText = `我的孩子是${age}岁${gender}性儿童，我为其填写了${scaleName}，各维度得分如下：\n`;
+            
+            // 添加各维度得分
+            Object.keys(dimNames).forEach(dim => {
+                const name = dimNames[dim];
+                const score = dimScores[dim];
+                aiText += `${dim}. ${name}：${score}分\n`;
+            });
+            
+            // 添加风险评估
+            if (highRiskDims.length > 0) {
+                aiText += `\n评估结果：存在高风险维度（${highRiskDims.join('、')}），${totalSuggestion.split('\n')[0]}\n`;
+            } else if (midRiskDims.length > 0) {
+                aiText += `\n评估结果：存在中风险维度（${midRiskDims.join('、')}），${totalSuggestion.split('\n')[0]}\n`;
+            } else {
+                aiText += `\n评估结果：各维度均为低风险，${totalSuggestion.split('\n')[0]}\n`;
             }
-            if (highRiskDims.includes('精神病性症状') || midRiskDims.includes('精神病性症状')) {
-                recommendedScales.push('儿童简明精神评定量表(BPRS-C)');
-            }
-            if (highRiskDims.includes('物质使用') || midRiskDims.includes('物质使用')) {
-                recommendedScales.push('青少年物质使用筛查量表(SASSI-A2)');
-            }
-            if (highRiskDims.includes('抑郁症状') || midRiskDims.includes('抑郁症状')) {
-                recommendedScales.push('儿童抑郁量表(CDI)');
-            }
-            if (highRiskDims.includes('焦虑症状') || midRiskDims.includes('焦虑症状')) {
-                recommendedScales.push('儿童焦虑量表(SCARED)');
-            }
-            if (highRiskDims.includes('注意力问题') || midRiskDims.includes('注意力问题')) {
-                recommendedScales.push('注意缺陷多动障碍评定量表(ADHD-RS)');
-            }
-
-            // 第七步：生成AI可识别精简文本
-            const aiText = `V:CP|基:龄${age},性${gender},日${date}|高:[${highRiskDims.join(',')}]|中:[${midRiskDims.join(',')}]|分:I${dimScores.I},II${dimScores.II},III${dimScores.III},IV${dimScores.IV},VVI${dimScores.VVI},VII${dimScores.VII},VIII${dimScores.VIII},IX${dimScores.IX},X${dimScores.X},XI${dimScores.XI},XII${dimScores.XII}|导:${dimScores.XII>=2?'急诊(自杀)':highRiskDims.length>0?'速诊(高风险)':midRiskDims.length>0?'普诊(中风险)':'随访(低风险)'}|推:[${recommendedScales.join(',')}]`;
+            
+            aiText += '\n请你为我分析，并给我推荐下一步建设性的操作指示或下一步应选择的量表。如果必要，请详细与我进行交谈来获取更多信息或其他操作';
+            aiText += '\n\n请问您需要我为您提供哪方面的分析或建议？您可以告诉我您最关心的问题。';
 
             // 第七步：填充结果并显示
             document.getElementById('basic-info-display').innerHTML = basicInfoHtml;
