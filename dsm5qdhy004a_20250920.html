@@ -908,10 +908,21 @@
                 // 提示复制成功
                 const originalText = copyBtn.textContent;
                 copyBtn.textContent = '已复制！';
+                copyBtn.style.background = '#3182ce';
                 
                 setTimeout(function() {
                     copyBtn.textContent = originalText;
+                    copyBtn.style.background = '#4299e1';
                 }, 2000);
+            });
+            
+            // 添加复制按钮悬停效果
+            copyBtn.addEventListener('mouseover', function() {
+                copyBtn.style.background = '#3182ce';
+            });
+            
+            copyBtn.addEventListener('mouseout', function() {
+                copyBtn.style.background = '#4299e1';
             });
             
             // 版本切换事件
@@ -1117,41 +1128,49 @@
                 }
             }
             
+            // 在综合建议中添加问题抛给用户的文本
+            comprehensiveAdvice += '\n\n请问您需要我为您提供哪方面的分析或建议？您可以告诉我您最关心的问题。';
             document.getElementById('comprehensiveAdvice').textContent = comprehensiveAdvice;
             
-            // 生成结构化的AI分析结果
-            let aiAnalysis = `V:CP|基:名${name},龄${age},性${gender},日${formattedDate}`;
+            // 获取每题选择与题干
+            let questionsDetails = '\n\n每题具体选择与题干：\n';
+            const questionElements = document.querySelectorAll('.question');
+            questionElements.forEach((questionEl, index) => {
+                // 获取当前版本的问题文本
+                const textElement = activeVersion === 'self' ? 
+                    questionEl.querySelector('.self-text') : 
+                    questionEl.querySelector('.informant-text');
+                const questionText = textElement ? textElement.innerText : '未获取到问题文本';
+                
+                // 获取选中的选项文本
+                let selectedOptionText = '未选择';
+                const selectedOptionEl = questionEl.querySelector('.option.selected');
+                
+                if (selectedOptionEl) {
+                    selectedOptionText = selectedOptionEl.innerText;
+                } else if (questionEl.dataset.score) {
+                    // 如果没有找到.selected类，但有data-score，通过得分值查找选项
+                    const scoreValue = questionEl.dataset.score;
+                    const optionWithScore = questionEl.querySelector(`.option[data-value="${scoreValue}"]`);
+                    if (optionWithScore) {
+                        selectedOptionText = optionWithScore.innerText;
+                    }
+                }
+                
+                questionsDetails += `${index + 1}. ${questionText} - 选择：${selectedOptionText}\n`;
+            });
             
-            if (activeVersion === 'informant') {
-                const relationship = document.getElementById('relationship').value || '未提供';
-                const timeTogether = document.getElementById('time-together').value || '未提供';
-                aiAnalysis += `,关${relationship},相${timeTogether}`;
-            }
+            // 生成符合001a风格的AI分析文本
+            const ageGenderText = activeVersion === 'self' ? 
+                `${age}岁${gender}性测试者` : 
+                `评估对象为${age}岁${gender}性来访者`;
             
-            aiAnalysis += '|';
+            const scaleName = 'PROMIS 抑郁量表';
             
-            // 添加风险等级
-            let riskLevel = '';
-            if (tScore >= 65) riskLevel = '高';
-            else if (tScore >= 55) riskLevel = '中';
-            else riskLevel = '低';
+            let aiAnalysis = `我是一名${ageGenderText}，测了${scaleName}，总得分为${depressionScore}分。${questionsDetails}\n请你为我分析，并给我推荐下一步建设性的操作指示或下一步应选择的量表。如果必要，请详细与我进行交谈来获取更多信息或其他操作`;
             
-            aiAnalysis += `风:${riskLevel}|`;
-            
-            // 添加得分信息
-            aiAnalysis += `分:原始${depressionScore},比例${proportionScore},T${tScore.toFixed(1)}|`;
-            
-            // 添加指导建议
-            let guidance = '';
-            if (tScore >= 65) {
-                guidance = '速诊(高风险)';
-            } else if (tScore >= 55) {
-                guidance = '普诊(中风险)';
-            } else {
-                guidance = '随访(低风险)';
-            }
-            
-            aiAnalysis += `导:${guidance}`;
+            // 移除推荐量表，改为将问题抛给用户
+            aiAnalysis += '\n\n请问您需要我为您提供哪方面的分析或建议？您可以告诉我您最关心的问题。';
             
             document.getElementById('aiText').textContent = aiAnalysis;
             
