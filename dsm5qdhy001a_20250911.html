@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DSM-5 水平1 症状自评量表（成人版）免费测试 </title>
+    <title>DSM-5 水平1 症状自评量表 - 成人版</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Microsoft YaHei", Arial, sans-serif; }
         body { padding: 15px; line-height: 1.8; background: #f5f7fa; padding-top: 60px; }
@@ -105,23 +105,23 @@
         </ul>
     </nav>
     <div class="container">
-        <div class="title">DSM-5 水平1 症状自评量表（成人版）</div>
+        <div class="title">DSM-5 水平1 症状自评量表 - 成人版</div>
 
         <!-- 版本切换 -->
         <div class="version-switch">
-            <button class="version-btn active" data-version="self">成人自我报告版</button>
-            <button class="version-btn" data-version="informant">成人知情者版</button>
+            <button class="version-btn active" data-version="self">自我报告版</button>
+            <button class="version-btn" data-version="informant">知情者报告版</button>
         </div>
 
-        <!-- 基本信息区（标注必填项，除姓名外均为必填） -->
+        <!-- 基本信息区（标记必填项，除姓名外均为必填） -->
         <div class="info-area" id="self-info">
             <div class="info-row">
                 <span class="info-label">姓名：</span>
-                <input type="text" class="info-input" id="self-name" placeholder="可选：请输入您的姓名">
+                <input type="text" class="info-input" id="self-name" placeholder="选填：请输入您的姓名">
             </div>
             <div class="info-row">
                 <span class="info-label">年龄：<span class="required-mark">*</span></span>
-                <input type="number" class="info-input" id="self-age" placeholder="必填：请输入您的年龄（如18）">
+                <input type="number" class="info-input" id="self-age" placeholder="必填：请输入您的年龄（如：18）">
             </div>
             <div class="info-row">
                 <span class="info-label">性别：<span class="required-mark">*</span></span>
@@ -140,15 +140,15 @@
         <div class="info-area" id="informant-info" style="display: none;">
             <div class="info-row">
                 <span class="info-label">来访者姓名：</span>
-                <input type="text" class="info-input" id="informant-name" placeholder="可选：请输入来访者姓名">
+                <input type="text" class="info-input" id="informant-name" placeholder="选填：请输入来访者姓名">
             </div>
             <div class="info-row">
-                <span class="info-label">您与来访者关系：<span class="required-mark">*</span></span>
-                <input type="text" class="info-input" id="informant-relation" placeholder="必填：如家人、朋友、同事">
+                <span class="info-label">与来访者关系：<span class="required-mark">*</span></span>
+                <input type="text" class="info-input" id="informant-relation" placeholder="必填：如：家人、朋友、同事">
             </div>
             <div class="info-row">
                 <span class="info-label">每周相处时间：<span class="required-mark">*</span></span>
-                <input type="number" class="info-input" id="informant-hours" placeholder="必填：请输入小时数（如10）">
+                <input type="number" class="info-input" id="informant-hours" placeholder="必填：请输入小时数（如：10）">
                 <span class="info-label">小时/周</span>
             </div>
             <div class="info-row">
@@ -157,13 +157,22 @@
             </div>
         </div>
 
+        <!-- 指导语区域 -->
+        <div class="instruction-area" id="self-instruction" style="margin-bottom: 25px; padding: 15px; background: #ebf8ff; border-radius: 8px; border-left: 4px solid #3182ce;">
+            <div class="instruction-text">指导语: 下面的问题会问一些可能困扰你的事情。对每个问题，选择最能描述你在 <strong>过去2周内</strong> 被这个问题困扰的程度（或频率）的选项。</div>
+        </div>
+        <div class="instruction-area" id="informant-instruction" style="margin-bottom: 25px; padding: 15px; background: #ebf8ff; border-radius: 8px; border-left: 4px solid #3182ce; display: none;">
+            <div class="instruction-text">指导语: 下面的问题会问一些可能困扰来访者的事情。对每个问题，选择最能描述来访者在 <strong>过去2周内</strong> 被这个问题困扰的程度（或频率）的选项。</div>
+        </div>
+
         <!-- 量表问题区（23题，均为必填） -->
         <div class="scale-area">
             <!-- 维度I：抑郁相关 -->
             <div class="dimension">
                 <div class="dimension-title">I. 抑郁相关症状 <span class="required-mark">*</span></div>
                 <div class="question" data-dim="I" data-score="">
-                    <div class="question-text">1. 做事情没有兴趣或没有愉悦感？</div>
+                    <div class="question-text self-text">1. 做事情没有兴趣或没有愉悦感？</div>
+                    <div class="question-text informant-text" style="display: none;">1. 做事情没有兴趣或没有愉悦感？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -173,7 +182,8 @@
                     </div>
                 </div>
                 <div class="question" data-dim="I" data-score="">
-                    <div class="question-text">2. 感到低落，抑郁或无望？</div>
+                    <div class="question-text self-text">2. 感到低落，抑郁或无望？</div>
+                    <div class="question-text informant-text" style="display: none;">2. 感到低落，抑郁或无望？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -188,7 +198,8 @@
             <div class="dimension">
                 <div class="dimension-title">II. 愤怒相关症状 <span class="required-mark">*</span></div>
                 <div class="question" data-dim="II" data-score="">
-                    <div class="question-text">3. 比平时更易感到烦躁、不满或愤怒？</div>
+                    <div class="question-text self-text">3. 比平时更易感到烦躁、不满或愤怒？</div>
+                    <div class="question-text informant-text" style="display: none;">3. 比平时更易感到烦躁、不满或愤怒？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -203,7 +214,8 @@
             <div class="dimension">
                 <div class="dimension-title">III. 躁狂相关症状 <span class="required-mark">*</span></div>
                 <div class="question" data-dim="III" data-score="">
-                    <div class="question-text">4. 睡的比平常少，但仍很有精力？</div>
+                    <div class="question-text self-text">4. 睡眠时间比平时少，但仍然感到精力充沛？</div>
+                    <div class="question-text informant-text" style="display: none;">4. 睡眠时间比平时少，但仍然感到精力充沛？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -213,7 +225,8 @@
                     </div>
                 </div>
                 <div class="question" data-dim="III" data-score="">
-                    <div class="question-text">5. 比平常启动更多的项目或比平常做更多冒险的事情？</div>
+                    <div class="question-text self-text">5. 比平时开始更多的项目，或做更多冒险的事情？</div>
+                    <div class="question-text informant-text" style="display: none;">5. 比平时开始更多的项目，或做更多冒险的事情？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -228,7 +241,8 @@
             <div class="dimension">
                 <div class="dimension-title">IV. 焦虑相关症状 <span class="required-mark">*</span></div>
                 <div class="question" data-dim="IV" data-score="">
-                    <div class="question-text">6. 感到紧张、焦虑、害怕、担忧或惴惴不安？</div>
+                    <div class="question-text self-text">6. 感到紧张、焦虑、害怕、担心或不安？</div>
+                    <div class="question-text informant-text" style="display: none;">6. 感到紧张、焦虑、害怕、担心或不安？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -238,7 +252,8 @@
                     </div>
                 </div>
                 <div class="question" data-dim="IV" data-score="">
-                    <div class="question-text">7. 感到恐慌或害怕？</div>
+                    <div class="question-text self-text">7. 感到恐慌或恐惧？</div>
+                    <div class="question-text informant-text" style="display: none;">7. 感到恐慌或恐惧？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -248,7 +263,8 @@
                     </div>
                 </div>
                 <div class="question" data-dim="IV" data-score="">
-                    <div class="question-text">8. 避免使你（来访者）焦虑的情境？</div>
+                    <div class="question-text self-text">8. 回避让你感到焦虑的情境？</div>
+                    <div class="question-text informant-text" style="display: none;">8. 回避让来访者感到焦虑的情境？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -263,7 +279,8 @@
             <div class="dimension">
                 <div class="dimension-title">V. 躯体相关症状 <span class="required-mark">*</span></div>
                 <div class="question" data-dim="V" data-score="">
-                    <div class="question-text">9. 不明原因的疼痛(如头、背、关节、腹部、腿部)？</div>
+                    <div class="question-text self-text">9. 无法解释的疼痛（如头痛、背痛、关节痛、腹痛、腿痛）？</div>
+                    <div class="question-text informant-text" style="display: none;">9. 无法解释的疼痛（如头痛、背痛、关节痛、腹痛、腿痛）？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -273,7 +290,8 @@
                     </div>
                 </div>
                 <div class="question" data-dim="V" data-score="">
-                    <div class="question-text">10. 感到自己（来访者）的疾病没有得到足够的重视？</div>
+                    <div class="question-text self-text">10. 感觉你的疾病没有被足够重视？</div>
+                    <div class="question-text informant-text" style="display: none;">10. 感觉来访者的疾病没有被足够重视？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -286,9 +304,10 @@
 
             <!-- 维度VI：自伤风险 -->
             <div class="dimension">
-                <div class="dimension-title">VI. 自伤风险相关 <span class="required-mark">*</span></div>
+                <div class="dimension-title">VI. 自伤风险 <span class="required-mark">*</span></div>
                 <div class="question" data-dim="VI" data-score="">
-                    <div class="question-text">11. 有真的想去伤害自己（来访者）的想法吗？</div>
+                    <div class="question-text self-text">11. 有真的想去伤害自己的想法吗？</div>
+                    <div class="question-text informant-text" style="display: none;">11. 有真的想去伤害自己的想法吗？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -301,7 +320,7 @@
 
             <!-- 维度VII：精神病性症状 -->
             <div class="dimension">
-                <div class="dimension-title">VII. 精神病性相关症状 <span class="required-mark">*</span></div>
+                <div class="dimension-title">VII. 精神病性症状 <span class="required-mark">*</span></div>
                 <div class="question" data-dim="VII" data-score="">
                     <div class="question-text">12. 听到别人听不到的东西，比如周围没人的时候听到有人说话？</div>
                     <div class="option-group">
@@ -313,7 +332,8 @@
                     </div>
                 </div>
                 <div class="question" data-dim="VII" data-score="">
-                    <div class="question-text">13. 感觉有人能够听到自己（来访者）的想法，或者自己（来访者）可以听到别人在想什么？</div>
+                    <div class="question-text self-text">13. 感觉有人能够听到你的想法，或者你可以听到别人在想什么？</div>
+                    <div class="question-text informant-text" style="display: none;">13. 感觉有人能够听到来访者的想法，或者来访者可以听到别人在想什么？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -326,9 +346,10 @@
 
             <!-- 维度VIII：睡眠问题 -->
             <div class="dimension">
-                <div class="dimension-title">VIII. 睡眠相关症状 <span class="required-mark">*</span></div>
+                <div class="dimension-title">VIII. 睡眠问题 <span class="required-mark">*</span></div>
                 <div class="question" data-dim="VIII" data-score="">
-                    <div class="question-text">14. 总的来说，睡眠问题影响了你的（来访者的）睡眠质量？</div>
+                    <div class="question-text self-text">14. 总的来说，睡眠问题影响了你的睡眠质量？</div>
+                    <div class="question-text informant-text" style="display: none;">14. 总的来说，睡眠问题影响了来访者的睡眠质量？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -341,7 +362,7 @@
 
             <!-- 维度IX：认知问题 -->
             <div class="dimension">
-                <div class="dimension-title">IX. 认知相关症状 <span class="required-mark">*</span></div>
+                <div class="dimension-title">IX. 认知问题 <span class="required-mark">*</span></div>
                 <div class="question" data-dim="IX" data-score="">
                     <div class="question-text">15. 记忆问题（如学习新信息）或定位问题（如找到回家的路）？</div>
                     <div class="option-group">
@@ -356,9 +377,10 @@
 
             <!-- 维度X：强迫症状 -->
             <div class="dimension">
-                <div class="dimension-title">X. 强迫相关症状 <span class="required-mark">*</span></div>
+                <div class="dimension-title">X. 强迫症状 <span class="required-mark">*</span></div>
                 <div class="question" data-dim="X" data-score="">
-                    <div class="question-text">16. 不愉快的想法、冲动或图像重复地进入你的（来访者的）脑海？</div>
+                    <div class="question-text self-text">16. 不愉快的想法、冲动或图像重复地进入你的脑海？</div>
+                    <div class="question-text informant-text" style="display: none;">16. 不愉快的想法、冲动或图像重复地进入来访者的脑海？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -368,7 +390,8 @@
                     </div>
                 </div>
                 <div class="question" data-dim="X" data-score="">
-                    <div class="question-text">17. 感到被驱使着去一遍遍地进行某些行为或者心理活动？</div>
+                    <div class="question-text self-text">17. 感到被驱使着去一遍遍地进行某些行为或者心理活动？</div>
+                    <div class="question-text informant-text" style="display: none;">17. 感到被驱使着去一遍遍地进行某些行为或者心理活动？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -381,9 +404,10 @@
 
             <!-- 维度XI：解离症状 -->
             <div class="dimension">
-                <div class="dimension-title">XI. 解离相关症状 <span class="required-mark">*</span></div>
+                <div class="dimension-title">XI. 解离症状 <span class="required-mark">*</span></div>
                 <div class="question" data-dim="XI" data-score="">
-                    <div class="question-text">18. 你（来访者）会感觉与自己、自己的身体、周遭环境、记忆相疏离或有距离吗？</div>
+                    <div class="question-text self-text">18. 你会感觉与自己、自己的身体、周遭环境、记忆相疏离或有距离吗？</div>
+                    <div class="question-text informant-text" style="display: none;">18. 来访者会感觉与自己、自己的身体、周遭环境、记忆相疏离或有距离吗？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -396,9 +420,10 @@
 
             <!-- 维度XII：身份认同问题 -->
             <div class="dimension">
-                <div class="dimension-title">XII. 身份认同相关症状 <span class="required-mark">*</span></div>
+                <div class="dimension-title">XII. 身份认同问题 <span class="required-mark">*</span></div>
                 <div class="question" data-dim="XII" data-score="">
-                    <div class="question-text">19. 不知道真实的自己（来访者）是谁，也不知道自己（来访者）想从生活中获得什么？</div>
+                    <div class="question-text self-text">19.不知道真实的自己是谁，也不知道自己想从生活中获得什么？</div>
+                    <div class="question-text informant-text" style="display: none;">19.不知道真实的来访者是谁，也不知道来访者想从生活中获得什么？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -408,7 +433,8 @@
                     </div>
                 </div>
                 <div class="question" data-dim="XII" data-score="">
-                    <div class="question-text">20. 感觉跟他人不亲近，或不享受与他人之间的关系？</div>
+                    <div class="question-text self-text">20. 感觉跟他人不亲近，或不享受与他人之间的关系？</div>
+                    <div class="question-text informant-text" style="display: none;">20. 感觉跟他人不亲近，或不享受与他人之间的关系？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -421,9 +447,10 @@
 
             <!-- 维度XIII：物质使用问题 -->
             <div class="dimension">
-                <div class="dimension-title">XIII. 物质使用相关症状 <span class="required-mark">*</span></div>
+                <div class="dimension-title">XIII. 物质使用问题 <span class="required-mark">*</span></div>
                 <div class="question" data-dim="XIII" data-score="">
-                    <div class="question-text">21. 在一天之内至少4次饮用任何种类的酒精饮料？</div>
+                    <div class="question-text self-text">21. 在一天之内至少4次饮用任何种类的酒精饮料？</div>
+                    <div class="question-text informant-text" style="display: none;">21. 在一天之内至少4次饮用任何种类的酒精饮料？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -433,7 +460,8 @@
                     </div>
                 </div>
                 <div class="question" data-dim="XIII" data-score="">
-                    <div class="question-text">22. 吸任何香烟、雪茄、烟斗或使用鼻烟或咀嚼烟草？</div>
+                    <div class="question-text self-text">22. 吸任何香烟、雪茄、烟斗或使用鼻烟或咀嚼烟草？</div>
+                    <div class="question-text informant-text" style="display: none;">22. 吸任何香烟、雪茄、烟斗或使用鼻烟或咀嚼烟草？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -443,7 +471,8 @@
                     </div>
                 </div>
                 <div class="question" data-dim="XIII" data-score="">
-                    <div class="question-text">23. 私自使用任何下列药物（无处方/超剂量/超期使用）：止痛药（如维柯丁）、兴奋剂（如利他林或阿德拉）、镇静剂（如安眠药或安定）、毒品（大麻、可卡因、摇头丸、LSD、海洛因、吸入剂如强力胶、甲基苯丙胺等）？</div>
+                    <div class="question-text self-text">23. 私自使用 任何下列药物，也就是说，没有医生处方，使用更多的剂量或比处方更长的使用期【止痛药（如维柯丁），兴奋剂（如利他林或阿德拉）、镇静剂或镇定剂（如安眠药或安定）、或毒品如大麻、可卡因或强效纯可卡因，夜店毒品（如摇头丸），迷幻剂（如LSD），海洛因，吸入剂或溶剂（如强力胶），或者甲基苯丙胺（如快速丸）】？</div>
+                    <div class="question-text informant-text" style="display: none;">23. 私自使用 任何下列药物，也就是说，没有医生处方，使用更多的剂量或比处方更长的使用期【止痛药（如维柯丁），兴奋剂（如利他林或阿德拉）、镇静剂或镇定剂（如安眠药或安定）、或毒品如大麻、可卡因或强效纯可卡因，夜店毒品（如摇头丸），迷幻剂（如LSD），海洛因，吸入剂或溶剂（如强力胶），或者甲基苯丙胺（如快速丸）】？</div>
                     <div class="option-group">
                         <div class="option" data-value="0">无</div>
                         <div class="option" data-value="1">轻微</div>
@@ -463,7 +492,7 @@
 
         <!-- 结果区 -->
         <div class="result-area" id="result-area">
-            <div class="result-title">DSM-5 水平1 症状自评结果</div>
+            <div class="result-title">DSM-5 水平1 症状自评量表结果</div>
             <div id="basic-info-display"></div> <!-- 基本信息展示 -->
             <div id="dimension-results"></div> <!-- 各维度结果 -->
             <div class="total-result" id="total-result"></div> <!-- 综合建议 -->
@@ -471,10 +500,10 @@
 
         <!-- 专业提示 -->
         <div class="warning">
-            ⚠️ 重要提示：1. 本结果仅为DSM-5水平1症状筛查的初步参考，<strong>不能替代精神科医生/临床心理学家的专业诊断</strong>；2. 若自伤风险（维度VI）得分≥2分，或存在明显精神病性症状（维度VII），请立即联系精神科医疗机构或危机干预热线；3. 非专业人士禁止用于他人评估。
+            ⚠️ 重要提示：1. 这些结果仅作为DSM-5 水平1症状筛查的初步参考，<strong>不能替代精神科医生/临床心理师的专业诊断</strong>；2. 若自伤风险（维度VI）得分≥2分，或存在明显的精神病性症状（维度VII），请立即联系精神卫生医疗机构或危机干预热线；3. 非专业人员禁止使用此量表对他人进行评估。
         </div>
-        <a href="http://s01.flagcounter.com/more/JW1"><img src="https://s01.flagcounter.com/map/JW1/size_s/txt_000000/border_CCCCCC/pageviews_0/viewers_0/flags_0/" alt="Flag Counter" border="0"></a>
-        <a href="https://hsyscn.top/">回首页</a>
+        <a href="http://s01.flagcounter.com/more/JW1"><img src="https://s01.flagcounter.com/map/JW1/size_s/txt_000000/border_CCCCCC/pageviews_0/viewers_0/flags_0/" alt="访问统计" border="0"></a>
+        <a href="https://hsyscn.top/">返回首页</a>
     </div>
 
     <script>
@@ -482,6 +511,10 @@
         const versionBtns = document.querySelectorAll('.version-btn');
         const selfInfo = document.getElementById('self-info');
         const informantInfo = document.getElementById('informant-info');
+        const selfInstruction = document.getElementById('self-instruction');
+        const informantInstruction = document.getElementById('informant-instruction');
+        const selfTexts = document.querySelectorAll('.self-text');
+        const informantTexts = document.querySelectorAll('.informant-text');
         let currentVersion = 'self'; // 默认自我报告版
 
         versionBtns.forEach(btn => {
@@ -489,14 +522,24 @@
                 // 切换按钮状态
                 versionBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                // 切换信息区
+                // 切换信息区和指导语
                 currentVersion = btn.dataset.version;
                 if (currentVersion === 'self') {
                     selfInfo.style.display = 'block';
                     informantInfo.style.display = 'none';
+                    selfInstruction.style.display = 'block';
+                    informantInstruction.style.display = 'none';
+                    // 显示自我报告版问题文本，隐藏知情者版
+                    selfTexts.forEach(text => text.style.display = 'block');
+                    informantTexts.forEach(text => text.style.display = 'none');
                 } else {
                     selfInfo.style.display = 'none';
                     informantInfo.style.display = 'block';
+                    selfInstruction.style.display = 'none';
+                    informantInstruction.style.display = 'block';
+                    // 显示知情者版问题文本，隐藏自我报告版
+                    selfTexts.forEach(text => text.style.display = 'none');
+                    informantTexts.forEach(text => text.style.display = 'block');
                 }
                 // 隐藏结果区
                 document.getElementById('result-area').style.display = 'none';
@@ -532,6 +575,7 @@
                 if (!age) missingFields.push('年龄（自我报告版）');
                 if (!gender) missingFields.push('性别（自我报告版）');
                 if (!date) missingFields.push('评估日期（自我报告版）');
+                // 保留中文提示信息不变
             } else {
                 const relation = document.getElementById('informant-relation').value.trim();
                 const hours = document.getElementById('informant-hours').value.trim();
@@ -559,8 +603,8 @@
             // 第一步：执行鉴权，检查必填项
             const missing = checkRequiredFields();
             if (missing.length > 0) {
-                // 弹窗提示漏填项，禁止提交
-                alert(`请完成以下必填项后再提交：\n\n${missing.join('\n')}`);
+                // 提示必填项未完成，阻止提交
+                alert(`请在提交前完成以下必填字段：\n\n${missing.join('\n')}`);
                 return; // 终止后续流程
             }
 
@@ -574,7 +618,7 @@
 
                 basicInfoHtml = `
                     <div class="info-row"><strong>评估对象：</strong>${name}</div>
-                    <div class="info-row"><strong>年龄：</strong>${age}岁</div>
+                    <div class="info-row"><strong>年龄：</strong>${age} 岁</div>
                     <div class="info-row"><strong>性别：</strong>${gender}</div>
                     <div class="info-row"><strong>评估日期：</strong>${date}</div>
                 `;
@@ -586,8 +630,8 @@
 
                 basicInfoHtml = `
                     <div class="info-row"><strong>来访者姓名：</strong>${name}</div>
-                    <div class="info-row"><strong>评估者与来访者关系：</strong>${relation}</div>
-                    <div class="info-row"><strong>每周相处时间：</strong>${hours}小时</div>
+                    <div class="info-row"><strong>与来访者关系：</strong>${relation}</div>
+                    <div class="info-row"><strong>每周相处时间：</strong>${hours} 小时</div>
                     <div class="info-row"><strong>评估日期：</strong>${date}</div>
                 `;
             }
@@ -600,10 +644,10 @@
             };
             const dimNames = {
                 'I': '抑郁相关症状', 'II': '愤怒相关症状', 'III': '躁狂相关症状',
-                'IV': '焦虑相关症状', 'V': '躯体相关症状', 'VI': '自伤风险相关',
-                'VII': '精神病性相关症状', 'VIII': '睡眠相关症状', 'IX': '认知相关症状',
-                'X': '强迫相关症状', 'XI': '解离相关症状', 'XII': '身份认同相关症状',
-                'XIII': '物质使用相关症状'
+                'IV': '焦虑相关症状', 'V': '躯体相关症状', 'VI': '自伤风险',
+                'VII': '精神病性症状', 'VIII': '睡眠问题', 'IX': '认知问题',
+                'X': '强迫症状', 'XI': '解离症状', 'XII': '身份认同问题',
+                'XIII': '物质使用问题'
             };
 
             questions.forEach(question => {
@@ -619,19 +663,19 @@
                 const name = dimNames[dim];
                 let riskClass = 'risk-low';
                 let riskText = '低风险';
-                let suggestion = '无明显症状困扰，建议保持当前积极状态，定期自我觉察。';
+                let suggestion = '无明显症状困扰，建议保持当前积极状态，定期进行自我觉察。';
 
                 // 特殊维度：自伤风险（VI）
                 if (dim === 'VI') {
                     if (score >= 2) {
                         riskClass = 'risk-high';
                         riskText = '高风险';
-                        suggestion = '存在明显自伤想法，需立即寻求精神科医生或危机干预帮助！';
+                        suggestion = '存在明显自伤意念，需要立即寻求专业心理健康或危机干预帮助！';
                         highRiskDims.push(name);
                     } else {
                         riskClass = 'risk-low';
                         riskText = '低风险';
-                        suggestion = '无明显自伤想法，建议持续关注情绪状态。';
+                        suggestion = '无明显自伤意念，建议继续关注情绪状态。';
                     }
                 } 
                 // 其他维度
@@ -639,18 +683,18 @@
                     if (score >= 7) {
                         riskClass = 'risk-high';
                         riskText = '高风险';
-                        suggestion = '症状明显且持续，严重影响生活，建议尽快前往精神科医疗机构就诊。';
+                        suggestion = '症状明显且持续，显著影响生活，建议尽快寻求精神科医疗帮助。';
                         highRiskDims.push(name);
                     } else if (score >= 3) {
                         riskClass = 'risk-mid';
                         riskText = '中风险';
-                        suggestion = '存在一定症状困扰，建议寻求心理咨询师帮助，必要时转诊精神科。';
+                        suggestion = '存在一定症状困扰，建议寻求心理咨询帮助，必要时转诊精神科。';
                     }
                 }
 
                 dimensionResultsHtml += `
                     <div class="dimension-result ${riskClass}">
-                        <strong>${dim}. ${name}</strong>：得分 ${score} 分（${riskText}）
+                        <strong>${dim}. ${name}</strong>：得分 ${score} 分 (${riskText})
                         <br>建议：${suggestion}
                     </div>
                 `;
@@ -661,9 +705,9 @@
             if (highRiskDims.length > 0) {
                 totalSuggestion = `综合评估：存在高风险维度（${highRiskDims.join('、')}），情况紧急，<strong>请立即联系精神科医生或专业危机干预机构</strong>，避免延误干预时机。`;
             } else if (Object.values(dimScores).some(score => score >= 3)) {
-                totalSuggestion = '综合评估：存在中风险症状维度，建议1个月内完成专业心理咨询或精神科筛查，明确症状性质并制定干预方案。';
+                totalSuggestion = '综合评估：存在中风险症状维度，建议在1个月内完成专业心理咨询或精神科筛查，明确症状性质并制定干预计划。';
             } else {
-                totalSuggestion = '综合评估：各维度均为低风险，无明显临床症状困扰，建议每3个月进行一次自我筛查，保持健康生活方式（规律作息、适度运动、良好社交）。';
+                totalSuggestion = '综合评估：所有维度均为低风险，无明显临床症状困扰，建议每3个月进行一次自我筛查，保持健康的生活方式（规律作息、适量运动、良好社交）。';
             }
 
             // 第五步：识别中风险维度
@@ -679,58 +723,150 @@
                 }
             });
             
-            // 第六步：生成推荐量表
+            // 第六步：根据高风险和中风险维度生成推荐量表
             let recommendedScales = [];
-            if (highRiskDims.includes('自伤风险相关') || dimScores.VI >= 2) {
-                recommendedScales.push('自杀意念量表(SIQ)');
+            if (highRiskDims.includes('自伤风险') || dimScores.VI >= 2) {
+                recommendedScales.push('哥伦比亚自杀严重程度评定量表(C-SSRS)');
             }
             if (highRiskDims.includes('抑郁相关症状') || midRiskDims.includes('抑郁相关症状')) {
-                recommendedScales.push('患者健康问卷(PHQ-9)');
+                recommendedScales.push('患者健康问卷-9项(PHQ-9)');
             }
             if (highRiskDims.includes('焦虑相关症状') || midRiskDims.includes('焦虑相关症状')) {
-                recommendedScales.push('广泛性焦虑障碍量表(GAD-7)');
+                recommendedScales.push('广泛性焦虑障碍量表-7项(GAD-7)');
             }
-            if (highRiskDims.includes('精神病性相关症状') || midRiskDims.includes('精神病性相关症状')) {
-                recommendedScales.push('简明精神评定量表(BPRS)');
+            if (highRiskDims.includes('精神病性症状') || midRiskDims.includes('精神病性症状')) {
+                recommendedScales.push('简明精神病评定量表(BPRS)');
             }
-            if (highRiskDims.includes('物质使用相关症状') || midRiskDims.includes('物质使用相关症状')) {
-                recommendedScales.push('酒精使用障碍识别测验(AUDIT)');
+            if (highRiskDims.includes('物质使用问题') || midRiskDims.includes('物质使用问题')) {
+                recommendedScales.push('酒精使用障碍识别测试(AUDIT)');
             }
-            if (highRiskDims.includes('强迫相关症状') || midRiskDims.includes('强迫相关症状')) {
+            if (highRiskDims.includes('强迫症状') || midRiskDims.includes('强迫症状')) {
                 recommendedScales.push('耶鲁-布朗强迫量表(Y-BOCS)');
             }
             
             // 第七步：填充并显示结果
             document.getElementById('basic-info-display').innerHTML = basicInfoHtml;
             document.getElementById('dimension-results').innerHTML = dimensionResultsHtml;
-            document.getElementById('total-result').textContent = totalSuggestion;
+            document.getElementById('total-result').innerHTML = totalSuggestion;
+            
+            // 确保结果区域可见
             const resultArea = document.getElementById('result-area');
             resultArea.style.display = 'block';
             resultArea.scrollIntoView({ behavior: 'smooth' });
             
-            // 生成AI可识别的精简分析文本
-            const aiText = `V:CP|${currentVersion==='self'?'自:':'知:'}基:${currentVersion==='self'?`龄${document.getElementById('self-age').value},性${document.getElementById('self-gender').value},日${document.getElementById('self-date').value}`:`关${document.getElementById('informant-relation').value},时${document.getElementById('informant-hours').value},日${document.getElementById('informant-date').value}`}|高:[${highRiskDims.join(',')}]|中:[${midRiskDims.join(',')}]|分:I${dimScores.I},II${dimScores.II},III${dimScores.III},IV${dimScores.IV},V${dimScores.V},VI${dimScores.VI},VII${dimScores.VII},VIII${dimScores.VIII},IX${dimScores.IX},X${dimScores.X},XI${dimScores.XI},XII${dimScores.XII},XIII${dimScores.XIII}|导:${dimScores.VI>=2?'急诊(自伤)':highRiskDims.length>0?'速诊(高风险)':midRiskDims.length>0?'普诊(中风险)':'随访(低风险)'}|推:[${recommendedScales.join(',')}]`;
-
-// 添加入页面
-const aiTextContainer = document.createElement('div');
-aiTextContainer.style.marginTop = '20px';
-aiTextContainer.style.padding = '10px';
-aiTextContainer.style.backgroundColor = '#f0f4f8';
-aiTextContainer.style.borderRadius = '6px';
-aiTextContainer.innerHTML = `
-  <div style="font-size:14px; margin-bottom:8px;"><strong>AI分析文本：</strong></div>
-  <div id="ai-analysis-text" style="font-size:12px; word-break:break-all; margin-bottom:8px;">${aiText}</div>
-  <button id="copy-ai-text" style="padding:6px 12px; border:none; border-radius:4px; background:#4299e1; color:#fff; cursor:pointer; font-size:12px;">一键复制</button>
-`;
-resultArea.appendChild(aiTextContainer);
-
-// 复制功能
-document.getElementById('copy-ai-text').addEventListener('click', () => {
-  const text = document.getElementById('ai-analysis-text').textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    alert('AI分析文本已复制！');
-  });
-});
+            // 生成用于AI分析的文本，但不在界面显示，仅提供复制功能
+            // 基本信息对象
+            const basicInfo = {
+                age: currentVersion === 'self' ? document.getElementById('self-age').value.trim() : 
+                    document.getElementById('informant-age').value.trim(),
+                gender: currentVersion === 'self' ? document.getElementById('self-gender').value : 
+                    document.getElementById('informant-gender').value
+            };
+            
+            // 计算总分
+            let totalScore = 0;
+            for (let dim in dimScores) {
+                totalScore += dimScores[dim];
+            }
+            
+            // 获取基本信息
+            const ageGenderText = currentVersion === 'self' ? 
+                `${basicInfo.age}岁${basicInfo.gender}性测试者` : 
+                `评估对象为${basicInfo.age}岁${basicInfo.gender}性来访者`;
+            
+            // 获取量表名称
+            const scaleName = 'DSM-5 水平1 症状自评量表';
+            
+            // 获取每题选择与题干
+            let questionsDetails = '\n\n每题具体选择与题干：\n';
+            const questionElements = document.querySelectorAll('.question');
+            questionElements.forEach((questionEl, index) => {
+                // 获取当前版本的问题文本（添加防御性编程）
+            const textElement = currentVersion === 'self' ? 
+                questionEl.querySelector('.self-text') : 
+                questionEl.querySelector('.informant-text');
+            const questionText = textElement ? textElement.innerText : '未获取到问题文本';
+                
+                // 获取选中的选项文本（添加防御性编程）
+                let selectedOptionText = '未选择';
+                const selectedOptionEl = questionEl.querySelector('.option.selected');
+                
+                if (selectedOptionEl) {
+                    selectedOptionText = selectedOptionEl.innerText;
+                } else if (questionEl.dataset.score) {
+                    // 如果没有找到.selected类，但有data-score，通过得分值查找选项
+                    const scoreValue = questionEl.dataset.score;
+                    const optionWithScore = questionEl.querySelector(`.option[data-value="${scoreValue}"]`);
+                    if (optionWithScore) {
+                        selectedOptionText = optionWithScore.innerText;
+                    }
+                }
+                
+                questionsDetails += `${index + 1}. ${questionText} - 选择：${selectedOptionText}\n`;
+            });
+            
+            // 生成符合用户要求的输出文本
+            let aiAnalysisText = `我是一名${ageGenderText}，测了${scaleName}，总得分为${totalScore}分。${questionsDetails}\n请你为我分析，并给我推荐下一步建设性的操作指示或下一步应选择的量表。如果必要，请详细与我进行交谈来获取更多信息或其他操作`;
+            
+            // 移除推荐量表，改为将问题抛给用户
+            aiAnalysisText += '\n\n请问您需要我为您提供哪方面的分析或建议？您可以告诉我您最关心的问题。';
+            
+            // 添加一个隐藏的容器用于存储AI分析文本
+            const hiddenContainer = document.createElement('div');
+            hiddenContainer.id = 'ai-analysis-content';
+            hiddenContainer.style.display = 'none';
+            hiddenContainer.innerText = aiAnalysisText;
+            document.body.appendChild(hiddenContainer);
+            
+            // 检查是否已存在复制按钮，如果有则移除
+            const existingCopyButton = document.getElementById('copy-ai-analysis');
+            if (existingCopyButton) {
+                existingCopyButton.remove();
+            }
+            
+            // 在结果区域底部添加一个明显的复制按钮
+            const copyButtonWrapper = document.createElement('div');
+            copyButtonWrapper.style.textAlign = 'center';
+            copyButtonWrapper.style.marginTop = '30px';
+            copyButtonWrapper.style.marginBottom = '20px';
+            
+            const copyButton = document.createElement('button');
+            copyButton.id = 'copy-ai-analysis';
+            copyButton.style.padding = '12px 24px';
+            copyButton.style.border = 'none';
+            copyButton.style.borderRadius = '6px';
+            copyButton.style.background = '#4299e1';
+            copyButton.style.color = '#fff';
+            copyButton.style.cursor = 'pointer';
+            copyButton.style.fontSize = '16px';
+            copyButton.style.fontWeight = 'bold';
+            copyButton.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+            copyButton.style.transition = 'background-color 0.3s ease';
+            copyButton.innerText = '复制评估结果用于AI分析';
+            
+            // 添加悬停效果
+            copyButton.addEventListener('mouseover', function() {
+                copyButton.style.background = '#3182ce';
+            });
+            
+            copyButton.addEventListener('mouseout', function() {
+                copyButton.style.background = '#4299e1';
+            });
+            
+            // 添加复制按钮事件监听
+            copyButton.addEventListener('click', function() {
+                const textToCopy = document.getElementById('ai-analysis-content').innerText;
+                navigator.clipboard.writeText(textToCopy).then(function() {
+                    alert('评估结果已复制到剪贴板！');
+                }, function(err) {
+                    alert('复制失败：' + err);
+                });
+            });
+            
+            copyButtonWrapper.appendChild(copyButton);
+            resultArea.appendChild(copyButtonWrapper);
+            
+            // 评估数据处理完成
 
         });
     </script>
