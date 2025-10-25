@@ -1,7 +1,7 @@
 {
   "name": "胡乱Live",
   "short_name": "胡乱直播",
-  "start_url": "live.html",
+
   "display": "standalone",
   "background_color": "#333",
   "theme_color": "#FF5722",

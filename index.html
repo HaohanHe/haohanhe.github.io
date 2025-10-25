@@ -1,58 +1,53 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>青岛何影</title>
-    <!-- 引入CSS样式文件 -->
-    <link rel="stylesheet" href="qdhys_custom.css">
-    <!-- 引入favicon -->
-    <link rel="SHORTCUT ICON" href="whitelogo.jpg">
-    <!-- 引入外部JavaScript库 -->
-    <script src="https://lf-package-cn.feishucdn.com/obj/feishu-static/op/fe/devtools_frontend/remote-debug-0.0.1-alpha.6.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#007aff">
+  <title>青岛何影</title>
+  <link rel="stylesheet" href="qdhys_custom.css">
+  <link rel="shortcut icon" href="whitelogo.jpg">
 </head>
 <body>
-             <!-- ... 小贴士：你好喵，当你看到了这注释时，你大概会代码，您甭跟我们老大耍小聪明喵，因为您耍不过他，喵。 ... -->
-    <!-- 导航菜单 -->
-    <nav class="navbar">
-        <ul>
-            <li><a href="https://hsyscn.top/">首页</a></li>
-            <li><a href="https://hsyscn.top/qdhsyscninformation.html">信息门户</a></li>
-            <li><a href="https://hsyscn.top/team.html">关于我们</a></li>
-            <li><a href="https://hsyscn.top/pay.html">支付与捐赠</a></li>
-        </ul>
-    </nav>
-    
-    <!-- 头部图片区域 -->
-    <div class="header-image ripple-container" style="background-image: url('大概.jpg');"></div>
+  <!-- 玻璃导航 -->
+  <nav class="navbar" id="navbar">
+    <ul>
+      <li><a href="https://hsyscn.top/">首页</a></li>
+      <li><a href="https://hsyscn.top/qdhsyscninformation.html">信息门户</a></li>
+      <li><a href="https://hsyscn.top/team.html">关于我们</a></li>
+      <li><a href="https://hsyscn.top/pay.html">支付与捐赠</a></li>
+    </ul>
+  </nav>
 
-    <!-- 轮播图区域 -->
-   <!-- <div class="slideshow-container">
-        <div class="slide active ripple-container" style="background-image: url('大概.jpg'); background-size: cover; background-position: center;"></div>-->
-        <!-- 可以添加更多轮播图 -->
+  <!-- Parallax Hero -->
+  <section class="hero ripple-container" id="hero">
+    <div class="hero-bg" data-speed="0.4" style="background-image:url('大概.jpg')"></div>
+    <div class="hero-content" data-speed="0.2">
+      <h1 class="fade-in">青岛何影</h1>
+      <p class="fade-in">综合数字化信息平台</p>
+      <a href="#info" class="btn-glass fade-in">探索更多</a>
     </div>
+  </section>
 
-    <!-- 主要内容区域 -->
-    <main>
-        <!-- 信息平台介绍 -->
-        <section class="fade-in">
-            <ul>
-                <li><a href="https://hsyscn.top/qdhsyscninformation.html" class="custom-link">综合数字化信息平台</a></li>
-            </ul>
-        </section>
+  <!-- 信息门户区块 -->
+  <section id="info" class="section-glass">
+    <h2 class="fade-in">信息门户</h2>
+    <a href="https://hsyscn.top/qdhsyscninformation.html" class="btn-glass fade-in">进入</a>
+  </section>
 
-        <!-- 其他内容区域 - 可以根据需要添加更多内容 -->
-        <section class="fade-in">
-            <!-- 观世音菩萨，行深般若波罗蜜多时，照见五阴空，度一切苦厄。
+  <!-- 图集懒加载 -->
+  <section class="gallery">
+    <img data-src="dsm5qdhy001a_20250911.html" class="lazy" alt="">
+    <img data-src="dsm5qdhy002a_20250911.html" class="lazy" alt="">
+    <img data-src="dsm5qdhy003a_20250912.html" class="lazy" alt="">
+    <img data-src="dsm5qdhy004a_20250920.html" class="lazy" alt="">
+  </section>
 
-    舍利弗，色空故，无恼坏相；受空故，无受相；想空故，无知相；行空故，无作相；识空故，无觉相。何以故？
-    舍利弗，非色异空，非空异色，色即是空，空即是色，受想行识亦复如是。舍利弗，是诸法空相，不生不灭，不垢不净，不增不减。是空法，非过去，非未来，非现在。是故空中，无色，无受想行识，无眼耳鼻舌身意，无色声香味触法，无眼界乃至无意识界，无无明亦无无明尽，乃至无老死，无老死尽，无苦集灭道，无智亦无得。
-    以无所得故，菩萨依般若波罗蜜故，心无挂碍；无挂碍故，无有恐怖，离一切颠倒梦想苦恼，究竟涅槃。三世诸佛依般若波罗蜜故，得阿耨多罗三藐三菩提。故知般若波罗蜜是大明咒、无上明咒、无等等明咒，能除一切苦，真实不虚。
-    故说般若波罗蜜咒，即说咒曰：竭帝竭帝　波罗竭帝　波罗僧竭帝　菩提僧莎呵 -->
-        </section>
-    </main>
+  <!-- 页脚 -->
+  <footer class="footer-glass">
+    <p>&copy; <span id="year"></span> 青岛何影</p>
+  </footer>
 
-    <!-- JavaScript -->
-    <script src="qdhys_custom.js"></script>
+  <script src="qdhys_custom.js"></script>
 </body>
 </html>
