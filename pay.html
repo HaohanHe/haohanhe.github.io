@@ -1,51 +1,607 @@
-<!DOCTYPE html>  
-<html lang="zh">  
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>青岛何影——支付</title>  
-    <link rel="stylesheet" href="styles.css">  
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青岛何影 - 支付与捐赠</title>
     <link href="whitelogo.jpg" rel="SHORTCUT ICON">
-</head>  
-<body>  
-    <header>  
-        <nav class="navbar">  
-            <ul>  
-                <li><a href="https://hsyscn.top/">首页</a></li>  
-                <li><a href="https://hsyscn.top/qdhsyscninformation.html">信息门户</a></li>  
-                <li><a href="https://hsyscn.top/team.html">关于我们</a></li>  
-                <li><a href="https://hsyscn.top/pay.html">支付与捐赠</a></li> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            --alipay-gradient: linear-gradient(135deg, #1677ff 0%, #00a6fb 100%);
+            --wechat-gradient: linear-gradient(135deg, #07c160 0%, #1aad19 100%);
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --glass-hover: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="20" cy="80" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .glass-nav {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .glass-nav:hover {
+            background: var(--glass-hover);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-link {
+            color: white !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.75rem 1rem !important;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::before {
+            width: 80%;
+        }
+
+        .nav-link:hover {
+            color: #fff !important;
+            transform: translateY(-2px);
+        }
+
+        .main-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: calc(100vh - 200px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: var(--glass-shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px 0 rgba(31, 38, 135, 0.5);
+            background: var(--glass-hover);
+        }
+
+        .main-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .payment-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--glass-shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .payment-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+
+        .payment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px 0 rgba(31, 38, 135, 0.4);
+            background: var(--glass-hover);
+        }
+
+        .payment-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .payment-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .payment-description {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .payment-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .payment-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .payment-button:hover::before {
+            left: 100%;
+        }
+
+        .payment-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        .alipay-button {
+            background: var(--alipay-gradient);
+        }
+
+        .wechat-button {
+            background: var(--wechat-gradient);
+        }
+
+        .donation-info {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: var(--glass-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .donation-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+
+        .donation-info h3 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .donation-info p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            top: 70%;
+            right: 15%;
+            animation-delay: 3s;
+        }
+
+        .floating-circle:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 6s;
+        }
+
+        .floating-money {
+            position: absolute;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.1);
+            animation: moneyFloat 12s ease-in-out infinite;
+        }
+
+        .floating-money:nth-child(4) {
+            top: 15%;
+            right: 20%;
+            animation-delay: 2s;
+        }
+
+        .floating-money:nth-child(5) {
+            bottom: 25%;
+            right: 10%;
+            animation-delay: 6s;
+        }
+
+        .floating-money:nth-child(6) {
+            top: 60%;
+            left: 15%;
+            animation-delay: 9s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-40px) rotate(180deg); }
+        }
+
+        @keyframes moneyFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            25% { transform: translateY(-15px) rotate(90deg) scale(1.1); }
+            50% { transform: translateY(-30px) rotate(180deg) scale(0.9); }
+            75% { transform: translateY(-15px) rotate(270deg) scale(1.1); }
+        }
+
+        .pulse-effect {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); }
+            50% { box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4); }
+            100% { box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); }
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
             
-            </ul>  
-        </nav>  
-      <div class="header-image" style="background-image: url('风格回家.jpg');"></div>  
-    <main>  
-    <a href="https://qr.alipay.com/tsx17276ozwmop7vtrhpn05" class="button-link">支付宝</a>
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .glass-card {
+                padding: 2rem;
+            }
+            
+            .payment-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .payment-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-money">💰</div>
+        <div class="floating-money">💳</div>
+        <div class="floating-money">🎁</div>
+    </div>
 
-<style>
-.button-link {
-    display: inline-block; /* 让链接表现得像块级元素 */
-    padding: 10px 20px; /* 内边距 */
-    text-decoration: none; /* 去除下划线 */
-    color: white; /* 文字颜色 */
-    background-color: #007bff; /* 背景颜色 */
-    border: 1px solid #007bff; /* 边框 */
-    border-radius: 5px; /* 边框圆角 */
-    cursor: pointer; /* 鼠标悬停时显示手指形状，表示可点击 */
-    transition: background-color 0.3s; /* 平滑过渡效果 */
-}
+    <nav class="navbar navbar-expand-lg glass-nav">
+        <div class="container">
+            <a class="navbar-brand" href="https://hsyscn.top/">青岛何影</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://hsyscn.top/">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://hsyscn.top/qdhsyscninformation.html">信息门户</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://hsyscn.top/team.html">关于我们</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="https://hsyscn.top/pay.html">支付与捐赠</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-.button-link:hover {
-    background-color: #0056b3; /* 鼠标悬停时的背景颜色 */
-}
+    <div class="main-container">
+        <div class="glass-card">
+            <h1 class="main-title">支付与捐赠</h1>
+            <p class="subtitle">感谢您的支持与信任<br>您的每一份贡献都将帮助我们提供更好的服务</p>
+            
+            <div class="payment-grid">
+                <div class="payment-card">
+                    <span class="payment-icon">💙</span>
+                    <h3 class="payment-title">支付宝</h3>
+                    <p class="payment-description">使用支付宝扫码支付，安全便捷，支持花呗分期付款</p>
+                    <a href="https://qr.alipay.com/tsx17276ozwmop7vtrhpn05" class="payment-button alipay-button pulse-effect">
+                        立即支付
+                    </a>
+                </div>
+                
+                <div class="payment-card">
+                    <span class="payment-icon">💚</span>
+                    <h3 class="payment-title">微信支付</h3>
+                    <p class="payment-description">微信扫码支付，快速到账，支持零钱和银行卡支付</p>
+                    <a href="#" class="payment-button wechat-button" onclick="showWeChatQR()">
+                        微信支付
+                    </a>
+                </div>
+            </div>
 
-.button-link:active {
-    background-color: #004085; /* 点击时的背景颜色 */
-}
-</style>
+            <div class="donation-info">
+                <h3>💝 捐赠说明</h3>
+                <p>• 所有捐赠将用于网站维护和服务器运营</p>
+                <p>• 您的支持是我们持续改进的动力</p>
+                <p>• 捐赠金额不限，心意最重要</p>
+                <p>• 如有疑问，请联系我们的客服团队</p>
+            </div>
+        </div>
+    </div>
 
-    </main>  
-  
-    <script src="script.js"></script>  
-</body>  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.glass-nav');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.15)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.1)';
+            }
+        });
+
+        // 卡片入场动画
+        const card = document.querySelector('.glass-card');
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(50px)';
+        card.style.transition = 'all 1s ease';
+
+        setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, 300);
+
+        // 支付卡片动画
+        const paymentCards = document.querySelectorAll('.payment-card');
+        paymentCards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.8s ease';
+            
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 500 + index * 200);
+        });
+
+        // 按钮点击效果
+        const buttons = document.querySelectorAll('.payment-button');
+        buttons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                // 创建点击波纹效果
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.pointerEvents = 'none';
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // 微信支付二维码显示
+        function showWeChatQR() {
+            alert('微信支付二维码功能正在开发中，请使用支付宝支付。感谢您的理解！');
+        }
+
+        // 添加波纹动画样式
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 鼠标跟随效果
+        document.addEventListener('mousemove', function(e) {
+            const circles = document.querySelectorAll('.floating-circle');
+            circles.forEach((circle, index) => {
+                const speed = (index + 1) * 0.01;
+                const x = e.clientX * speed;
+                const y = e.clientY * speed;
+                circle.style.transform += ` translate(${x}px, ${y}px)`;
+            });
+        });
+
+        // 支付成功提示
+        function showPaymentSuccess() {
+            const successMsg = document.createElement('div');
+            successMsg.innerHTML = '✅ 支付成功！感谢您的支持！';
+            successMsg.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(76, 175, 80, 0.9);
+                color: white;
+                padding: 20px 40px;
+                border-radius: 10px;
+                font-size: 18px;
+                z-index: 10000;
+                backdrop-filter: blur(10px);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            `;
+            document.body.appendChild(successMsg);
+            
+            setTimeout(() => {
+                successMsg.remove();
+            }, 3000);
+        }
+    </script>
+</body>
 </html>

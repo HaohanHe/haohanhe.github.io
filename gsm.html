@@ -3,17 +3,446 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>青岛何影</title>
+    <title>青岛何影 - 号卡办理</title>
+    <link href="whitelogo.jpg" rel="SHORTCUT ICON">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        #csbody{color:#2c3e50;font-family:'Arial Rounded MT Bold','Arial',sans-serif;padding:20px;border-radius:20px;background:linear-gradient(145deg,#f0f7ff,#e6f0ff);transition:all 0.3s ease;position:relative;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.05);border:2px solid #a8d8ff}#csbody::before{content:'';position:absolute;top:-2px;left:-2px;right:-2px;bottom:-2px;background:linear-gradient(145deg,#e6f0ff,#f0f7ff);border-radius:22px;z-index:-1;transition:all 0.3s ease}#csbody:hover{transform:translateY(-5px);box-shadow:0 10px 25px rgba(0,0,0,0.1)}#csbody:hover::before{transform:scale(1.02)}#calldata{color:#ff7eb3;font-weight:bold;background-color:#fff8f0;padding:18px;border-radius:15px;margin:15px 0;box-shadow:0 4px 10px rgba(0,0,0,0.05);transition:all 0.3s ease;position:relative;overflow:hidden;border-left:4px solid #ffb6c1}#calldata:hover{transform:translateY(-3px);box-shadow:0 6px 12px rgba(0,0,0,0.1)}#calldata::after{content:'♥';position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#ff7eb3;animation:heartBeat 1s infinite}#biodata{color:#8ec9ff;background-color:#f0f7ff;padding:18px;border-radius:15px;box-shadow:0 4px 10px rgba(0,0,0,0.05);transition:all 0.3s ease;position:relative;overflow:hidden}#biodata:hover{transform:translateY(-3px);box-shadow:0 6px 12px rgba(0,0,0,0.1)}#biodata::after{content:'⭐';position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#8ec9ff;animation:starTwinkle 1s infinite}#t_bio.biodiv{background:linear-gradient(145deg,#f9f9f9,#f0f0f0);padding:20px;border-radius:15px;box-shadow:0 4px 10px rgba(0,0,0,0.05);transition:all 0.3s ease;position:relative;overflow:hidden;border:1px solid #e0e0e0}#t_bio.biodiv h2{color:#ff9500;border-bottom:2px solid #ffcc00;padding-bottom:10px;margin-top:0;font-weight:bold}#t_bio.biodiv p{color:#7f8c8d;margin-bottom:15px;line-height:1.6}#t_bio.biodiv .highlight{color:#ff9500;font-weight:bold;position:relative}.highlight::after{content:'';position:absolute;bottom:-2px;left:0;width:100%;height:2px;background-color:#ffcc00}@keyframes heartBeat{0%{transform:translateY(-50%) scale(1)}50%{transform:translateY(-50%) scale(1.2)}100%{transform:translateY(-50%) scale(1)}}@keyframes starTwinkle{0%{opacity:0.5;transform:translateY(-50%) rotate(0deg)}50%{opacity:1;transform:translateY(-50%) rotate(10deg)}100%{opacity:0.5;transform:translateY(-50%) rotate(0deg)}}@keyframes float{0%{transform:translateY(0px)}50%{transform:translateY(-5px)}100%{transform:translateY(0px)}}#csbody{animation:float 3s ease-in-out infinite}#calldata{animation:fadeIn 0.8s ease-in-out}#biodata{animation:fadeIn 1s ease-in-out}#t_bio.biodiv{animation:fadeIn 1.2s ease-in-out}@keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}@media(max-width:768px){#csbody,#calldata,#biodata,#t_bio.biodiv{padding:15px;margin:10px 0;border-radius:12px}}.button-style{display:inline-block;padding:10px 20px;font-size:16px;color:white;background-color:#4CAF50;border:none;border-radius:4px;cursor:pointer;text-decoration:none}.button-style:hover{background-color:#45a049}
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            --orange-gradient: linear-gradient(135deg, #ff9500 0%, #ffcc00 100%);
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --glass-hover: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="20" cy="80" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .glass-nav {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .glass-nav:hover {
+            background: var(--glass-hover);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-link {
+            color: white !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.75rem 1rem !important;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::before {
+            width: 80%;
+        }
+
+        .nav-link:hover {
+            color: #fff !important;
+            transform: translateY(-2px);
+        }
+
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: calc(100vh - 200px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: var(--glass-shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px 0 rgba(31, 38, 135, 0.5);
+            background: var(--glass-hover);
+        }
+
+        .main-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .card-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-width: 200px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .card-button:hover::before {
+            left: 100%;
+        }
+
+        .card-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        .card-172 {
+            background: var(--success-gradient);
+        }
+
+        .card-world {
+            background: var(--orange-gradient);
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            top: 70%;
+            right: 15%;
+            animation-delay: 3s;
+        }
+
+        .floating-circle:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 6s;
+        }
+
+        .floating-phone {
+            position: absolute;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.1);
+            animation: phoneFloat 10s ease-in-out infinite;
+        }
+
+        .floating-phone:nth-child(4) {
+            top: 20%;
+            right: 10%;
+            animation-delay: 1s;
+        }
+
+        .floating-phone:nth-child(5) {
+            bottom: 30%;
+            right: 30%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-40px) rotate(180deg); }
+        }
+
+        @keyframes phoneFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            33% { transform: translateY(-20px) rotate(120deg) scale(1.1); }
+            66% { transform: translateY(-10px) rotate(240deg) scale(0.9); }
+        }
+
+        .pulse-effect {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); }
+            50% { box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4); }
+            100% { box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); }
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .glass-card {
+                padding: 2rem;
+            }
+            
+            .card-button {
+                min-width: 180px;
+                padding: 0.8rem 2rem;
+                font-size: 1.1rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <div id="csbody">
-        <h1>青岛何影</h1>
-        <p>号卡办理，补贴多多</p>
-        <a href="https://172.lot-ml.com/ProductEn/index/53bf93bc3aece970" class="button-style">172号卡</a>
-        <a href="https://ym.ksjhaoka.com/?s=4xdscK9t57770" class="button-style">卡世界</a>
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-phone">📱</div>
+        <div class="floating-phone">📞</div>
     </div>
+
+    <nav class="navbar navbar-expand-lg glass-nav">
+        <div class="container">
+            <a class="navbar-brand" href="https://hsyscn.top/">青岛何影</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://hsyscn.top/">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://hsyscn.top/qdhsyscninformation.html">信息门户</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://hsyscn.top/team.html">关于我们</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://hsyscn.top/pay.html">支付与捐赠</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="glass-card">
+            <h1 class="main-title">青岛何影</h1>
+            <p class="subtitle">号卡办理，补贴多多<br>优质通信服务，让您畅享数字生活</p>
+            
+            <div class="button-container">
+                <a href="https://172.lot-ml.com/ProductEn/index/53bf93bc3aece970" class="card-button card-172 pulse-effect">
+                    📱 172号卡
+                </a>
+                <a href="https://ym.ksjhaoka.com/?s=4xdscK9t57770" class="card-button card-world">
+                    🌍 卡世界
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.glass-nav');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.15)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.1)';
+            }
+        });
+
+        // 卡片入场动画
+        const card = document.querySelector('.glass-card');
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(50px)';
+        card.style.transition = 'all 1s ease';
+
+        setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, 300);
+
+        // 按钮点击效果
+        const buttons = document.querySelectorAll('.card-button');
+        buttons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                // 创建点击波纹效果
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.pointerEvents = 'none';
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // 添加波纹动画样式
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 鼠标跟随效果
+        document.addEventListener('mousemove', function(e) {
+            const circles = document.querySelectorAll('.floating-circle');
+            circles.forEach((circle, index) => {
+                const speed = (index + 1) * 0.01;
+                const x = e.clientX * speed;
+                const y = e.clientY * speed;
+                circle.style.transform += ` translate(${x}px, ${y}px)`;
+            });
+        });
+    </script>
 </body>
 </html>

@@ -3,46 +3,436 @@
 <head>  
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>青岛何影</title>
-    <link rel="stylesheet" href="styles.css">  
+    <title>青岛何影 - 关于我们</title>
+    <link href="whitelogo.jpg" rel="SHORTCUT ICON">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --glass-hover: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="20" cy="80" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .glass-nav {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .glass-nav:hover {
+            background: var(--glass-hover);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-link {
+            color: white !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.75rem 1rem !important;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::before {
+            width: 80%;
+        }
+
+        .nav-link:hover {
+            color: #fff !important;
+            transform: translateY(-2px);
+        }
+
+        .header-image {
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('https://cdn-bio.qrz.com/b/bi4mib/IMG_0354.jpeg?p=94df982a329eacd28e1a9aa42a33be91');
+        }
+
+        .header-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(2px);
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+        }
+
+        .header-content h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--glass-shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
+            background: var(--glass-hover);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .section-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+        }
+
+        .contact-info {
+            background: var(--accent-gradient);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .contact-info h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-info a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+            opacity: 0.8;
+        }
+
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .link-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+        }
+
+        .link-card:hover {
+            transform: translateY(-3px);
+            background: var(--glass-hover);
+            color: white;
+            text-decoration: none;
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-circle:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        @media (max-width: 768px) {
+            .header-content h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .glass-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>  
-            <!-- ... 何影喵小贴士：你好喵，当你看到了这注释时，你大概会代码，您甭跟我们老大耍小聪明喵，因为您耍不过他，喵。  ... -->
 <body>  
-    <header>  
-        <nav class="navbar">  
-            <ul>  
-                <li><a href="https://hsyscn.top/">首页</a></li>  
-                <li><a href="https://hsyscn.top/qdhsyscninformation.html">信息门户</a></li>  
-                <li><a href="https://hsyscn.top/team.html">关于我们</a></li>  
-                <li><a href="https://hsyscn.top/pay.html">支付与捐赠</a></li>  
-               
-            </ul>  
-        </nav>  
- <div class="header-image" style="background-image: url('https://cdn-bio.qrz.com/b/bi4mib/IMG_0354.jpeg?p=94df982a329eacd28e1a9aa42a33be91');"></div> 
-</header>
-      <main>  
-    <h1>何影团队</h1>
-    <p>世间花叶不相伦，花入金盆叶作尘。</p>
-    <h2>团队愿景</h2>
-    <p>降低认知门槛，普及社工与心理，最大化自身价值。</p>
-    <p>社工+互联网+计算社科？</p>
-  
-    <!-- ... 其他内容 ... -->
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+    </div>
 
-    <h2>了解部分团队成员</h2>
-    <!-- 这里可以添加团队成员的照片和简介 -->
+    <nav class="navbar navbar-expand-lg glass-nav">
+        <div class="container">
+            <a class="navbar-brand" href="https://hsyscn.top/">青岛何影</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://hsyscn.top/">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://hsyscn.top/qdhsyscninformation.html">信息门户</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="https://hsyscn.top/team.html">关于我们</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://hsyscn.top/pay.html">支付与捐赠</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <h2>联系方式</h2>    
-    <p>邮箱: <a href="mailto:hehaohan@hsyscn.top">hehaohan@hsyscn.top</a> ,
-        <a href="mailto:bg2mkf@hsyscn.top">bg2mkf@hsyscn.top（分）</a>或 <a href="mailto:hsyscn@iCloud.com">hsyscn@iCloud.com</a></p>
-    <p>通讯地址: 山东省青岛市黄岛区张家楼镇双河路108号内22栋3单元501（邮寄前请联系）</p>
-          
-    <li><a href="http://www.wannengye.com/pages/ccAmBnyM/">备用站</a></li>
-    <li><a href="https://www.qrz.com/db/BI4MIB">无线电台</a></li>
-    <li><a href="https://hsyscn.top/qdhsyscninformation">综合数字化信息平台</a></li>
-    <li><a href="https://hsyscn.top/gsm">号卡分销</a></li>
-    </main>  
-  
-    <script src="script.js"></script>  
+    <div class="header-image">
+        <div class="header-content">
+            <h1>何影团队</h1>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="glass-card">
+            <h1 class="section-title">何影团队</h1>
+            <p class="section-text">世间花叶不相伦，花入金盆叶作尘。</p>
+        </div>
+
+        <div class="glass-card">
+            <h2 class="section-subtitle">团队愿景</h2>
+            <p class="section-text">降低认知门槛，普及社工与心理，最大化自身价值。</p>
+            <p class="section-text">社工+互联网+计算社科？</p>
+        </div>
+
+        <div class="glass-card">
+            <h2 class="section-subtitle">了解部分团队成员</h2>
+            <p class="section-text">我们是一个充满活力的团队，致力于通过技术手段推动社会工作和心理健康服务的发展。</p>
+        </div>
+
+        <div class="glass-card">
+            <div class="contact-info">
+                <h3>联系方式</h3>
+                <p>邮箱: <a href="mailto:hehaohan@hsyscn.top">hehaohan@hsyscn.top</a></p>
+                <p>分邮箱: <a href="mailto:bg2mkf@hsyscn.top">bg2mkf@hsyscn.top</a></p>
+                <p>备用邮箱: <a href="mailto:hsyscn@iCloud.com">hsyscn@iCloud.com</a></p>
+                <p>通讯地址: 山东省青岛市黄岛区张家楼镇双河路108号内22栋3单元501（邮寄前请联系）</p>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h2 class="section-subtitle">相关链接</h2>
+            <div class="link-grid">
+                <a href="http://www.wannengye.com/pages/ccAmBnyM/" class="link-card">
+                    <h4>备用站</h4>
+                    <p>备用访问入口</p>
+                </a>
+                <a href="https://www.qrz.com/db/BI4MIB" class="link-card">
+                    <h4>无线电台</h4>
+                    <p>业余无线电信息</p>
+                </a>
+                <a href="https://hsyscn.top/qdhsyscninformation.html" class="link-card">
+                    <h4>综合数字化信息平台</h4>
+                    <p>信息门户系统</p>
+                </a>
+                <a href="https://hsyscn.top/gsm.html" class="link-card">
+                    <h4>号卡分销</h4>
+                    <p>通信服务</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.glass-nav');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.15)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.1)';
+            }
+        });
+
+        // 卡片动画效果
+        const cards = document.querySelectorAll('.glass-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        cards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
 </body>  
 </html>
