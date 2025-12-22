@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>照片裁剪工具 - Group 211尺寸</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .container {
+            display: flex;
+            gap: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        .left-panel, .right-panel {
+            flex: 1;
+        }
+        
+        .upload-section {
+            margin-bottom: 20px;
+        }
+        
+        .upload-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .upload-btn:hover {
+            background: #45a049;
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .preview-section {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        #imageContainer {
+            position: relative;
+            max-width: 100%;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        
+        #imagePreview {
+            max-width: 100%;
+            max-height: 500px;
+            cursor: move;
+        }
+        
+        .crop-box {
+            position: absolute;
+            border: 2px solid #4CAF50;
+            background: rgba(76, 175, 80, 0.2);
+            cursor: crosshair;
+            border-radius: 25px; /* 圆角预览 */
+        }
+        
+        /* 微调控制样式 */
+        .fine-tune-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 5px;
+        }
+        
+        .fine-tune-row {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .fine-tune-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 5px;
+            background: #2196F3;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .fine-tune-btn:hover {
+            background: #0b7dda;
+        }
+        
+        .fine-tune-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        #fineTuneCenter {
+            width: 80px;
+            font-size: 12px;
+        }
+        
+        /* 缩放控制样式 */
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .zoom-text {
+            font-size: 12px;
+            color: #666;
+            width: 40px;
+            text-align: center;
+        }
+        
+        .separator {
+            height: 1px;
+            width: 80%;
+            background: #ddd;
+            margin: 10px 0;
+        }
+        
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .crop-btn {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .crop-btn:hover {
+            background: #0b7dda;
+        }
+        
+        .reset-btn {
+            background: #f44336;
+            color: white;
+        }
+        
+        .reset-btn:hover {
+            background: #da190b;
+        }
+        
+        .result-section {
+            text-align: center;
+        }
+        
+        #croppedResult {
+            margin: 20px 0;
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        
+        .download-btn {
+            background: #ff9800;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .download-btn:hover {
+            background: #e68a00;
+        }
+        
+        .info {
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #1976d2;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>照片裁剪工具 - Group 211适配</h1>
+    <div class="container">
+        <div class="left-panel">
+            <div class="upload-section">
+                <label for="fileInput" class="upload-btn">上传照片</label>
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+            <div class="preview-section">
+                <h3>裁剪预览</h3>
+                <div class="info">
+                    内部显示区域：390 × 450 px<br>
+                    最终导出尺寸：360 × 360 px（透明背景）<br>
+                    操作提示：点击并拖拽图片调整位置，使用鼠标滚轮缩放图片
+                </div>
+                <div id="imageContainer">
+                    <img id="imagePreview" style="display: none;">
+                    <div id="cropBox" class="crop-box"></div>
+                </div>
+            </div>
+            <div class="controls">
+                <div class="fine-tune-controls">
+                    <!-- 缩放微调 -->
+                    <div class="zoom-controls">
+                        <button id="zoomIn" class="fine-tune-btn" disabled>+</button>
+                        <span class="zoom-text">缩放</span>
+                        <button id="zoomOut" class="fine-tune-btn" disabled>-</button>
+                    </div>
+                    <div class="separator"></div>
+                    <!-- 位置微调 -->
+                    <button id="fineTuneUp" class="fine-tune-btn" disabled>↑</button>
+                    <div class="fine-tune-row">
+                        <button id="fineTuneLeft" class="fine-tune-btn" disabled>←</button>
+                        <button id="fineTuneCenter" class="fine-tune-btn" disabled>居中</button>
+                        <button id="fineTuneRight" class="fine-tune-btn" disabled>→</button>
+                    </div>
+                    <button id="fineTuneDown" class="fine-tune-btn" disabled>↓</button>
+                </div>
+                <button id="cropBtn" class="crop-btn" disabled>裁剪图片</button>
+                <button id="resetBtn" class="reset-btn" disabled>重置</button>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="result-section">
+                <h3>裁剪结果 (390px × 450px)</h3>
+                <img id="croppedResult" style="display: none;">
+                <a id="downloadLink" class="download-btn" style="display: none;">下载裁剪图片</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 尺寸配置
+        const INNER_WIDTH = 390;  // 内部Group 211尺寸
+        const INNER_HEIGHT = 450;
+        const EXPORT_WIDTH = 360;  // 最终导出尺寸
+        const EXPORT_HEIGHT = 360;
+        
+        // 图片处理状态
+        let originalImage = null;
+        let imageScale = 1;
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
+        let offsetX = 0;
+        let offsetY = 0;
+        
+        // DOM 元素
+        const fileInput = document.getElementById('fileInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const imageContainer = document.getElementById('imageContainer');
+        const cropBox = document.getElementById('cropBox');
+        const cropBtn = document.getElementById('cropBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const croppedResult = document.getElementById('croppedResult');
+        const downloadLink = document.getElementById('downloadLink');
+        
+        // 微调控制按钮
+        const fineTuneUp = document.getElementById('fineTuneUp');
+        const fineTuneDown = document.getElementById('fineTuneDown');
+        const fineTuneLeft = document.getElementById('fineTuneLeft');
+        const fineTuneRight = document.getElementById('fineTuneRight');
+        const fineTuneCenter = document.getElementById('fineTuneCenter');
+        
+        // 缩放控制按钮
+        const zoomIn = document.getElementById('zoomIn');
+        const zoomOut = document.getElementById('zoomOut');
+        
+        // 初始化裁剪框 - 确保所见即所得
+        function initCropBox() {
+            const containerRect = imageContainer.getBoundingClientRect();
+            const containerWidth = containerRect.width;
+            const containerHeight = 500; // 固定高度
+            
+            // 计算预览尺寸，确保最终导出的360x360效果与预览一致
+            // 保持360x360的比例
+            const exportAspectRatio = EXPORT_WIDTH / EXPORT_HEIGHT; // 1:1
+            let previewSize = Math.min(containerWidth * 0.7, containerHeight * 0.7);
+            
+            // 居中显示裁剪框
+            cropBox.style.width = `${previewSize}px`;
+            cropBox.style.height = `${previewSize}px`;
+            cropBox.style.left = `${(containerWidth - previewSize) / 2}px`;
+            cropBox.style.top = `${(containerHeight - previewSize) / 2}px`;
+            cropBox.style.borderRadius = `${previewSize * (86 / 360)}px`; // 按比例显示86px圆角
+        }
+        
+        // 上传图片
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    originalImage = img;
+                    
+                    // 计算图片缩放比例，确保所见即所得
+                    const containerRect = imageContainer.getBoundingClientRect();
+                    const cropRect = cropBox.getBoundingClientRect();
+                    
+                    // 计算图片缩放比例，确保图片填满裁剪框
+                    const scaleX = cropRect.width / img.width;
+                    const scaleY = cropRect.height / img.height;
+                    imageScale = Math.max(scaleX, scaleY) * 1.1; // 稍微放大一点，让用户可以调整
+                    
+                    // 重置偏移量，居中显示
+                    offsetX = 0;
+                    offsetY = 0;
+                    
+                    // 更新图片预览
+                    imagePreview.src = event.target.result;
+                    imagePreview.style.display = 'block';
+                    updateImagePosition();
+                    
+                    // 启用按钮
+                    cropBtn.disabled = false;
+                    resetBtn.disabled = false;
+                    fineTuneUp.disabled = false;
+                    fineTuneDown.disabled = false;
+                    fineTuneLeft.disabled = false;
+                    fineTuneRight.disabled = false;
+                    fineTuneCenter.disabled = false;
+                    zoomIn.disabled = false;
+                    zoomOut.disabled = false;
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+        
+        // 更新图片位置
+        function updateImagePosition() {
+            imagePreview.style.transform = `scale(${imageScale}) translate(${offsetX}px, ${offsetY}px)`;
+        }
+        
+        // 鼠标事件处理 - 拖拽图片
+        imagePreview.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX - offsetX;
+            startY = e.clientY - offsetY;
+            imagePreview.style.cursor = 'grabbing';
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            
+            offsetX = e.clientX - startX;
+            offsetY = e.clientY - startY;
+            updateImagePosition();
+        });
+        
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            imagePreview.style.cursor = 'move';
+        });
+        
+        // 鼠标滚轮缩放
+        imageContainer.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            
+            const delta = e.deltaY > 0 ? 0.9 : 1.1;
+            imageScale *= delta;
+            imageScale = Math.max(0.5, Math.min(3, imageScale)); // 限制缩放范围
+            updateImagePosition();
+        });
+        
+        // 裁剪图片 - 真正的所见即所得
+        cropBtn.addEventListener('click', () => {
+            if (!originalImage) return;
+            
+            // 创建Canvas进行处理
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // 设置Canvas尺寸为最终导出尺寸360x360
+            canvas.width = EXPORT_WIDTH;
+            canvas.height = EXPORT_HEIGHT;
+            
+            // 第一步：创建透明背景
+            ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+            ctx.fillRect(0, 0, EXPORT_WIDTH, EXPORT_HEIGHT);
+            
+            // 第二步：获取裁剪框和容器的位置信息
+            const cropRect = cropBox.getBoundingClientRect();
+            const containerRect = imageContainer.getBoundingClientRect();
+            
+            // 第三步：计算图片在预览中的实际显示位置和大小
+            // 计算图片在原始图片上的位置
+            const imageRect = imagePreview.getBoundingClientRect();
+            const containerOffsetX = containerRect.left;
+            const containerOffsetY = containerRect.top;
+            
+            // 计算图片在容器内的相对位置
+            const relativeImageX = imageRect.left - containerOffsetX;
+            const relativeImageY = imageRect.top - containerOffsetY;
+            
+            // 计算裁剪区域在图片上的相对位置
+            const cropAreaX = cropRect.left - containerOffsetX - relativeImageX;
+            const cropAreaY = cropRect.top - containerOffsetY - relativeImageY;
+            
+            // 计算图片的实际显示缩放比例
+            const displayScaleX = imageRect.width / originalImage.width;
+            const displayScaleY = imageRect.height / originalImage.height;
+            const displayScale = Math.max(displayScaleX, displayScaleY);
+            
+            // 计算裁剪区域在原始图片上的位置和大小
+            const sourceX = cropAreaX / displayScale;
+            const sourceY = cropAreaY / displayScale;
+            const sourceWidth = cropRect.width / displayScale;
+            const sourceHeight = cropRect.height / displayScale;
+            
+            // 第四步：应用86px圆角裁剪路径
+            const borderRadius = 86; // 设计图要求的手表截图圆角
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(borderRadius, 0);
+            ctx.lineTo(canvas.width - borderRadius, 0);
+            ctx.arc(canvas.width - borderRadius, borderRadius, borderRadius, 1.5 * Math.PI, 0);
+            ctx.lineTo(canvas.width, canvas.height - borderRadius);
+            ctx.arc(canvas.width - borderRadius, canvas.height - borderRadius, borderRadius, 0, 0.5 * Math.PI);
+            ctx.lineTo(borderRadius, canvas.height);
+            ctx.arc(borderRadius, canvas.height - borderRadius, borderRadius, 0.5 * Math.PI, Math.PI);
+            ctx.lineTo(0, borderRadius);
+            ctx.arc(borderRadius, borderRadius, borderRadius, Math.PI, 1.5 * Math.PI);
+            ctx.closePath();
+            ctx.clip();
+            
+            // 第五步：直接绘制图片，确保所见即所得
+            ctx.drawImage(
+                originalImage,
+                sourceX, sourceY, sourceWidth, sourceHeight,  // 从原图截取预览框内容
+                0, 0, EXPORT_WIDTH, EXPORT_HEIGHT             // 直接绘制到360x360画布
+            );
+            
+            ctx.restore();
+            
+            // 显示裁剪结果
+            const dataURL = canvas.toDataURL('image/png');
+            croppedResult.src = dataURL;
+            croppedResult.style.display = 'block';
+            
+            // 更新下载链接
+            downloadLink.href = dataURL;
+            downloadLink.download = `cropped-${Date.now()}.png`;
+            downloadLink.style.display = 'inline-block';
+        });
+        
+        // 微调按钮事件处理
+        fineTuneUp.addEventListener('click', () => {
+            offsetY += 5; // 向上微调
+            updateImagePosition();
+        });
+        
+        fineTuneDown.addEventListener('click', () => {
+            offsetY -= 5; // 向下微调
+            updateImagePosition();
+        });
+        
+        fineTuneLeft.addEventListener('click', () => {
+            offsetX += 5; // 向左微调
+            updateImagePosition();
+        });
+        
+        fineTuneRight.addEventListener('click', () => {
+            offsetX -= 5; // 向右微调
+            updateImagePosition();
+        });
+        
+        fineTuneCenter.addEventListener('click', () => {
+            // 居中对齐图片
+            offsetX = 0;
+            offsetY = 0;
+            updateImagePosition();
+        });
+        
+        // 缩放微调按钮事件处理
+        zoomIn.addEventListener('click', () => {
+            imageScale *= 1.1; // 放大10%
+            imageScale = Math.min(3, imageScale); // 限制最大缩放
+            updateImagePosition();
+        });
+        
+        zoomOut.addEventListener('click', () => {
+            imageScale *= 0.9; // 缩小10%
+            imageScale = Math.max(0.5, imageScale); // 限制最小缩放
+            updateImagePosition();
+        });
+        
+        // 重置
+        resetBtn.addEventListener('click', () => {
+            imagePreview.style.display = 'none';
+            imagePreview.src = '';
+            croppedResult.style.display = 'none';
+            downloadLink.style.display = 'none';
+            cropBtn.disabled = true;
+            resetBtn.disabled = true;
+            fineTuneUp.disabled = true;
+            fineTuneDown.disabled = true;
+            fineTuneLeft.disabled = true;
+            fineTuneRight.disabled = true;
+            fineTuneCenter.disabled = true;
+            zoomIn.disabled = true;
+            zoomOut.disabled = true;
+            originalImage = null;
+            imageScale = 1;
+            offsetX = 0;
+            offsetY = 0;
+        });
+        
+        // 初始化
+        window.addEventListener('load', () => {
+            initCropBox();
+            
+            // 窗口大小改变时重新初始化裁剪框
+            window.addEventListener('resize', initCropBox);
+        });
+    </script>
+</body>
+</html>
