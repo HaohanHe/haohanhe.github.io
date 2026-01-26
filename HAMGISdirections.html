@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAMGIS 系统使用说明书</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary-color: #ec4899;
+            --accent-color: #10b981;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-light: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--text-primary);
+            background-color: var(--bg-secondary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 60px 0 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z" fill="%23ffffff" fill-opacity="0.05" fill-rule="evenodd"/></svg>');
+            opacity: 0.5;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.025em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            font-weight: 400;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .language-switcher {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            display: flex;
+            gap: 8px;
+            z-index: 2;
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: var(--radius-full);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .lang-btn:hover,
+        .lang-btn.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        nav {
+            background-color: var(--bg-primary);
+            padding: 16px 24px;
+            margin: 32px auto;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 24px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.875rem;
+            padding: 10px 18px;
+            border-radius: var(--radius-full);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+            transition: var(--transition);
+        }
+
+        nav a:hover::before {
+            left: 100%;
+        }
+
+        nav a:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        section {
+            background-color: var(--bg-primary);
+            padding: 40px;
+            margin-bottom: 32px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        section:hover {
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-2px);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--primary-light);
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        h3 {
+            color: var(--text-primary);
+            margin: 32px 0 20px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        h4 {
+            color: var(--text-primary);
+            margin: 24px 0 16px;
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        h5 {
+            color: var(--text-primary);
+            margin: 20px 0 16px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 28px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            position: relative;
+        }
+
+        ul li::before {
+            content: '•';
+            color: var(--primary-color);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            padding: 28px;
+            border-radius: var(--radius-lg);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-light);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 16px;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            margin-bottom: 0;
+            color: var(--text-secondary);
+        }
+
+        .code-block {
+            background-color: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 24px 0;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .code-block strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 24px 0;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--bg-primary);
+        }
+
+        th, td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        tr:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .flow-diagram {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 0;
+            padding: 32px;
+            background-color: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+        }
+
+        .flow-step {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 32px;
+            border-radius: var(--radius-lg);
+            width: 140px;
+            height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            text-align: center;
+            font-size: 1.125rem;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .flow-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h40v40H0z" fill="%23ffffff" fill-opacity="0.1"/></svg>');
+        }
+
+        .flow-step span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .flow-step:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .flow-arrow {
+            font-size: 3rem;
+            color: var(--primary-light);
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 24px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border-radius: var(--radius-lg);
+            margin-top: 40px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .footer p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 12px;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: underline;
+            transition: var(--transition);
+        }
+
+        .footer a:hover {
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+
+            header {
+                padding: 48px 24px 32px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            section {
+                padding: 24px;
+                margin-bottom: 24px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            h3 {
+                font-size: 1.25rem;
+            }
+
+            .language-switcher {
+                position: static;
+                justify-content: center;
+                margin-bottom: 24px;
+            }
+
+            nav {
+                padding: 12px 16px;
+                margin: 24px 0;
+            }
+
+            nav ul {
+                gap: 8px;
+            }
+
+            nav a {
+                padding: 8px 12px;
+                font-size: 0.8125rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .feature-card {
+                padding: 20px;
+            }
+
+            .flow-diagram {
+                flex-direction: column;
+                gap: 24px;
+                padding: 24px 16px;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+                font-size: 2.5rem;
+            }
+
+            .flow-step {
+                width: 120px;
+                height: 120px;
+                padding: 24px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switcher">
+        <button class="lang-btn active" data-lang="zh-CN">中文</button>
+        <button class="lang-btn" data-lang="en-US">English</button>
+        <button class="lang-btn" data-lang="ja-JP">日本語</button>
+    </div>
+
+    <header>
+        <h1 data-i18n="title">HAMGIS 系统</h1>
+        <p class="subtitle" data-i18n="subtitle">专业 GIS 土地测量解决方案</p>
+    </header>
+
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="#overview" data-i18n="nav_overview">概述</a></li>
+                <li><a href="#architecture" data-i18n="nav_architecture">项目架构</a></li>
+                <li><a href="#installation" data-i18n="nav_installation">安装指南</a></li>
+                <li><a href="#usage" data-i18n="nav_usage">使用说明</a></li>
+                <li><a href="#features" data-i18n="nav_features">功能详解</a></li>
+                <li><a href="#export" data-i18n="nav_export">导出格式</a></li>
+                <li><a href="#troubleshooting" data-i18n="nav_troubleshooting">故障排除</a></li>
+            </ul>
+        </nav>
+
+        <section id="overview">
+            <h2 data-i18n="overview_title">系统概述</h2>
+            <p data-i18n="overview_content">HAMGIS 是一套完整的地理测量系统，由运行在 Zepp OS 手表上的 HAMGIS 应用和运行在 Android 手机上的 HAMGIS-drop 应用组成。该系统为用户提供高精度的土地测量、数据采集和导出功能，适用于农业、林业、测绘等多个领域。</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4 data-i18n="feature_accuracy">高精度定位</h4>
+                    <p data-i18n="feature_accuracy_desc">融合北斗、GPS 多星定位系统，提供厘米级定位精度</p>
+                </div>
+                <div class="feature-card">
+                    <h4 data-i18n="feature_area">自动面积计算</h4>
+                    <p data-i18n="feature_area_desc">支持多点勾勒测量区域，实时计算面积与周长</p>
+                </div>
+                <div class="feature-card">
+                    <h4 data-i18n="feature_elevation">高程数据采集</h4>
+                    <p data-i18n="feature_elevation_desc">通过气压计采集海拔数据，提供三维地理信息参考</p>
+                </div>
+                <div class="feature-card">
+                    <h4 data-i18n="feature_export">多种导出格式</h4>
+                    <p data-i18n="feature_export_desc">支持 CSV、JSON、GeoJSON、KML 等多种专业格式</p>
+                </div>
+                <div class="feature-card">
+                    <h4 data-i18n="feature_http">HTTP数据传输</h4>
+                    <p data-i18n="feature_http_desc">稳定可靠的HTTP数据传输方式</p>
+                </div>
+                <div class="feature-card">
+                    <h4 data-i18n="feature_i18n">国际化支持</h4>
+                    <p data-i18n="feature_i18n_desc">支持中文、英文、日文三种语言</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture">
+            <h2 data-i18n="architecture_title">项目架构</h2>
+            
+            <h3 data-i18n="hamgis_title">HAMGIS（手表端）</h3>
+            <p data-i18n="hamgis_desc">运行在 Zepp OS 手表上的地理测量应用，负责数据采集和初步处理。</p>
+            
+            <div class="code-block">
+                <strong data-i18n="hamgis_structure">项目结构：</strong><br>
+                HAMGIS/<br>
+                ├── app-side/          # 应用端代码<br>
+                ├── assets/            # 资源文件<br>
+                ├── page/              # 页面代码<br>
+                │   ├── data-view/     # 数据视图<br>
+                │   ├── export/        # 导出功能<br>
+                │   ├── history/       # 历史记录<br>
+                │   ├── map/           # 地图功能<br>
+                │   ├── measurement/   # 测量功能<br>
+                │   └── settings/      # 设置页面<br>
+                ├── setting/           # 设置相关<br>
+                └── utils/             # 工具函数<br>
+            </div>
+
+            <h3 data-i18n="hamgis_drop_title">HAMGIS-drop（手机端）</h3>
+            <p data-i18n="hamgis_drop_desc">运行在 Android 手机上的应用，负责接收手表端发送的数据并支持多种格式导出。</p>
+            
+            <div class="code-block">
+                <strong data-i18n="hamgis_drop_structure">项目结构：</strong><br>
+                HAMGIS-drop/<br>
+                └── app/<br>
+                    └── src/main/<br>
+                        ├── java/top/hsyscn/hamgis/  # 主代码<br>
+                        │   ├── HttpServerManager.kt  # HTTP 服务器管理<br>
+                        │   └── MainActivity.kt       # 主界面<br>
+                        └── res/                      # 资源文件<br>
+                            ├── values/               # 英文资源<br>
+                            ├── values-zh/            # 中文资源<br>
+                            └── values-ja/            # 日文资源<br>
+            </div>
+
+            <h3 data-i18n="workflow_title">工作流程</h3>
+            <div class="flow-diagram">
+                <div class="flow-step" data-i18n="workflow_step1">1. 手表采集数据</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step" data-i18n="workflow_step2">2. 数据传输</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step" data-i18n="workflow_step3">3. 手机接收</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step" data-i18n="workflow_step4">4. 数据导出</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step" data-i18n="workflow_step5">5. GIS 分析</div>
+            </div>
+        </section>
+
+        <section id="installation">
+            <h2 data-i18n="installation_title">安装指南</h2>
+            
+            <h3 data-i18n="hamgis_install_title">HAMGIS（手表端）</h3>
+            <ol>
+                <li data-i18n="hamgis_install_step1">确保您的手表支持 Zepp OS 系统</li>
+                <li data-i18n="hamgis_install_step2">安装 <a href="https://docs.zepp.com/docs/guides/tools/cli/" target="_blank">Zepp CLI</a></li>
+                <li data-i18n="hamgis_install_step3">克隆 HAMGIS 仓库</li>
+                <li data-i18n="hamgis_install_step4">运行 <code>npm install</code> 安装依赖</li>
+                <li data-i18n="hamgis_install_step5">使用 <code>npm run build</code> 编译项目</li>
+                <li data-i18n="hamgis_install_step6">使用 Zepp CLI 将应用安装到手表</li>
+            </ol>
+
+            <h3 data-i18n="hamgis_drop_install_title">HAMGIS-drop（手机端）</h3>
+            <ol>
+                <li data-i18n="hamgis_drop_install_step1">确保您的设备运行 Android 8.0（API 级别 26）或更高版本</li>
+                <li data-i18n="hamgis_drop_install_step2">克隆或下载 HAMGIS-drop 项目</li>
+                <li data-i18n="hamgis_drop_install_step3">使用 Android Studio 打开项目</li>
+                <li data-i18n="hamgis_drop_install_step4">连接您的 Android 设备或启动模拟器</li>
+                <li data-i18n="hamgis_drop_install_step5">点击 "运行" 按钮安装应用</li>
+            </ol>
+        </section>
+
+        <section id="usage">
+            <h2 data-i18n="usage_title">使用说明</h2>
+            
+            <h3 data-i18n="watch_usage_title">手表端操作</h3>
+            <h4 data-i18n="watch_modes_title">工作模式</h4>
+            <ul>
+                <li><strong data-i18n="mode_area">面积测量模式：</strong><span data-i18n="mode_area_desc">专注于农田测量，自动计算面积和周长</span></li>
+                <li><strong data-i18n="mode_gis">GIS 采集模式：</strong><span data-i18n="mode_gis_desc">专业版本，可同时采集点、线、面要素</span></li>
+            </ul>
+
+            <h4 data-i18n="watch_operations_title">基本操作</h4>
+            <ul>
+                <li data-i18n="op_collect">短按 "Collect"：采集点</li>
+                <li data-i18n="op_finish">短按 "Finish"：完成当前要素</li>
+                <li data-i18n="op_finish_project">长按 "Finish"：完成整个 GIS 项目</li>
+            </ul>
+
+            <h3 data-i18n="phone_usage_title">手机端操作</h3>
+            <h4 data-i18n="data_reception_title">数据接收</h4>
+            
+            <h5 data-i18n="http_method_title">HTTP 方式</h5>
+            <ol>
+                <li data-i18n="http_step1">打开 HAMGIS-drop 应用</li>
+                <li data-i18n="http_step2">点击 "Start Server" 按钮启动 HTTP 服务器</li>
+                <li data-i18n="http_step3">确保手表和手机连接到同一局域网</li>
+                <li data-i18n="http_step4">在手表端选择 "导出到 HTTP" 选项</li>
+                <li data-i18n="http_step5">手表会自动搜索并连接到手机的 HTTP 服务器</li>
+                <li data-i18n="http_step6">数据传输完成后，应用会显示 "数据已接收！"</li>
+            </ol>
+
+            <h4 data-i18n="data_export_title">数据导出</h4>
+            <ol>
+                <li data-i18n="export_step1">数据接收完成后，应用会显示数据预览</li>
+                <li data-i18n="export_step2">选择您需要的导出格式（CSV、JSON、GeoJSON、KML）</li>
+                <li data-i18n="export_step3">选择文件保存位置</li>
+                <li data-i18n="export_step4">点击 "保存" 按钮完成导出</li>
+            </ol>
+        </section>
+
+        <section id="features">
+            <h2 data-i18n="features_title">功能详解</h2>
+            
+            <h3 data-i18n="accuracy_title">高精度定位</h3>
+            <p data-i18n="accuracy_desc">HAMGIS 融合北斗、GPS 多星定位系统，实时追踪测量轨迹，提供厘米级定位精度。在开阔环境下，定位精度可达到 1-3 米，满足大多数土地测量需求。</p>
+
+            <h3 data-i18n="area_measurement_title">自动面积计算</h3>
+            <p data-i18n="area_measurement_desc">系统支持多点勾勒测量区域，自动计算面积和周长。面积计算支持平方米和亩两种单位，方便用户在不同场景下使用。</p>
+
+            <h3 data-i18n="elevation_data_title">高程数据采集</h3>
+            <p data-i18n="elevation_data_desc">通过手表内置的气压计，系统可以采集海拔数据，为用户提供三维地理信息参考。这对于需要考虑地形起伏的测量任务非常有用。</p>
+
+            <h3 data-i18n="visual_map_title">可视化小地图</h3>
+            <p data-i18n="visual_map_desc">手表端内置实时地图视图，直观展示测量路径与围合区域。用户可以在测量过程中实时查看测量进度和区域形状。</p>
+
+            <h3 data-i18n="project_management_title">项目管理</h3>
+            <p data-i18n="project_management_desc">系统支持自动定时测量与完善的历史记录项目管理。用户可以方便地查看、编辑和管理历史测量项目。</p>
+        </section>
+
+        <section id="export">
+            <h2 data-i18n="export_title">导出格式说明</h2>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-i18n="format">格式</th>
+                            <th data-i18n="purpose">用途</th>
+                            <th data-i18n="features">特点</th>
+                            <th data-i18n="compatibility">兼容性</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CSV</td>
+                            <td data-i18n="csv_purpose">数据表格</td>
+                            <td data-i18n="csv_features">包含项目摘要和点位详情，适合数据统计和分析</td>
+                            <td data-i18n="csv_compatibility">Excel、Google Sheets、各种数据分析软件</td>
+                        </tr>
+                        <tr>
+                            <td>JSON</td>
+                            <td data-i18n="json_purpose">数据交换</td>
+                            <td data-i18n="json_features">完整的项目数据，结构化存储，易于机器处理</td>
+                            <td data-i18n="json_compatibility">各种编程语言、Web 应用</td>
+                        </tr>
+                        <tr>
+                            <td>GeoJSON</td>
+                            <td data-i18n="geojson_purpose">GIS 分析</td>
+                            <td data-i18n="geojson_features">标准 GIS 格式，包含空间信息和属性数据</td>
+                            <td data-i18n="geojson_compatibility">ArcGIS、QGIS、Google Earth Pro</td>
+                        </tr>
+                        <tr>
+                            <td>KML</td>
+                            <td data-i18n="kml_purpose">可视化展示</td>
+                            <td data-i18n="kml_features">适合在地图上直观展示地理数据</td>
+                            <td data-i18n="kml_compatibility">Google Earth、Google Maps、ArcGIS</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="troubleshooting">
+            <h2 data-i18n="troubleshooting_title">故障排除</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4 data-i18n="problem_data_not_received">问题：数据未接收</h4>
+                    <p data-i18n="solution_data_not_received">检查 Zepp App 是否已在后台运行，确保手表和手机连接正常。如果使用 HTTP 方式，确保两者在同一局域网内。</p>
+                </div>
+                <div class="feature-card">
+                    <h4 data-i18n="problem_export_failed">问题：导出失败</h4>
+                    <p data-i18n="solution_export_failed">确保数据格式正确，尝试重新发送数据。如果问题持续存在，检查应用权限设置，确保应用有写入存储的权限。</p>
+                </div>
+                <div class="feature-card">
+                    <h4 data-i18n="problem_gps_weak">问题：GPS 信号弱</h4>
+                    <p data-i18n="solution_gps_weak">移至开阔地带，确保手表能接收到足够的卫星信号。首次使用或长时间未使用时，可能需要几分钟时间进行定位。</p>
+                </div>
+                <div class="feature-card">
+                    <h4 data-i18n="problem_server_not_started">问题：服务器无法启动</h4>
+                    <p data-i18n="solution_server_not_started">确保应用有相应的网络权限，检查是否有其他应用占用了端口 8888，尝试重启应用。</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p data-i18n="contact_info">如有问题或建议，欢迎通过以下方式联系我们：</p>
+            <p>Email: <a href="mailto:bugreport@hsyscn.top" style="color: white;">bugreport@hsyscn.top</a></p>
+            <p data-i18n="copyright">© 2026 HAMGIS 团队. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // 国际化数据
+        const i18n = {
+            "zh-CN": {
+                "title": "HAMGIS 系统",
+                "subtitle": "专业 GIS 土地测量解决方案",
+                "nav_overview": "概述",
+                "nav_architecture": "项目架构",
+                "nav_installation": "安装指南",
+                "nav_usage": "使用说明",
+                "nav_features": "功能详解",
+                "nav_export": "导出格式",
+                "nav_troubleshooting": "故障排除",
+                "overview_title": "系统概述",
+                "overview_content": "HAMGIS 是一套完整的地理测量系统，由运行在 Zepp OS 手表上的 HAMGIS 应用和运行在 Android 手机上的 HAMGIS-drop 应用组成。该系统为用户提供高精度的土地测量、数据采集和导出功能，适用于农业、林业、测绘等多个领域。",
+                "feature_accuracy": "高精度定位",
+                "feature_accuracy_desc": "融合北斗、GPS 多星定位系统，提供厘米级定位精度",
+                "feature_area": "自动面积计算",
+                "feature_area_desc": "支持多点勾勒测量区域，实时计算面积与周长",
+                "feature_elevation": "高程数据采集",
+                "feature_elevation_desc": "通过气压计采集海拔数据，提供三维地理信息参考",
+                "feature_export": "多种导出格式",
+                "feature_export_desc": "支持 CSV、JSON、GeoJSON、KML 等多种专业格式",
+                "feature_http": "HTTP数据传输",
+                "feature_http_desc": "稳定可靠的HTTP数据传输方式",
+                "feature_i18n": "国际化支持",
+                "feature_i18n_desc": "支持中文、英文、日文三种语言",
+                "architecture_title": "项目架构",
+                "hamgis_title": "HAMGIS（手表端）",
+                "hamgis_desc": "运行在 Zepp OS 手表上的地理测量应用，负责数据采集和初步处理。",
+                "hamgis_structure": "项目结构：",
+                "hamgis_drop_title": "HAMGIS-drop（手机端）",
+                "hamgis_drop_desc": "运行在 Android 手机上的应用，负责接收手表端发送的数据并支持多种格式导出。",
+                "hamgis_drop_structure": "项目结构：",
+                "workflow_title": "工作流程",
+                "workflow_step1": "1. 手表采集数据",
+                "workflow_step2": "2. 数据传输",
+                "workflow_step3": "3. 手机接收",
+                "workflow_step4": "4. 数据导出",
+                "workflow_step5": "5. GIS 分析",
+                "installation_title": "安装指南",
+                "hamgis_install_title": "HAMGIS（手表端）",
+                "hamgis_install_step1": "确保您的手表支持 Zepp OS 系统",
+                "hamgis_install_step2": "安装 Zepp CLI",
+                "hamgis_install_step3": "克隆 HAMGIS 仓库",
+                "hamgis_install_step4": "运行 npm install 安装依赖",
+                "hamgis_install_step5": "使用 npm run build 编译项目",
+                "hamgis_install_step6": "使用 Zepp CLI 将应用安装到手表",
+                "hamgis_drop_install_title": "HAMGIS-drop（手机端）",
+                "hamgis_drop_install_step1": "确保您的设备运行 Android 8.0（API 级别 26）或更高版本",
+                "hamgis_drop_install_step2": "克隆或下载 HAMGIS-drop 项目",
+                "hamgis_drop_install_step3": "使用 Android Studio 打开项目",
+                "hamgis_drop_install_step4": "连接您的 Android 设备或启动模拟器",
+                "hamgis_drop_install_step5": "点击 \"运行\" 按钮安装应用",
+                "usage_title": "使用说明",
+                "watch_usage_title": "手表端操作",
+                "watch_modes_title": "工作模式",
+                "mode_area": "面积测量模式：",
+                "mode_area_desc": "专注于农田测量，自动计算面积和周长",
+                "mode_gis": "GIS 采集模式：",
+                "mode_gis_desc": "专业版本，可同时采集点、线、面要素",
+                "watch_operations_title": "基本操作",
+                "op_collect": "短按 \"Collect\"：采集点",
+                "op_finish": "短按 \"Finish\"：完成当前要素",
+                "op_finish_project": "长按 \"Finish\"：完成整个 GIS 项目",
+                "phone_usage_title": "手机端操作",
+                "data_reception_title": "数据接收",
+                "http_method_title": "HTTP 方式",
+                "http_step1": "打开 HAMGIS-drop 应用",
+                "http_step2": "点击 \"Start Server\" 按钮启动 HTTP 服务器",
+                "http_step3": "确保手表和手机连接到同一局域网",
+                "http_step4": "在手表端选择 \"导出到 HTTP\" 选项",
+                "http_step5": "手表会自动搜索并连接到手机的 HTTP 服务器",
+                "http_step6": "数据传输完成后，应用会显示 \"数据已接收！\"",
+                "data_export_title": "数据导出",
+                "export_step1": "数据接收完成后，应用会显示数据预览",
+                "export_step2": "选择您需要的导出格式（CSV、JSON、GeoJSON、KML）",
+                "export_step3": "选择文件保存位置",
+                "export_step4": "点击 \"保存\" 按钮完成导出",
+                "features_title": "功能详解",
+                "accuracy_title": "高精度定位",
+                "accuracy_desc": "HAMGIS 融合北斗、GPS 多星定位系统，实时追踪测量轨迹，提供厘米级定位精度。在开阔环境下，定位精度可达到 1-3 米，满足大多数土地测量需求。",
+                "area_measurement_title": "自动面积计算",
+                "area_measurement_desc": "系统支持多点勾勒测量区域，自动计算面积和周长。面积计算支持平方米和亩两种单位，方便用户在不同场景下使用。",
+                "elevation_data_title": "高程数据采集",
+                "elevation_data_desc": "通过手表内置的气压计，系统可以采集海拔数据，为用户提供三维地理信息参考。这对于需要考虑地形起伏的测量任务非常有用。",
+                "visual_map_title": "可视化小地图",
+                "visual_map_desc": "手表端内置实时地图视图，直观展示测量路径与围合区域。用户可以在测量过程中实时查看测量进度和区域形状。",
+                "project_management_title": "项目管理",
+                "project_management_desc": "系统支持自动定时测量与完善的历史记录项目管理。用户可以方便地查看、编辑和管理历史测量项目。",
+                "export_title": "导出格式说明",
+                "format": "格式",
+                "purpose": "用途",
+                "features": "特点",
+                "compatibility": "兼容性",
+                "csv_purpose": "数据表格",
+                "csv_features": "包含项目摘要和点位详情，适合数据统计和分析",
+                "csv_compatibility": "Excel、Google Sheets、各种数据分析软件",
+                "json_purpose": "数据交换",
+                "json_features": "完整的项目数据，结构化存储，易于机器处理",
+                "json_compatibility": "各种编程语言、Web 应用",
+                "geojson_purpose": "GIS 分析",
+                "geojson_features": "标准 GIS 格式，包含空间信息和属性数据",
+                "geojson_compatibility": "ArcGIS、QGIS、Google Earth Pro",
+                "kml_purpose": "可视化展示",
+                "kml_features": "适合在地图上直观展示地理数据",
+                "kml_compatibility": "Google Earth、Google Maps、ArcGIS",
+                "troubleshooting_title": "故障排除",
+                "problem_data_not_received": "问题：数据未接收",
+                "solution_data_not_received": "检查 Zepp App 是否已在后台运行，确保手表和手机连接正常。如果使用 HTTP 方式，确保两者在同一局域网内。",
+                "problem_export_failed": "问题：导出失败",
+                "solution_export_failed": "确保数据格式正确，尝试重新发送数据。如果问题持续存在，检查应用权限设置，确保应用有写入存储的权限。",
+                "problem_gps_weak": "问题：GPS 信号弱",
+                "solution_gps_weak": "移至开阔地带，确保手表能接收到足够的卫星信号。首次使用或长时间未使用时，可能需要几分钟时间进行定位。",
+                "problem_server_not_started": "问题：服务器无法启动",
+                "solution_server_not_started": "确保应用有相应的网络权限，检查是否有其他应用占用了端口 8888，尝试重启应用。",
+                "contact_info": "如有问题或建议，欢迎通过以下方式联系我们：",
+                "copyright": "© 2026 HAMGIS 团队. 保留所有权利。"
+            },
+            "en-US": {
+                "title": "HAMGIS System",
+                "subtitle": "Professional GIS Land Measurement Solution",
+                "nav_overview": "Overview",
+                "nav_architecture": "Architecture",
+                "nav_installation": "Installation",
+                "nav_usage": "Usage",
+                "nav_features": "Features",
+                "nav_export": "Export Formats",
+                "nav_troubleshooting": "Troubleshooting",
+                "overview_title": "System Overview",
+                "overview_content": "HAMGIS is a complete geographic measurement system consisting of the HAMGIS app running on Zepp OS watches and the HAMGIS-drop app running on Android phones. The system provides users with high-precision land measurement, data collection, and export functions, suitable for agriculture, forestry, surveying, and other fields.",
+                "feature_accuracy": "High-Precision Positioning",
+                "feature_accuracy_desc": "Integrates Beidou and GPS multi-satellite positioning systems for centimeter-level accuracy",
+                "feature_area": "Automatic Area Calculation",
+                "feature_area_desc": "Supports multi-point area delineation with real-time area and perimeter calculation",
+                "feature_elevation": "Elevation Data Collection",
+                "feature_elevation_desc": "Collects altitude data via barometer, providing 3D geographic reference",
+                "feature_export": "Multiple Export Formats",
+                "feature_export_desc": "Supports CSV, JSON, GeoJSON, KML and other professional formats",
+                "feature_http": "HTTP Data Transfer",
+                "feature_http_desc": "Stable and reliable HTTP data transfer method",
+                "feature_i18n": "Internationalization Support",
+                "feature_i18n_desc": "Supports Chinese, English, and Japanese languages",
+                "architecture_title": "Project Architecture",
+                "hamgis_title": "HAMGIS (Watch Side)",
+                "hamgis_desc": "A geographic measurement app running on Zepp OS watches, responsible for data collection and preliminary processing.",
+                "hamgis_structure": "Project Structure:",
+                "hamgis_drop_title": "HAMGIS-drop (Phone Side)",
+                "hamgis_drop_desc": "An app running on Android phones, responsible for receiving data from watches and supporting multiple export formats.",
+                "hamgis_drop_structure": "Project Structure:",
+                "workflow_title": "Workflow",
+                "workflow_step1": "1. Watch Collects Data",
+                "workflow_step2": "2. Data Transfer",
+                "workflow_step3": "3. Phone Receives Data",
+                "workflow_step4": "4. Data Export",
+                "workflow_step5": "5. GIS Analysis",
+                "installation_title": "Installation Guide",
+                "hamgis_install_title": "HAMGIS (Watch Side)",
+                "hamgis_install_step1": "Ensure your watch supports Zepp OS",
+                "hamgis_install_step2": "Install Zepp CLI",
+                "hamgis_install_step3": "Clone the HAMGIS repository",
+                "hamgis_install_step4": "Run npm install to install dependencies",
+                "hamgis_install_step5": "Use npm run build to compile the project",
+                "hamgis_install_step6": "Use Zepp CLI to install the app to your watch",
+                "hamgis_drop_install_title": "HAMGIS-drop (Phone Side)",
+                "hamgis_drop_install_step1": "Ensure your device is running Android 8.0 (API level 26) or higher",
+                "hamgis_drop_install_step2": "Clone or download the HAMGIS-drop project",
+                "hamgis_drop_install_step3": "Open the project with Android Studio",
+                "hamgis_drop_install_step4": "Connect your Android device or start an emulator",
+                "hamgis_drop_install_step5": "Click the \"Run\" button to install the app",
+                "usage_title": "Usage Instructions",
+                "watch_usage_title": "Watch Operations",
+                "watch_modes_title": "Working Modes",
+                "mode_area": "Area Measurement Mode:",
+                "mode_area_desc": "Focused on farmland measurement, automatically calculates area and perimeter",
+                "mode_gis": "GIS Collection Mode:",
+                "mode_gis_desc": "Professional version, can collect point, line, and polygon features simultaneously",
+                "watch_operations_title": "Basic Operations",
+                "op_collect": "Short press \"Collect\": Collect point",
+                "op_finish": "Short press \"Finish\": Complete current feature",
+                "op_finish_project": "Long press \"Finish\": Complete entire GIS project",
+                "phone_usage_title": "Phone Operations",
+                "data_reception_title": "Data Reception",
+                "http_method_title": "HTTP Method",
+                "http_step1": "Open the HAMGIS-drop app",
+                "http_step2": "Click the \"Start Server\" button to start the HTTP server",
+                "http_step3": "Ensure the watch and phone are connected to the same LAN",
+                "http_step4": "Select \"Export to HTTP\" on the watch",
+                "http_step5": "The watch will automatically search for and connect to the phone's HTTP server",
+                "http_step6": "After successful data transfer, the app will display \"Data received!\"",
+                "data_export_title": "Data Export",
+                "export_step1": "After data reception, the app will display a data preview",
+                "export_step2": "Select your desired export format (CSV, JSON, GeoJSON, KML)",
+                "export_step3": "Choose a file save location",
+                "export_step4": "Click the \"Save\" button to complete the export",
+                "features_title": "Features Details",
+                "accuracy_title": "High-Precision Positioning",
+                "accuracy_desc": "HAMGIS integrates Beidou and GPS multi-satellite positioning systems to track measurement trajectories in real-time, providing centimeter-level positioning accuracy. In open environments, the positioning accuracy can reach 1-3 meters, meeting most land measurement needs.",
+                "area_measurement_title": "Automatic Area Calculation",
+                "area_measurement_desc": "The system supports multi-point area delineation and automatically calculates area and perimeter. Area calculation supports both square meters and mu units, making it convenient for users in different scenarios.",
+                "elevation_data_title": "Elevation Data Collection",
+                "elevation_data_desc": "Through the barometer built into the watch, the system can collect altitude data, providing users with 3D geographic information reference. This is very useful for measurement tasks that need to consider terrain undulations.",
+                "visual_map_title": "Visual Mini-Map",
+                "visual_map_desc": "The watch has a built-in real-time map view that intuitively displays measurement paths and enclosed areas. Users can view the measurement progress and area shape in real-time during the measurement process.",
+                "project_management_title": "Project Management",
+                "project_management_desc": "The system supports automatic timed measurement and comprehensive historical record project management. Users can easily view, edit, and manage historical measurement projects.",
+                "export_title": "Export Formats",
+                "format": "Format",
+                "purpose": "Purpose",
+                "features": "Features",
+                "compatibility": "Compatibility",
+                "csv_purpose": "Data Tables",
+                "csv_features": "Contains project summary and point details, suitable for data statistics and analysis",
+                "csv_compatibility": "Excel, Google Sheets, various data analysis software",
+                "json_purpose": "Data Exchange",
+                "json_features": "Complete project data, structured storage, easy for machine processing",
+                "json_compatibility": "Various programming languages, web applications",
+                "geojson_purpose": "GIS Analysis",
+                "geojson_features": "Standard GIS format, contains spatial information and attribute data",
+                "geojson_compatibility": "ArcGIS, QGIS, Google Earth Pro",
+                "kml_purpose": "Visual Display",
+                "kml_features": "Suitable for intuitive display of geographic data on maps",
+                "kml_compatibility": "Google Earth, Google Maps, ArcGIS",
+                "troubleshooting_title": "Troubleshooting",
+                "problem_data_not_received": "Problem: Data Not Received",
+                "solution_data_not_received": "Check if Zepp App is running in the background and ensure the watch and phone are connected properly. If using HTTP method, ensure both are on the same LAN.",
+                "problem_export_failed": "Problem: Export Failed",
+                "solution_export_failed": "Ensure the data format is correct and try resending the data. If the problem persists, check app permissions to ensure it has write storage access.",
+                "problem_gps_weak": "Problem: Weak GPS Signal",
+                "solution_gps_weak": "Move to an open area to ensure the watch can receive sufficient satellite signals. It may take a few minutes to locate when first used or after long periods of inactivity.",
+                "problem_server_not_started": "Problem: Server Cannot Start",
+                "solution_server_not_started": "Ensure the app has appropriate network permissions, check if port 8888 is occupied by other applications, and try restarting the app.",
+                "contact_info": "For any questions or suggestions, please contact us through:",
+                "copyright": "© 2026 HAMGIS Team. All rights reserved."
+            },
+            "ja-JP": {
+                "title": "HAMGIS システム",
+                "subtitle": "プロフェッショナルGIS土地測量ソリューション",
+                "nav_overview": "概要",
+                "nav_architecture": "アーキテクチャ",
+                "nav_installation": "インストールガイド",
+                "nav_usage": "使用説明",
+                "nav_features": "機能詳細",
+                "nav_export": "エクスポート形式",
+                "nav_troubleshooting": "トラブルシューティング",
+                "overview_title": "システム概要",
+                "overview_content": "HAMGISは、Zepp OSウォッチで動作するHAMGISアプリとAndroidフォンで動作するHAMGIS-dropアプリで構成される完全な地理測量システムです。このシステムは、農業、林業、測量などの分野に適した高精度な土地測量、データ収集、エクスポート機能をユーザーに提供します。",
+                "feature_accuracy": "高精度測位",
+                "feature_accuracy_desc": "北斗・GPSマルチ衛星測位システムを統合し、センチメートル級の測位精度を実現",
+                "feature_area": "自動面積計算",
+                "feature_area_desc": "多点で測定エリアを描くことをサポートし、リアルタイムで面積と周囲長を計算",
+                "feature_elevation": "標高データ収集",
+                "feature_elevation_desc": "気圧計を通じて標高データを収集し、3D地理情報参照を提供",
+                "feature_export": "複数のエクスポート形式",
+                "feature_export_desc": "CSV、JSON、GeoJSON、KMLなどの複数の専門フォーマットをサポート",
+                "feature_http": "HTTPデータ転送",
+                "feature_http_desc": "安定した信頼性の高いHTTPデータ転送方式",
+                "feature_i18n": "国際化サポート",
+                "feature_i18n_desc": "中国語、英語、日本語の3つの言語をサポート",
+                "architecture_title": "プロジェクトアーキテクチャ",
+                "hamgis_title": "HAMGIS（ウォッチ側）",
+                "hamgis_desc": "Zepp OSウォッチで動作する地理測量アプリで、データ収集と予備処理を担当します。",
+                "hamgis_structure": "プロジェクト構造：",
+                "hamgis_drop_title": "HAMGIS-drop（フォン側）",
+                "hamgis_drop_desc": "Androidフォンで動作するアプリで、ウォッチから送信されたデータを受信し、複数の形式でエクスポートすることをサポートします。",
+                "hamgis_drop_structure": "プロジェクト構造：",
+                "workflow_title": "ワークフロー",
+                "workflow_step1": "1. ウォッチでデータ収集",
+                "workflow_step2": "2. データ転送",
+                "workflow_step3": "3. フォンでデータ受信",
+                "workflow_step4": "4. データエクスポート",
+                "workflow_step5": "5. GIS分析",
+                "installation_title": "インストールガイド",
+                "hamgis_install_title": "HAMGIS（ウォッチ側）",
+                "hamgis_install_step1": "ウォッチがZepp OSをサポートしていることを確認",
+                "hamgis_install_step2": "Zepp CLIをインストール",
+                "hamgis_install_step3": "HAMGISリポジトリをクローン",
+                "hamgis_install_step4": "npm installを実行して依存関係をインストール",
+                "hamgis_install_step5": "npm run buildを使用してプロジェクトをコンパイル",
+                "hamgis_install_step6": "Zepp CLIを使用してウォッチにアプリをインストール",
+                "hamgis_drop_install_title": "HAMGIS-drop（フォン側）",
+                "hamgis_drop_install_step1": "デバイスがAndroid 8.0（APIレベル26）以上を実行していることを確認",
+                "hamgis_drop_install_step2": "HAMGIS-dropプロジェクトをクローンまたはダウンロード",
+                "hamgis_drop_install_step3": "Android Studioでプロジェクトを開く",
+                "hamgis_drop_install_step4": "Androidデバイスを接続するかエミュレータを起動",
+                "hamgis_drop_install_step5": "\'実行\'ボタンをクリックしてアプリをインストール",
+                "usage_title": "使用説明",
+                "watch_usage_title": "ウォッチ操作",
+                "watch_modes_title": "動作モード",
+                "mode_area": "面積測定モード：",
+                "mode_area_desc": "農地測定に特化し、自動的に面積と周囲長を計算",
+                "mode_gis": "GIS収集モード：",
+                "mode_gis_desc": "専門版で、点、線、面の要素を同時に収集可能",
+                "watch_operations_title": "基本操作",
+                "op_collect": "\'Collect\'を短押し：ポイントを収集",
+                "op_finish": "\'Finish\'を短押し：現在の要素を完了",
+                "op_finish_project": "\'Finish\'を長押し：GISプロジェクト全体を完了",
+                "phone_usage_title": "フォン操作",
+                "data_reception_title": "データ受信",
+                "http_method_title": "HTTP方式",
+                "http_step1": "HAMGIS-dropアプリを開く",
+                "http_step2": "\'Start Server\'ボタンをクリックしてHTTPサーバーを起動",
+                "http_step3": "ウォッチとフォンが同じLANに接続されていることを確認",
+                "http_step4": "ウォッチ側で\'HTTPにエクスポート\'オプションを選択",
+                "http_step5": "ウォッチは自動的にフォンのHTTPサーバーを検索して接続",
+                "http_step6": "データ転送が成功すると、アプリに\'データを受信しました！\'と表示",
+                "data_export_title": "データエクスポート",
+                "export_step1": "データ受信後、アプリにデータプレビューが表示されます",
+                "export_step2": "必要なエクスポート形式（CSV、JSON、GeoJSON、KML）を選択",
+                "export_step3": "ファイルの保存場所を選択",
+                "export_step4": "\'保存\'ボタンをクリックしてエクスポートを完了",
+                "features_title": "機能詳細",
+                "accuracy_title": "高精度測位",
+                "accuracy_desc": "HAMGISは北斗・GPSマルチ衛星測位システムを統合し、測定軌跡をリアルタイムで追跡し、センチメートル級の測位精度を提供します。開けた環境では、測位精度は1-3メートルに達し、ほとんどの土地測定ニーズを満たします。",
+                "area_measurement_title": "自動面積計算",
+                "area_measurement_desc": "システムは多点で測定エリアを描くことをサポートし、自動的に面積と周囲長を計算します。面積計算は平方メートルと畝の両方の単位をサポートし、ユーザーが異なるシナリオで使用できるようにします。",
+                "elevation_data_title": "標高データ収集",
+                "elevation_data_desc": "ウォッチに内蔵された気圧計を通じて、システムは標高データを収集し、ユーザーに3D地理情報参照を提供します。これは地形起伏を考慮する必要がある測定タスクに非常に有用です。",
+                "visual_map_title": "可視化ミニマップ",
+                "visual_map_desc": "ウォッチ側にはリアルタイムマップビューが内蔵され、測定経路と囲まれたエリアを直感的に表示します。ユーザーは測定中にリアルタイムで測定進捗とエリア形状を確認できます。",
+                "project_management_title": "プロジェクト管理",
+                "project_management_desc": "システムは自動定時測定と完全な履歴記録プロジェクト管理をサポートします。ユーザーは履歴測定プロジェクトを簡単に表示、編集、管理できます。",
+                "export_title": "エクスポート形式",
+                "format": "形式",
+                "purpose": "用途",
+                "features": "特徴",
+                "compatibility": "互換性",
+                "csv_purpose": "データテーブル",
+                "csv_features": "プロジェクトの概要とポイントの詳細を含み、データ統計と分析に適しています",
+                "csv_compatibility": "Excel、Google Sheets、各種データ分析ソフトウェア",
+                "json_purpose": "データ交換",
+                "json_features": "完全なプロジェクトデータ、構造化ストレージ、機械処理が容易",
+                "json_compatibility": "各種プログラミング言語、Webアプリケーション",
+                "geojson_purpose": "GIS分析",
+                "geojson_features": "標準GIS形式、空間情報と属性データを含む",
+                "geojson_compatibility": "ArcGIS、QGIS、Google Earth Pro",
+                "kml_purpose": "可視化表示",
+                "kml_features": "地図上で地理データを直感的に表示するのに適しています",
+                "kml_compatibility": "Google Earth、Google Maps、ArcGIS",
+                "troubleshooting_title": "トラブルシューティング",
+                "problem_data_not_received": "問題：データが受信されない",
+                "solution_data_not_received": "Zepp Appがバックグラウンドで実行されているか確認し、ウォッチとフォンの接続が正常であることを確認してください。HTTP方式を使用する場合は、両方が同じLAN内にあることを確認してください。",
+                "problem_export_failed": "問題：エクスポートに失敗",
+                "solution_export_failed": "データ形式が正しいことを確認し、データの再送信を試みてください。問題が続く場合は、アプリの権限設定を確認し、アプリにストレージへの書き込み権限があることを確認してください。",
+                "problem_gps_weak": "問題：GPS信号が弱い",
+                "solution_gps_weak": "開けた場所に移動し、ウォッチが十分な衛星信号を受信できるようにしてください。初めて使用する場合や長期間使用していない場合は、測位に数分かかる場合があります。",
+                "problem_server_not_started": "問題：サーバーを起動できない",
+                "solution_server_not_started": "アプリに適切なネットワーク権限があることを確認し、他のアプリがポート8888を占有していないか確認し、アプリを再起動してみてください。",
+                "contact_info": "質問や提案がある場合は、以下の方法でお問い合わせください：",
+                "copyright": "© 2026 HAMGISチーム. 全著作権所有。"
+            }
+        };
+
+        // 语言切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const langBtns = document.querySelectorAll('.lang-btn');
+            const elements = document.querySelectorAll('[data-i18n]');
+
+            // 初始加载默认语言
+            updateLanguage('zh-CN');
+
+            // 语言切换事件
+            langBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const lang = this.getAttribute('data-lang');
+                    updateLanguage(lang);
+                    
+                    // 更新按钮状态
+                    langBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            function updateLanguage(lang) {
+                elements.forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (i18n[lang] && i18n[lang][key]) {
+                        el.textContent = i18n[lang][key];
+                    }
+                });
+                
+                // 更新页面语言属性
+                document.documentElement.lang = lang;
+            }
+        });
+    </script>
+</body>
+</html>
