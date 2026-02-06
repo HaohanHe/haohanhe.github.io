@@ -989,6 +989,10 @@
             </ul>
 
             <h3 data-i18n="operation_title">操作说明</h3>
+            <div class="alert-box tip-box">
+                <strong data-i18n="button_mode_tip">按键模式</strong>
+                <p data-i18n="button_mode_content">软件内按键功能需要在系统设置中开启"按键模式"才能使用。如果按键无反应，请检查手表系统设置。</p>
+            </div>
             <div class="table-container">
                 <table>
                     <thead>
@@ -999,20 +1003,16 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td data-i18n="action_collect">短按<span class="highlight">"采集"</span></td>
+                            <td data-i18n="action_collect">短按<span class="highlight">上键（Home/Select）</span></td>
                             <td data-i18n="function_collect">记录当前位置为一个点</td>
                         </tr>
                         <tr>
-                            <td data-i18n="action_finish">短按<span class="highlight">"完成"</span></td>
-                            <td data-i18n="function_finish">结束当前要素的采集</td>
+                            <td data-i18n="action_finish">短按<span class="highlight">下键（Back/Shortcut）</span></td>
+                            <td data-i18n="function_finish">结束当前采集 / 退出软件</td>
                         </tr>
                         <tr>
-                            <td data-i18n="action_long">长按<span class="highlight">"完成"</span></td>
-                            <td data-i18n="function_long">结束整个项目（GIS模式下）</td>
-                        </tr>
-                        <tr>
-                            <td data-i18n="action_undo"><span class="highlight">"撤销"</span></td>
-                            <td data-i18n="function_undo">删除最后采集的一个点</td>
+                            <td data-i18n="action_screen">点击<span class="highlight">屏幕按钮</span></td>
+                            <td data-i18n="function_screen">采集、完成、撤销等操作</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1189,16 +1189,16 @@
                 "gis_feature3": "支持面要素（如地块、建筑）",
                 "gis_feature4": "记录海拔高度信息",
                 "operation_title": "操作说明",
+                "button_mode_tip": "按键模式",
+                "button_mode_content": "软件内按键功能需要在系统设置中开启\"按键模式\"才能使用。如果按键无反应，请检查手表系统设置。",
                 "action": "操作",
                 "function": "功能",
-                "action_collect": "短按\"采集\"",
+                "action_collect": "短按上键（Home/Select）",
                 "function_collect": "记录当前位置为一个点",
-                "action_finish": "短按\"完成\"",
-                "function_finish": "结束当前要素的采集",
-                "action_long": "长按\"完成\"",
-                "function_long": "结束整个项目（GIS模式下）",
-                "action_undo": "\"撤销\"",
-                "function_undo": "删除最后采集的一个点",
+                "action_finish": "短按下键（Back/Shortcut）",
+                "function_finish": "结束当前采集 / 退出软件",
+                "action_screen": "点击屏幕按钮",
+                "function_screen": "采集、完成、撤销等操作",
                 "export_title": "导出格式说明",
                 "export_desc": "手机端 HAMGIS Receiver 支持导出以下格式，根据你的需求选择：",
                 "format": "格式",
@@ -1312,16 +1312,16 @@
                 "gis_feature3": "Polygon features (plots, buildings)",
                 "gis_feature4": "Records altitude information",
                 "operation_title": "Operations",
+                "button_mode_tip": "Button Mode",
+                "button_mode_content": "In-app button functions require 'Button Mode' to be enabled in system settings. If buttons don't respond, check your watch system settings.",
                 "action": "Action",
                 "function": "Function",
-                "action_collect": "Short press 'Collect'",
+                "action_collect": "Short press UP key (Home/Select)",
                 "function_collect": "Record current position as a point",
-                "action_finish": "Short press 'Finish'",
-                "function_finish": "Complete current feature collection",
-                "action_long": "Long press 'Finish'",
-                "function_long": "Complete entire project (GIS mode)",
-                "action_undo": "'Undo'",
-                "function_undo": "Delete last collected point",
+                "action_finish": "Short press DOWN key (Back/Shortcut)",
+                "function_finish": "End collection / Exit app",
+                "action_screen": "Tap screen buttons",
+                "function_screen": "Collect, finish, undo, etc.",
                 "export_title": "Export Formats",
                 "export_desc": "HAMGIS Receiver supports these export formats:",
                 "format": "Format",
@@ -1435,16 +1435,16 @@
                 "gis_feature3": "ポリゴン要素（区画、建物など）",
                 "gis_feature4": "標高情報を記録",
                 "operation_title": "操作方法",
+                "button_mode_tip": "ボタンモード",
+                "button_mode_content": "アプリ内ボタン機能は、システム設定で「ボタンモード」を有効にする必要があります。ボタンが反応しない場合は、時計のシステム設定を確認してください。",
                 "action": "操作",
                 "function": "機能",
-                "action_collect": "「収集」を短押し",
+                "action_collect": "上キー（Home/Select）を短押し",
                 "function_collect": "現在位置をポイントとして記録",
-                "action_finish": "「完了」を短押し",
-                "function_finish": "現在の要素収集を完了",
-                "action_long": "「完了」を長押し",
-                "function_long": "プロジェクト全体を完了（GISモード）",
-                "action_undo": "「元に戻す」",
-                "function_undo": "最後に収集したポイントを削除",
+                "action_finish": "下キー（Back/Shortcut）を短押し",
+                "function_finish": "収集を終了 / アプリを終了",
+                "action_screen": "画面ボタンをタップ",
+                "function_screen": "収集、完了、元に戻すなど",
                 "export_title": "エクスポート形式の説明",
                 "export_desc": "HAMGIS Receiverは以下の形式にエクスポートできます：",
                 "format": "形式",
