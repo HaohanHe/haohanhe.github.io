@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电子数据取证分析系统</title>
+    <script src="https://cdn.jsdelivr.net/npm/exif-js@2.3.0/exif.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "SimSun", "宋体", "Microsoft YaHei", sans-serif;
+            background: #f0f0f0;
+            color: #333;
+            line-height: 2;
+            font-size: 18px;
+        }
+        
+        .header {
+            background: #b81c22;
+            color: #fff;
+            padding: 0;
+            border-bottom: 4px solid #d4a017;
+        }
+        
+        .header-top {
+            background: #8b0000;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+        
+        .header-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 25px 40px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .emblem {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #d4a017 0%, #f4d03f 50%, #d4a017 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: #8b0000;
+            font-weight: bold;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .header-text h1 {
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+            font-family: "SimHei", "黑体", sans-serif;
+        }
+        
+        .header-text .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            letter-spacing: 2px;
+        }
+        
+        .nav-bar {
+            background: #fff;
+            border-bottom: 2px solid #b81c22;
+        }
+        
+        .nav-bar .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+        }
+        
+        .nav-item {
+            color: #333;
+            text-decoration: none;
+            padding: 18px 35px;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            color: #b81c22;
+            border-bottom-color: #b81c22;
+            background: #fff5f5;
+        }
+        
+        .breadcrumb {
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 12px 0;
+        }
+        
+        .breadcrumb .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .breadcrumb a {
+            color: #b81c22;
+            text-decoration: none;
+        }
+        
+        .main-content {
+            max-width: 1200px;
+            margin: 25px auto;
+            padding: 0 40px;
+        }
+        
+        .notice-bar {
+            background: linear-gradient(90deg, #fff8e1 0%, #fff3cd 100%);
+            border: 2px solid #d4a017;
+            border-left: 6px solid #d4a017;
+            border-radius: 4px;
+            padding: 18px 25px;
+            margin-bottom: 25px;
+            font-size: 16px;
+            color: #856404;
+        }
+        
+        .notice-bar strong {
+            color: #8b0000;
+        }
+        
+        .section {
+            background: #fff;
+            border: 2px solid #ddd;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .section-header {
+            background: linear-gradient(90deg, #f8f8f8 0%, #fff 100%);
+            border-bottom: 2px solid #b81c22;
+            padding: 18px 30px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: "SimHei", "黑体", sans-serif;
+        }
+        
+        .section-header::before {
+            content: "■";
+            color: #b81c22;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+        
+        .section-header .badge {
+            background: #b81c22;
+            color: #fff;
+            padding: 6px 18px;
+            font-size: 16px;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+        
+        .section-header .badge.success {
+            background: #228B22;
+        }
+        
+        .section-header .badge.warning {
+            background: #d4a017;
+            color: #333;
+        }
+        
+        .section-body {
+            padding: 25px 30px;
+        }
+        
+        .upload-area {
+            border: 3px dashed #b81c22;
+            border-radius: 8px;
+            padding: 50px;
+            text-align: center;
+            cursor: pointer;
+            background: #fffbfb;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            background: #fff5f5;
+            border-color: #8b0000;
+        }
+        
+        .upload-area .icon {
+            font-size: 60px;
+            color: #b81c22;
+            margin-bottom: 15px;
+        }
+        
+        .upload-area p {
+            color: #333;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .upload-area .hint {
+            color: #666;
+            font-size: 16px;
+            margin-top: 12px;
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border: 1px solid #ddd;
+            font-size: 17px;
+        }
+        
+        .data-table th {
+            background: #f5f5f5;
+            color: #333;
+            font-weight: bold;
+            width: 200px;
+            border-color: #ccc;
+        }
+        
+        .data-table td {
+            color: #333;
+            background: #fff;
+        }
+        
+        .data-table tr:nth-child(even) td {
+            background: #fafafa;
+        }
+        
+        .data-table .null-value {
+            color: #999;
+            font-style: italic;
+        }
+        
+        .verification-result {
+            padding: 25px;
+            border: 3px solid;
+            margin-bottom: 20px;
+            background: #fff;
+        }
+        
+        .verification-result.valid {
+            border-color: #228B22;
+            border-left-width: 8px;
+        }
+        
+        .verification-result.valid .status-icon {
+            color: #228B22;
+        }
+        
+        .verification-result.invalid {
+            border-color: #b81c22;
+            border-left-width: 8px;
+        }
+        
+        .verification-result.invalid .status-icon {
+            color: #b81c22;
+        }
+        
+        .verification-result.pending {
+            border-color: #d4a017;
+            border-left-width: 8px;
+        }
+        
+        .verification-result.pending .status-icon {
+            color: #d4a017;
+        }
+        
+        .verification-result h3 {
+            margin-bottom: 15px;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .verification-result .status-icon {
+            font-size: 28px;
+        }
+        
+        .verification-result ul {
+            margin-left: 30px;
+            font-size: 17px;
+        }
+        
+        .verification-result li {
+            margin-bottom: 8px;
+        }
+        
+        .tabs {
+            display: flex;
+            background: #f5f5f5;
+            border-bottom: 2px solid #b81c22;
+        }
+        
+        .tab {
+            padding: 15px 30px;
+            cursor: pointer;
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .tab:hover {
+            color: #b81c22;
+            background: #fff;
+        }
+        
+        .tab.active {
+            color: #b81c22;
+            border-bottom-color: #b81c22;
+            background: #fff;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .map-container {
+            height: 400px;
+            background: #f5f5f5;
+            border: 2px solid #ddd;
+            margin-top: 20px;
+        }
+        
+        .raw-data {
+            background: #f8f8f8;
+            border: 2px solid #ddd;
+            padding: 20px;
+            font-family: "Courier New", monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 14px 40px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin-right: 15px;
+            margin-bottom: 10px;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #b81c22;
+            color: #fff;
+            border: 2px solid #8b0000;
+        }
+        
+        .btn-primary:hover {
+            background: #8b0000;
+        }
+        
+        .btn-secondary {
+            background: #fff;
+            color: #333;
+            border: 2px solid #b81c22;
+        }
+        
+        .btn-secondary:hover {
+            background: #fff5f5;
+        }
+        
+        .btn-gold {
+            background: linear-gradient(135deg, #d4a017 0%, #f4d03f 50%, #d4a017 100%);
+            color: #333;
+            border: 2px solid #b8860b;
+        }
+        
+        .btn-gold:hover {
+            background: linear-gradient(135deg, #c49a16 0%, #e4c02f 50%, #c49a16 100%);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #333;
+            font-size: 20px;
+        }
+        
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 4px solid #ddd;
+            border-top-color: #b81c22;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 15px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .footer {
+            background: #333;
+            color: #ccc;
+            padding: 30px 0;
+            margin-top: 50px;
+            border-top: 4px solid #b81c22;
+        }
+        
+        .footer .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            text-align: center;
+        }
+        
+        .footer .footer-title {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .footer .footer-info {
+            font-size: 14px;
+            line-height: 2;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .info-card {
+            background: #fafafa;
+            border: 2px solid #ddd;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .info-card h4 {
+            color: #666;
+            font-size: 16px;
+            font-weight: normal;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .info-card .value {
+            font-size: 22px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .info-card .sub-value {
+            font-size: 14px;
+            color: #999;
+            margin-top: 8px;
+        }
+        
+        .stamp {
+            position: absolute;
+            right: 30px;
+            top: 20px;
+            width: 100px;
+            height: 100px;
+            border: 4px solid #b81c22;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b81c22;
+            font-size: 18px;
+            font-weight: bold;
+            transform: rotate(-15deg);
+            opacity: 0.8;
+            font-family: "SimHei", "黑体", sans-serif;
+        }
+        
+        .section-wrapper {
+            position: relative;
+        }
+        
+        @media print {
+            .header-top, .nav-bar, .breadcrumb, .upload-area, .tabs, .btn, .footer {
+                display: none !important;
+            }
+            
+            .section {
+                box-shadow: none;
+                border: 2px solid #000;
+            }
+            
+            .section-header {
+                background: #f0f0f0;
+                border-bottom: 2px solid #000;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header-main {
+                padding: 20px;
+            }
+            
+            .header-text h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="header-top">
+            依法取证 · 科学分析 · 公正鉴定
+        </div>
+        <div class="header-main">
+            <div class="emblem">test</div>
+            <div class="header-text">
+                <h1>电子数据取证分析系统</h1>
+                <div class="subtitle">Electronic Evidence Forensic Analysis System</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="nav-bar">
+        <div class="container">
+            <a href="#" class="nav-item active">元数据解析</a>
+            <a href="#" class="nav-item">验证报告</a>
+            <a href="#" class="nav-item">导出数据</a>
+            <a href="#" class="nav-item">使用帮助</a>
+        </div>
+    </div>
+    
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="http://hsyscn.top">首页</a> &gt; <a href="#">取证分析</a> &gt; 元数据解析
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="notice-bar">
+            <strong>使用说明：</strong>请点击下方上传区域，选择需要解析的图片文件。系统将自动提取并验证图片中的EXIF元数据信息，生成取证分析报告。
+        </div>
+        
+        <div class="section">
+            <div class="section-header">文件上传</div>
+            <div class="section-body">
+                <div class="upload-area" id="uploadArea">
+                    <div class="icon">&#128193;</div>
+                    <p>点击此处上传图片文件</p>
+                    <p class="hint">支持格式：JPG、JPEG、PNG、TIFF</p>
+                </div>
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+        </div>
+        
+        <div id="loadingSection" class="section hidden">
+            <div class="section-body loading">
+                正在解析EXIF数据，请稍候...
+            </div>
+        </div>
+        
+        <div id="errorSection" class="section hidden">
+            <div class="section-body">
+                <div class="verification-result invalid">
+                    <h3><span class="status-icon">✕</span> 解析失败</h3>
+                    <p id="errorMessage"></p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="resultsSection" class="hidden">
+            <div class="section section-wrapper">
+                <div class="section-header">
+                    验证状态
+                    <span id="verificationBadge" class="badge">待验证</span>
+                </div>
+                <div class="stamp" id="stamp">已验证</div>
+                <div class="section-body">
+                    <div id="verificationResult" class="verification-result pending">
+                        <h3><span class="status-icon">○</span> 数据验证结果</h3>
+                        <p id="verificationText">等待文件上传...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">基本信息</div>
+                <div class="section-body">
+                    <div class="info-grid" id="basicInfo"></div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">取证信息</div>
+                <div class="section-body">
+                    <table class="data-table" id="forensicTable">
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">传感器数据</div>
+                <div class="section-body">
+                    <table class="data-table" id="sensorTable">
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">GPS定位信息</div>
+                <div class="section-body">
+                    <table class="data-table" id="gpsTable">
+                        <tbody></tbody>
+                    </table>
+                    <div id="mapContainer" class="map-container"></div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">标准EXIF数据</div>
+                <div class="section-body">
+                    <div class="tabs">
+                        <div class="tab active" data-tab="exifBasic">基础信息</div>
+                        <div class="tab" data-tab="exifCamera">相机参数</div>
+                        <div class="tab" data-tab="exifRaw">原始数据</div>
+                    </div>
+                    <div id="exifBasic" class="tab-content active">
+                        <table class="data-table" id="exifBasicTable">
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div id="exifCamera" class="tab-content">
+                        <table class="data-table" id="exifCameraTable">
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div id="exifRaw" class="tab-content">
+                        <div class="raw-data" id="rawData"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">操作选项</div>
+                <div class="section-body">
+                    <button class="btn btn-primary" onclick="exportJSON()">导出分析报告</button>
+                    <button class="btn btn-gold" onclick="window.print()">打印本页</button>
+                    <button class="btn btn-secondary" onclick="resetPage()">重新上传</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="container">
+            <div class="footer-title">电子数据取证分析系统</div>
+            <div class="footer-info">
+                技术支持：OpenCamera Enhanced<br>
+                本系统仅供取证分析使用，分析结果仅供参考
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentData = null;
+        let map = null;
+        
+        document.getElementById('uploadArea').addEventListener('click', () => {
+            document.getElementById('fileInput').click();
+        });
+        
+        document.getElementById('uploadArea').addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+        
+        document.getElementById('uploadArea').addEventListener('drop', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const file = e.dataTransfer.files[0];
+            if (file) handleFile(file);
+        });
+        
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) handleFile(file);
+        });
+        
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+        
+        function handleFile(file) {
+            if (!file.type.startsWith('image/')) {
+                showError('请上传图片文件');
+                return;
+            }
+            
+            document.getElementById('loadingSection').classList.remove('hidden');
+            document.getElementById('errorSection').classList.add('hidden');
+            document.getElementById('resultsSection').classList.add('hidden');
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                parseEXIF(e.target.result, file);
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function parseEXIF(dataUrl, file) {
+            const img = new Image();
+            
+            const timeout = setTimeout(() => {
+                showError('EXIF解析超时，请尝试其他图片');
+            }, 10000);
+            
+            img.onload = function() {
+                try {
+                    EXIF.getData(img, function() {
+                        clearTimeout(timeout);
+                        try {
+                            const allMetaData = EXIF.getAllTags(this);
+                            const userComment = EXIF.getTag(this, 'UserComment');
+                            
+                            currentData = {
+                                fileName: file.name,
+                                fileSize: formatFileSize(file.size),
+                                fileType: file.type,
+                                parseTime: new Date().toISOString(),
+                                standardExif: allMetaData || {},
+                                forensicData: parseUserComment(userComment)
+                            };
+                            
+                            displayResults();
+                            document.getElementById('loadingSection').classList.add('hidden');
+                            document.getElementById('resultsSection').classList.remove('hidden');
+                        } catch (e) {
+                            clearTimeout(timeout);
+                            showError('解析错误: ' + e.message);
+                        }
+                    });
+                } catch (e) {
+                    clearTimeout(timeout);
+                    showError('EXIF读取错误: ' + e.message);
+                }
+            };
+            
+            img.onerror = function() {
+                clearTimeout(timeout);
+                showError('图片加载失败');
+            };
+            
+            img.src = dataUrl;
+        }
+        
+        function parseUserComment(userComment) {
+            if (!userComment) return null;
+            
+            let str = userComment;
+            if (typeof str === 'string' && str.startsWith('charset=')) {
+                str = str.substring(str.indexOf('=') + 1);
+                str = str.substring(str.indexOf(' ') + 1);
+            }
+            
+            const data = {};
+            const pairs = str.split(';');
+            
+            pairs.forEach(pair => {
+                const [key, value] = pair.split('=');
+                if (key && value !== undefined) {
+                    data[key.trim()] = value.trim();
+                }
+            });
+            
+            return data;
+        }
+        
+        function displayResults() {
+            displayBasicInfo();
+            displayForensicInfo();
+            displaySensorInfo();
+            displayGPSInfo();
+            displayExifBasic();
+            displayExifCamera();
+            displayRawData();
+            updateVerificationStatus();
+        }
+        
+        function displayBasicInfo() {
+            const container = document.getElementById('basicInfo');
+            
+            container.innerHTML = `
+                <div class="info-card">
+                    <h4>文件名称</h4>
+                    <div class="value">${currentData.fileName}</div>
+                    <div class="sub-value">大小: ${currentData.fileSize}</div>
+                </div>
+                <div class="info-card">
+                    <h4>解析时间</h4>
+                    <div class="value">${new Date(currentData.parseTime).toLocaleString()}</div>
+                </div>
+                <div class="info-card">
+                    <h4>拍摄设备</h4>
+                    <div class="value">${currentData.standardExif.Make || '未知'} ${currentData.standardExif.Model || ''}</div>
+                </div>
+                <div class="info-card">
+                    <h4>拍摄时间</h4>
+                    <div class="value">${currentData.standardExif.DateTimeOriginal || currentData.standardExif.DateTime || '未知'}</div>
+                </div>
+            `;
+        }
+        
+        function displayForensicInfo() {
+            const tbody = document.querySelector('#forensicTable tbody');
+            const fd = currentData.forensicData;
+            
+            const items = [];
+            if (fd?.FORENSIC_MODE) items.push({ label: '取证模式', value: fd.FORENSIC_MODE === 'true' ? '已启用' : '未启用' });
+            if (fd?.CASE_NUMBER) items.push({ label: '案件编号', value: fd.CASE_NUMBER });
+            if (fd?.OFFICER_ID) items.push({ label: '执法人员', value: fd.OFFICER_ID });
+            if (fd?.DEPARTMENT) items.push({ label: '所属部门', value: fd.DEPARTMENT });
+            if (fd?.CHAIN_OF_CUSTODY) items.push({ label: '证据链', value: fd.CHAIN_OF_CUSTODY });
+            if (fd?.TIMESTAMP) items.push({ label: '时间戳(NTP)', value: new Date(parseInt(fd.TIMESTAMP)).toLocaleString() });
+            if (fd?.TIME_SOURCE) items.push({ label: '时间来源', value: fd.TIME_SOURCE });
+            if (fd?.TIME_VERIFIED) items.push({ label: '时间验证', value: fd.TIME_VERIFIED === 'true' ? '已验证(NTP)' : '本地时间' });
+            if (fd?.IMAGE_HASH) items.push({ label: '图片哈希(SHA-256)', value: fd.IMAGE_HASH });
+            if (fd?.VERIFY_HASH) items.push({ label: '验证哈希', value: fd.VERIFY_HASH });
+            if (fd?.SIGNATURE) items.push({ label: '数字签名(HMAC-SHA256)', value: fd.SIGNATURE });
+            if (fd?.TIME_SERIES_HASH) items.push({ label: '时序数据哈希', value: fd.TIME_SERIES_HASH });
+            if (fd?.TIME_SERIES_FRAMES) items.push({ label: '时序帧数', value: fd.TIME_SERIES_FRAMES + ' 帧' });
+            
+            if (items.length === 0) {
+                items.push({ label: '取证信息', value: '无取证数据', isNull: true });
+            }
+            
+            tbody.innerHTML = items.map(item => `
+                <tr>
+                    <th>${item.label}</th>
+                    <td class="${item.isNull ? 'null-value' : ''}">${item.value || '无'}</td>
+                </tr>
+            `).join('');
+        }
+        
+        function displaySensorInfo() {
+            const tbody = document.querySelector('#sensorTable tbody');
+            const fd = currentData.forensicData;
+            
+            const items = [];
+            if (fd?.ISO) items.push({ label: 'ISO', value: fd.ISO });
+            if (fd?.APERTURE) items.push({ label: '光圈', value: 'f/' + fd.APERTURE });
+            if (fd?.EXPOSURE_TIME) items.push({ label: '曝光时间', value: fd.EXPOSURE_TIME + ' ns' });
+            if (fd?.FOCAL_LENGTH) items.push({ label: '焦距', value: fd.FOCAL_LENGTH + ' mm' });
+            if (fd?.FLASH) items.push({ label: '闪光灯', value: fd.FLASH === 'true' ? '已开启' : '未开启' });
+            if (fd?.WB) items.push({ label: '白平衡', value: fd.WB });
+            if (fd?.ACCEL) items.push({ label: '加速度计(X,Y,Z)', value: fd.ACCEL + ' m/s2' });
+            if (fd?.GYRO) items.push({ label: '陀螺仪(X,Y,Z)', value: fd.GYRO + ' rad/s' });
+            if (fd?.PRESSURE) items.push({ label: '气压', value: fd.PRESSURE + ' hPa' });
+            if (fd?.STEPS) items.push({ label: '步数', value: fd.STEPS });
+            if (fd?.MAGNETIC_FIELD) items.push({ label: '磁场(X,Y,Z)', value: fd.MAGNETIC_FIELD + ' uT' });
+            if (fd?.LIGHT) items.push({ label: '光照强度', value: fd.LIGHT + ' lux' });
+            if (fd?.TEMPERATURE) items.push({ label: '温度', value: fd.TEMPERATURE + ' C' });
+            if (fd?.HUMIDITY) items.push({ label: '湿度', value: fd.HUMIDITY + ' %' });
+            if (fd?.PROXIMITY) items.push({ label: '距离传感器', value: fd.PROXIMITY + ' cm' });
+            if (fd?.BATTERY) items.push({ label: '电量', value: fd.BATTERY + ' %' });
+            if (fd?.NETWORK) items.push({ label: '网络状态', value: fd.NETWORK });
+            
+            if (items.length === 0) {
+                items.push({ label: '传感器数据', value: '无传感器数据', isNull: true });
+            }
+            
+            tbody.innerHTML = items.map(item => `
+                <tr>
+                    <th>${item.label}</th>
+                    <td class="${item.isNull ? 'null-value' : ''}">${item.value || '无'}</td>
+                </tr>
+            `).join('');
+        }
+        
+        function displayGPSInfo() {
+            const tbody = document.querySelector('#gpsTable tbody');
+            const exif = currentData.standardExif;
+            const fd = currentData.forensicData;
+            
+            const items = [];
+            
+            if (fd?.GPS_LAT && fd?.GPS_LON) {
+                items.push({ label: '纬度', value: fd.GPS_LAT + '度' });
+                items.push({ label: '经度', value: fd.GPS_LON + '度' });
+            }
+            
+            if (exif.GPSLatitude && exif.GPSLongitude) {
+                const lat = convertDMSToDD(exif.GPSLatitude, exif.GPSLatitudeRef || 'N');
+                const lon = convertDMSToDD(exif.GPSLongitude, exif.GPSLongitudeRef || 'E');
+                if (!isNaN(lat) && !isNaN(lon)) {
+                    items.push({ label: '标准GPS纬度', value: lat.toFixed(6) + '度' });
+                    items.push({ label: '标准GPS经度', value: lon.toFixed(6) + '度' });
+                    showMap(lat, lon);
+                }
+            }
+            
+            if (fd?.GPS_ALT) items.push({ label: '海拔', value: fd.GPS_ALT + ' m' });
+            
+            if (items.length === 0) {
+                items.push({ label: 'GPS信息', value: '无GPS数据', isNull: true });
+                document.getElementById('mapContainer').style.display = 'none';
+            }
+            
+            tbody.innerHTML = items.map(item => `
+                <tr>
+                    <th>${item.label}</th>
+                    <td class="${item.isNull ? 'null-value' : ''}">${item.value || '无'}</td>
+                </tr>
+            `).join('');
+        }
+        
+        function displayExifBasic() {
+            const tbody = document.querySelector('#exifBasicTable tbody');
+            const exif = currentData.standardExif;
+            
+            const basicFields = [
+                { key: 'Make', label: '制造商' },
+                { key: 'Model', label: '型号' },
+                { key: 'Software', label: '软件' },
+                { key: 'DateTime', label: '修改时间' },
+                { key: 'DateTimeOriginal', label: '拍摄时间' },
+                { key: 'ImageWidth', label: '图片宽度' },
+                { key: 'ImageHeight', label: '图片高度' },
+                { key: 'Orientation', label: '方向' },
+                { key: 'XResolution', label: 'X分辨率' },
+                { key: 'YResolution', label: 'Y分辨率' }
+            ];
+            
+            tbody.innerHTML = basicFields.map(field => `
+                <tr>
+                    <th>${field.label}</th>
+                    <td>${exif[field.key] || '<span class="null-value">无</span>'}</td>
+                </tr>
+            `).join('');
+        }
+        
+        function displayExifCamera() {
+            const tbody = document.querySelector('#exifCameraTable tbody');
+            const exif = currentData.standardExif;
+            
+            const cameraFields = [
+                { key: 'ExposureTime', label: '曝光时间' },
+                { key: 'FNumber', label: '光圈' },
+                { key: 'ISOSpeedRatings', label: 'ISO' },
+                { key: 'FocalLength', label: '焦距' },
+                { key: 'Flash', label: '闪光灯' },
+                { key: 'WhiteBalance', label: '白平衡' },
+                { key: 'MeteringMode', label: '测光模式' },
+                { key: 'ExposureProgram', label: '曝光程序' },
+                { key: 'FocalLengthIn35mmFilm', label: '35mm等效焦距' },
+                { key: 'SceneCaptureType', label: '场景类型' }
+            ];
+            
+            tbody.innerHTML = cameraFields.map(field => `
+                <tr>
+                    <th>${field.label}</th>
+                    <td>${exif[field.key] || '<span class="null-value">无</span>'}</td>
+                </tr>
+            `).join('');
+        }
+        
+        function displayRawData() {
+            document.getElementById('rawData').textContent = JSON.stringify(currentData, null, 2);
+        }
+        
+        function updateVerificationStatus() {
+            const badge = document.getElementById('verificationBadge');
+            const result = document.getElementById('verificationResult');
+            const text = document.getElementById('verificationText');
+            const stamp = document.getElementById('stamp');
+            const fd = currentData.forensicData;
+            
+            if (!fd) {
+                badge.className = 'badge warning';
+                badge.textContent = '无取证数据';
+                result.className = 'verification-result pending';
+                stamp.style.display = 'none';
+                text.innerHTML = '未检测到取证数据，无法验证数据完整性。';
+                return;
+            }
+            
+            const isOurApp = fd.APP === 'OpenCameraEnhanced' || fd.DEVICE_ID;
+            const hasFullVerification = fd.VERIFY_HASH && fd.SIGNATURE && fd.IMAGE_HASH;
+            const hasTimeSeries = fd.TIME_SERIES_HASH;
+            const hasNTPTime = fd.TIME_VERIFIED === 'true';
+            
+            let verificationDetails = [];
+            if (fd.IMAGE_HASH) verificationDetails.push('图片哈希验证');
+            if (fd.VERIFY_HASH) verificationDetails.push('元数据验证');
+            if (fd.SIGNATURE) verificationDetails.push('数字签名验证');
+            if (hasTimeSeries) verificationDetails.push('时序数据验证');
+            if (hasNTPTime) verificationDetails.push('NTP时间验证');
+            
+            if (isOurApp && fd.FORENSIC_MODE === 'true' && hasFullVerification) {
+                badge.className = 'badge success';
+                badge.textContent = '验证通过';
+                result.className = 'verification-result valid';
+                stamp.style.display = 'flex';
+                stamp.textContent = '已验证';
+                text.innerHTML = `
+                    <strong>司法级取证数据验证通过</strong>
+                    <ul>
+                        <li>数据来源：OpenCamera Enhanced</li>
+                        <li>验证项目：${verificationDetails.join('、')}</li>
+                        <li>取证模式：已启用</li>
+                    </ul>
+                `;
+            } else if (isOurApp && hasFullVerification) {
+                badge.className = 'badge success';
+                badge.textContent = '验证通过';
+                result.className = 'verification-result valid';
+                stamp.style.display = 'flex';
+                stamp.textContent = '已验证';
+                text.innerHTML = `
+                    <strong>完整取证数据验证通过</strong>
+                    <ul>
+                        <li>数据来源：OpenCamera Enhanced</li>
+                        <li>验证项目：${verificationDetails.join('、')}</li>
+                    </ul>
+                `;
+            } else if (isOurApp) {
+                badge.className = 'badge warning';
+                badge.textContent = '部分验证';
+                result.className = 'verification-result pending';
+                stamp.style.display = 'none';
+                text.innerHTML = 'OpenCamera Enhanced 拍摄，但缺少完整验证数据。';
+            } else {
+                badge.className = 'badge warning';
+                badge.textContent = '无法验证';
+                result.className = 'verification-result pending';
+                stamp.style.display = 'none';
+                text.innerHTML = '无法确认数据来源，建议使用本系统拍摄以获取完整取证数据。';
+            }
+        }
+        
+        function showMap(lat, lon) {
+            if (isNaN(lat) || isNaN(lon) || !isFinite(lat) || !isFinite(lon)) {
+                document.getElementById('mapContainer').style.display = 'none';
+                return;
+            }
+            
+            document.getElementById('mapContainer').style.display = 'block';
+            
+            if (map) map.remove();
+            
+            try {
+                map = L.map('mapContainer').setView([lat, lon], 15);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: 'OpenStreetMap'
+                }).addTo(map);
+                
+                L.marker([lat, lon]).addTo(map)
+                    .bindPopup('拍摄位置<br>纬度: ' + lat.toFixed(6) + '<br>经度: ' + lon.toFixed(6))
+                    .openPopup();
+            } catch (e) {
+                console.error('Map error:', e);
+            }
+        }
+        
+        function convertDMSToDD(dms, ref) {
+            if (!dms || dms.length < 3) return NaN;
+            
+            const degrees = parseFloat(dms[0]) || 0;
+            const minutes = parseFloat(dms[1]) || 0;
+            const seconds = parseFloat(dms[2]) || 0;
+            
+            let dd = degrees + minutes / 60 + seconds / 3600;
+            
+            if (ref === 'S' || ref === 'W') {
+                dd = -dd;
+            }
+            
+            return dd;
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function showError(message) {
+            document.getElementById('loadingSection').classList.add('hidden');
+            document.getElementById('errorSection').classList.remove('hidden');
+            document.getElementById('errorMessage').textContent = message;
+        }
+        
+        function resetPage() {
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('errorSection').classList.add('hidden');
+            document.getElementById('fileInput').value = '';
+            currentData = null;
+        }
+        
+        function exportJSON() {
+            if (!currentData) return;
+            
+            const report = {
+                reportTitle: '电子数据取证分析报告',
+                generatedAt: new Date().toISOString(),
+                file: {
+                    name: currentData.fileName,
+                    size: currentData.fileSize,
+                    type: currentData.fileType
+                },
+                standardExif: currentData.standardExif,
+                forensicMetadata: currentData.forensicData,
+                verification: {
+                    hasForensicData: !!currentData.forensicData,
+                    hasVerificationHash: !!currentData.forensicData?.VERIFY_HASH,
+                    hasSignature: !!currentData.forensicData?.SIGNATURE
+                }
+            };
+            
+            const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = currentData.fileName.replace(/\.[^.]+$/, '') + '_取证报告.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
