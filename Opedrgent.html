@@ -1,0 +1,2229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opedrgent - 会说话的 AI 第二大脑</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-secondary: #fafafa;
+    --bg-tertiary: #f5f5f7;
+    --text-primary: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --text-tertiary: #86868b;
+    --accent: #007AFF;
+    --accent-hover: #0066D6;
+    --purple: #AF52DE;
+    --cyan: #32ADE6;
+    --pink: #FF375F;
+    /* Liquid Glass 材质 */
+    --glass-bg: rgba(255, 255, 255, 0.18);
+    --glass-border: rgba(255, 255, 255, 0.28);
+    --glass-highlight: rgba(255, 255, 255, 0.25);
+    --glass-shadow-outer: 0 8px 32px rgba(0, 0, 0, 0.06);
+    --glass-shadow-inner-top: inset 0 1px 2px rgba(255, 255, 255, 0.5);
+    --glass-shadow-inner-bottom: inset 0 -1px 2px rgba(0, 0, 0, 0.04);
+    --radius: 20px;
+    --radius-sm: 12px;
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'PingFang SC', sans-serif;
+    --spring-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #000000;
+      --bg-secondary: #1c1c1e;
+      --bg-tertiary: #121214;
+      --text-primary: #f5f5f7;
+      --text-secondary: #a1a1a6;
+      --text-tertiary: #6e6e73;
+      --accent: #0A84FF;
+      --accent-hover: #409CFF;
+      /* Dark mode Liquid Glass - 更透明、边框更微妙 */
+      --glass-bg: rgba(30, 30, 32, 0.55);
+      --glass-border: rgba(255, 255, 255, 0.12);
+      --glass-highlight: rgba(255, 255, 255, 0.06);
+      --glass-shadow-outer: 0 8px 32px rgba(0, 0, 0, 0.18);
+      --glass-shadow-inner-top: inset 0 1px 2px rgba(255, 255, 255, 0.15);
+      --glass-shadow-inner-bottom: inset 0 -1px 2px rgba(0, 0, 0, 0.12);
+    }
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ===== Liquid Glass 基础材质 ===== */
+  .liquid-glass {
+    backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
+    -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      var(--glass-shadow-outer),
+      var(--glass-shadow-inner-top),
+      var(--glass-shadow-inner-bottom);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 折射高光层（Liquid Glass 核心） */
+  .liquid-glass::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      var(--glass-highlight) 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+    transition: all 0.4s var(--spring-ease);
+  }
+
+  /* ===== Hero ===== */
+  .hero {
+    min-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 多层渐变光球 - Liquid Glass 配色 */
+  .hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+  }
+
+  .hero-orb-1 {
+    width: 520px; height: 520px;
+    top: -120px; right: -140px;
+    background: radial-gradient(circle at 35% 35%, rgba(0,122,255,0.18), rgba(175,82,222,0.12) 45%, transparent 70%);
+    animation: floatOrb 14s ease-in-out infinite;
+  }
+
+  .hero-orb-2 {
+    width: 400px; height: 400px;
+    bottom: -80px; left: -100px;
+    background: radial-gradient(circle at 65% 65%, rgba(50,173,230,0.14), rgba(255,55,95,0.08) 50%, transparent 65%);
+    animation: floatOrb 18s ease-in-out infinite reverse;
+  }
+
+  .hero-orb-3 {
+    width: 280px; height: 280px;
+    top: 40%; left: 45%;
+    background: radial-gradient(circle at 50% 50%, rgba(175,82,222,0.08), transparent 60%);
+    animation: floatOrb 22s ease-in-out infinite 3s;
+  }
+
+  @keyframes floatOrb {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(35px, -25px) scale(1.08); }
+    66% { transform: translate(-20px, 28px) scale(0.94); }
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 7px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    border: 1px solid var(--glass-border);
+    border-radius: 100px;
+    letter-spacing: 0.02em;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+    transition: all 0.4s var(--spring-ease);
+  }
+
+  .hero-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(0, 122, 255, 0.15);
+  }
+
+  .hero h1 {
+    font-size: clamp(48px, 9vw, 82px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    /* 多色段细腻渐变 */
+    background: linear-gradient(
+      135deg,
+      var(--text-primary) 0%,
+      var(--text-primary) 35%,
+      var(--accent) 55%,
+      var(--purple) 75%,
+      var(--cyan) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 20px;
+  }
+
+  .hero-tagline {
+    font-size: clamp(22px, 4vw, 34px);
+    font-weight: 300;
+    color: var(--text-secondary);
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 14px;
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    color: var(--text-tertiary);
+    max-width: 520px;
+    margin: 0 auto 40px;
+    line-height: 1.55;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 36px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 17px;
+    font-weight: 500;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: all 0.5s var(--spring-ease);
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+    border: none;
+    outline: none;
+  }
+
+  .hero-cta:hover {
+    background: var(--accent-hover);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 36px rgba(0, 122, 255, 0.28);
+  }
+
+  .hero-cta:active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 4px 16px rgba(0, 122, 255, 0.18), inset 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  /* ===== Section Base ===== */
+  section {
+    padding: 100px 0;
+    position: relative;
+  }
+
+  section:nth-child(even) {
+    background: var(--bg-secondary);
+  }
+
+  .section-label {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+  }
+
+  .section-desc {
+    font-size: 19px;
+    color: var(--text-secondary);
+    max-width: 640px;
+    line-height: 1.65;
+  }
+
+  /* ===== Quote Block - Liquid Glass ===== */
+  .quote-block {
+    margin-top: 48px;
+    padding: 44px 40px;
+    border-radius: var(--radius);
+    backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
+    -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      var(--glass-shadow-outer),
+      var(--glass-shadow-inner-top),
+      var(--glass-shadow-inner-bottom);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quote-block::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      var(--glass-highlight) 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* 左侧彩色光带 */
+  .quote-block::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 10%; bottom: 10%;
+    width: 3px;
+    border-radius: 2px;
+    background: linear-gradient(
+      180deg,
+      var(--accent) 0%,
+      var(--purple) 50%,
+      var(--cyan) 100%
+    );
+    opacity: 0.7;
+  }
+
+  .quote-block p {
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--text-primary);
+    font-style: italic;
+    position: relative;
+    z-index: 2;
+    padding-left: 20px;
+  }
+
+  .quote-block cite {
+    display: block;
+    margin-top: 18px;
+    font-size: 15px;
+    color: var(--text-tertiary);
+    font-style: normal;
+    position: relative;
+    z-index: 2;
+    padding-left: 20px;
+  }
+
+  /* ===== Solution Cards - Full Liquid Glass ===== */
+  .solution-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 56px;
+  }
+
+  .solution-card {
+    border-radius: var(--radius);
+    padding: 38px 30px;
+    backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
+    -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      var(--glass-shadow-outer),
+      var(--glass-shadow-inner-top),
+      var(--glass-shadow-inner-bottom);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s var(--spring-ease);
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  /* 折射高光 */
+  .solution-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      var(--glass-highlight) 0%,
+      rgba(255, 255, 255, 0.04) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+    transition: all 0.4s var(--spring-ease);
+  }
+
+  .solution-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .solution-card:hover {
+    transform: translateY(-8px) rotateX(1deg);
+    box-shadow:
+      0 16px 48px rgba(0, 0, 0, 0.1),
+      inset 0 1px 3px rgba(255, 255, 255, 0.6),
+      inset 0 -1px 3px rgba(0, 0, 0, 0.06);
+    border-color: rgba(255, 255, 255, 0.38);
+  }
+
+  .solution-card:hover::before {
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.35) 0%,
+      rgba(255, 255, 255, 0.08) 50%,
+      transparent 100%
+    );
+  }
+
+  .solution-icon {
+    width: 52px; height: 52px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 22px;
+    background: linear-gradient(135deg, rgba(0,122,255,0.12), rgba(175,82,222,0.1));
+    color: var(--accent);
+    position: relative;
+    z-index: 2;
+    border: 1px solid rgba(0, 122, 255, 0.1);
+  }
+
+  .solution-card h3 {
+    font-size: 19px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    position: relative;
+    z-index: 2;
+  }
+
+  .solution-card p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ===== Features Grid - 半透明玻璃 ===== */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    margin-top: 56px;
+  }
+
+  .feature-item {
+    padding: 30px 24px;
+    border-radius: var(--radius-sm);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+    transition: all 0.5s var(--spring-ease);
+    opacity: 0;
+    transform: translateY(20px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 45%;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.15) 0%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.4s var(--spring-ease);
+  }
+
+  .feature-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .feature-item:hover {
+    border-color: var(--glass-border);
+    background: var(--glass-bg);
+    transform: translateY(-4px);
+    box-shadow:
+      0 8px 28px rgba(0, 0, 0, 0.07),
+      inset 0 1px 2px rgba(255, 255, 255, 0.4);
+  }
+
+  .feature-item:hover::before {
+    opacity: 1;
+  }
+
+  .feature-icon {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--accent), var(--purple));
+    position: relative;
+    z-index: 2;
+  }
+
+  .feature-item h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+    position: relative;
+    z-index: 2;
+  }
+
+  .feature-item p {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    line-height: 1.55;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ===== Architecture Diagram - 玻璃容器 + 渐变连接线 ===== */
+  .arch-diagram {
+    margin-top: 56px;
+    padding: 48px;
+    border-radius: var(--radius);
+    backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
+    -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      var(--glass-shadow-outer),
+      var(--glass-shadow-inner-top),
+      var(--glass-shadow-inner-bottom);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .arch-diagram::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      var(--glass-highlight) 0%,
+      rgba(255, 255, 255, 0.04) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .arch-layer {
+    text-align: center;
+    padding: 26px;
+    border-radius: var(--radius-sm);
+    position: relative;
+    z-index: 2;
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .arch-layer.input-layer {
+    background: linear-gradient(135deg, rgba(0,122,255,0.06), rgba(0,122,255,0.02));
+    border-color: rgba(0, 122, 255, 0.18);
+  }
+
+  .arch-layer.process-layer {
+    background: linear-gradient(135deg, rgba(175,82,222,0.06), rgba(175,82,222,0.02));
+    border-color: rgba(175, 82, 222, 0.18);
+  }
+
+  .arch-layer.output-layer {
+    background: linear-gradient(135deg, rgba(52,199,89,0.06), rgba(52,199,89,0.02));
+    border-color: rgba(52, 199, 89, 0.18);
+  }
+
+  .arch-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .arch-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .arch-chip {
+    padding: 7px 16px;
+    font-size: 13px;
+    border-radius: 100px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--text-secondary);
+    border: 1px solid var(--glass-border);
+  }
+
+  .arch-arrow {
+    text-align: center;
+    padding: 10px 0;
+    color: var(--text-tertiary);
+    font-size: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .arch-arrow::after {
+    content: '';
+    display: block;
+    width: 2px;
+    height: 20px;
+    background: linear-gradient(180deg, var(--accent), var(--purple));
+    margin: 0 auto;
+    border-radius: 1px;
+    opacity: 0.3;
+  }
+
+  /* ===== Privacy Section - 重写为优雅文字陈述 ===== */
+  .privacy-section {
+    padding: 110px 0;
+    background: linear-gradient(180deg, var(--bg-secondary), rgba(0,122,255,0.03), var(--bg-secondary));
+    position: relative;
+  }
+
+  .privacy-section::before {
+    content: '';
+    position: absolute;
+    width: 480px; height: 480px;
+    border-radius: 50%;
+    filter: blur(80px);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(0,122,255,0.06), transparent 70%);
+    pointer-events: none;
+  }
+
+  .privacy-hero-text {
+    text-align: center;
+    font-size: clamp(26px, 4.2vw, 40px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.35;
+    color: var(--text-primary);
+    margin-bottom: 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .privacy-statement {
+    max-width: 720px;
+    margin: 0 auto 48px;
+    padding: 48px 42px;
+    border-radius: var(--radius);
+    backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
+    -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      var(--glass-shadow-outer),
+      var(--glass-shadow-inner-top),
+      var(--glass-shadow-inner-bottom);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .privacy-statement::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      var(--glass-highlight) 0%,
+      rgba(255, 255, 255, 0.04) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .privacy-statement p {
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--text-secondary);
+    position: relative;
+    z-index: 2;
+  }
+
+  .privacy-statement p + p {
+    margin-top: 20px;
+  }
+
+  .privacy-quote {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 36px 32px;
+    border-radius: var(--radius-sm);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    background: var(--glass-bg);
+    border-left: 3px solid var(--accent);
+    border-right: 1px solid var(--glass-border);
+    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow-outer);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .privacy-quote::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 45%;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      var(--glass-highlight) 0%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .privacy-quote p {
+    font-size: 17px;
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--text-primary);
+    position: relative;
+    z-index: 2;
+  }
+
+  .privacy-quote cite {
+    display: block;
+    margin-top: 14px;
+    font-size: 14px;
+    color: var(--text-tertiary);
+    font-style: normal;
+    position: relative;
+    z-index: 2;
+  }
+
+  .privacy-footer-note {
+    text-align: center;
+    font-size: 15px;
+    color: var(--text-tertiary);
+    font-style: italic;
+    padding: 28px;
+    max-width: 540px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    line-height: 1.6;
+  }
+
+  /* ===== Tech Specs Table - 玻璃表面 ===== */
+  .specs-table-wrap {
+    margin-top: 56px;
+    overflow-x: auto;
+    border-radius: var(--radius);
+    backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
+    -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      var(--glass-shadow-outer),
+      var(--glass-shadow-inner-top),
+      var(--glass-shadow-inner-bottom);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .specs-table-wrap::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 40%;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      var(--glass-highlight) 0%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    position: relative;
+    z-index: 2;
+  }
+
+  thead th {
+    padding: 20px 22px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.02em;
+    border-bottom: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  thead th:first-child { border-radius: calc(var(--radius) - 1px) 0 0 0; }
+  thead th:last-child { border-radius: 0 calc(var(--radius) - 1px) 0 0; }
+
+  tbody td {
+    padding: 18px 22px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+    transition: background 0.3s ease;
+  }
+
+  tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:last-child td:first-child { border-radius: 0 0 0 calc(var(--radius) - 1px); }
+  tbody tr:last-child td:last-child { border-radius: 0 0 calc(var(--radius) - 1px) 0; }
+
+  tbody td:first-child {
+    font-weight: 550;
+    color: var(--text-primary);
+  }
+
+  /* ===== Footer - 玻璃条 ===== */
+  footer {
+    padding: 72px 0 56px;
+    text-align: center;
+    position: relative;
+  }
+
+  footer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+  }
+
+  footer .brand {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--text-primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  footer .tagline {
+    font-size: 15px;
+    color: var(--text-tertiary);
+    margin-bottom: 22px;
+  }
+
+  footer .tech-stack {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.01em;
+    padding: 16px 28px;
+    border-radius: 100px;
+    display: inline-block;
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+  }
+
+  footer .author-note {
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    opacity: 0.5;
+  }
+
+  /* ===== Animations ===== */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s var(--spring-ease), transform 0.7s var(--spring-ease);
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 680px) {
+    .hero { min-height: auto; padding: 100px 20px 80px; }
+    section { padding: 76px 0; }
+    .solution-grid { grid-template-columns: 1fr; gap: 18px; }
+    .features-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .arch-diagram { padding: 28px 18px; }
+    .quote-block { padding: 32px 24px; }
+    .quote-block p { font-size: 18px; padding-left: 16px; }
+    .quote-block cite { padding-left: 16px; }
+    .privacy-statement { padding: 32px 24px; }
+    .privacy-quote { padding: 28px 22px; }
+    table { font-size: 13px; }
+    thead th, tbody td { padding: 14px 16px; }
+    .hero-orb-1 { width: 340px; height: 340px; }
+    .hero-orb-2 { width: 260px; height: 260px; }
+    .hero-orb-3 { display: none; }
+  }
+
+  /* ===== Liquid Glass Optical Refraction Enhancement (shuding/liquid-glass) ===== */
+  /* Activated when SVG displacement filter is ready */
+  .liquid-glass-active .solution-card,
+  .liquid-glass-active .quote-block,
+  .liquid-glass-active .privacy-statement,
+  .liquid-glass-active .arch-diagram,
+  .liquid-glass-active .specs-table-wrap,
+  .liquid-glass-active .voice-note-card {
+    /* SVG optical refraction layer on top of existing backdrop-filter */
+    backdrop-filter:
+      url(#lg-refraction),
+      blur(0.5px),
+      contrast(1.15),
+      brightness(1.04),
+      saturate(1.12);
+    -webkit-backdrop-filter:
+      url(#lg-refraction),
+      blur(0.5px),
+      contrast(1.15),
+      brightness(1.04),
+      saturate(1.12);
+  }
+  /* ===== Voice Note Demo Section ===== */
+  .voice-demo-section {
+    padding: 100px 0;
+    position: relative;
+  }
+
+  .voice-demo-section::before {
+    content: '';
+    position: absolute;
+    width: 560px; height: 560px;
+    border-radius: 50%;
+    filter: blur(90px);
+    top: 30%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(175,82,222,0.08), rgba(0,122,255,0.05) 45%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .voice-note-card {
+    margin-top: 56px;
+    border-radius: var(--radius);
+    backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
+    -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      var(--glass-shadow-outer),
+      var(--glass-shadow-inner-top),
+      var(--glass-shadow-inner-bottom);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .voice-note-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      var(--glass-highlight) 0%,
+      rgba(255, 255, 255, 0.04) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .vnc-inner {
+    position: relative;
+    z-index: 2;
+    padding: 36px 40px 44px;
+  }
+
+  /* --- Meta Header --- */
+  .vnc-header {
+    margin-bottom: 28px;
+  }
+
+  .vnc-title {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+
+  /* Tag rows */
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .tag-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 100px;
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+  }
+
+  .tag-pill.system-tag {
+    color: var(--accent);
+    border-color: rgba(0, 122, 255, 0.25);
+    background: rgba(0, 122, 255, 0.08);
+  }
+
+  .tag-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .tag-pill.ai-tag {
+    border-style: dashed;
+    border-color: rgba(175, 82, 222, 0.35);
+    color: var(--purple);
+    background: rgba(175, 82, 222, 0.06);
+  }
+
+  /* --- Waveform Player --- */
+  .waveform-player {
+    margin-bottom: 28px;
+    padding: 24px 28px;
+    border-radius: var(--radius-sm);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .waveform-top-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 10px;
+  }
+
+  .play-btn {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s var(--spring-ease);
+  }
+
+  .play-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(0, 122, 255, 0.15);
+  }
+
+  .play-btn svg {
+    width: 16px; height: 16px;
+    fill: var(--accent);
+    transition: all 0.2s ease;
+  }
+
+  .play-btn.playing svg.icon-play { display: none; }
+  .play-btn:not(.playing) svg.icon-pause { display: none; }
+
+  .waveform-area {
+    flex: 1;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    padding: 8px 0 0;
+  }
+
+  .waveform-bars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 48px;
+    position: relative;
+  }
+
+  .w-bar {
+    flex: 1;
+    min-width: 3px;
+    max-width: 8px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, var(--accent), var(--purple));
+    opacity: 0.35;
+    transition: opacity 0.15s ease, filter 0.15s ease;
+    position: relative;
+  }
+
+  .w-bar.played {
+    opacity: 0.85;
+    filter: brightness(1.2);
+  }
+
+  .w-bar.active-chapter {
+    opacity: 1;
+    box-shadow: 0 0 8px rgba(0, 122, 255, 0.3);
+  }
+
+  .progress-line {
+    position: absolute;
+    top: 0; left: 0;
+    width: 2px;
+    height: 100%;
+    background: var(--text-primary);
+    border-radius: 1px;
+    pointer-events: none;
+    transition: left 0.08s linear;
+    z-index: 3;
+  }
+
+  .duration-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .time-axis {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 58px;
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    font-variant-numeric: tabular-nums;
+    opacity: 0.7;
+  }
+
+  /* --- Tab Bar --- */
+  .tab-bar {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 28px;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    padding: 4px 4px 0;
+  }
+
+  .tab-pill {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 450;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    border-bottom: 2px solid transparent;
+    transition: all 0.25s ease;
+    border-radius: 8px 8px 0 0;
+    white-space: nowrap;
+  }
+
+  .tab-pill:hover {
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .tab-pill.active {
+    color: var(--text-primary);
+    font-weight: 650;
+    border-bottom-color: var(--accent);
+  }
+
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+    animation: tabFadeIn 0.3s ease;
+  }
+
+  @keyframes tabFadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* --- Note Content Area --- */
+  .voice-note-content {
+    /* content wrapper */
+  }
+
+  .voice-note-content h3.section-label {
+    display: block;
+    margin-bottom: 18px;
+    font-size: 14px;
+  }
+
+  /* Info Grid */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .info-item {
+    padding: 16px 18px;
+    border-radius: 10px;
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .info-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 550;
+    color: var(--text-tertiary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .info-value {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  /* Summary Block */
+  .summary-block {
+    padding: 20px 22px;
+    border-radius: var(--radius-sm);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 32px;
+  }
+
+  .summary-block p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  /* Chapter List */
+  .chapter-list {
+    margin-bottom: 36px;
+  }
+
+  .chapter-item {
+    padding: 14px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+    margin-bottom: 4px;
+    backdrop-filter: blur(8px) saturate(120%);
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+    background: rgba(255, 255, 255, 0.03);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .chapter-item:hover {
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  .chapter-item.active {
+    border-left-color: var(--accent);
+    background: rgba(0, 122, 255, 0.06);
+  }
+
+  .chapter-item.highlight {
+    border-left-color: var(--pink);
+    background: rgba(255, 55, 95, 0.05);
+  }
+
+  .chapter-time {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    margin-right: 12px;
+  }
+
+  .chapter-item.highlight .chapter-time {
+    color: var(--pink);
+  }
+
+  .chapter-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .chapter-summary {
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    padding-left: 2px;
+  }
+
+  /* Quotes Grid */
+  .quotes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+
+  .quote-card {
+    padding: 18px 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    font-style: italic;
+    transition: all 0.25s ease;
+  }
+
+  .quote-card:hover {
+    background: rgba(255, 255, 255, 0.09);
+    transform: translateY(-2px);
+  }
+
+  .quote-card.highlight {
+    border-color: rgba(255, 55, 95, 0.25);
+    background: linear-gradient(135deg, rgba(255,55,95,0.06), rgba(175,82,222,0.04));
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  /* Other Tab Placeholder States */
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-tertiary);
+  }
+
+  .empty-state-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.3;
+  }
+
+  .empty-state p {
+    font-size: 15px;
+  }
+
+  .source-url-card {
+    padding: 20px 24px;
+    border-radius: var(--radius-sm);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .source-url-card .url-favicon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--purple));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .source-url-card .url-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .source-url-card .url-info strong {
+    display: block;
+    font-size: 14px;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+
+  .source-url-card .url-info span {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    word-break: break-all;
+  }
+
+  .sprout-status {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 28px;
+    border-radius: var(--radius-sm);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .sprout-spinner {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 3px solid rgba(175, 82, 222, 0.15);
+    border-top-color: var(--purple);
+    animation: spin 1s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .sprout-status-text h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .sprout-status-text p {
+    font-size: 13px;
+    color: var(--text-tertiary);
+  }
+
+  /* Responsive for voice demo */
+  @media (max-width: 680px) {
+    .vnc-inner { padding: 24px 18px 32px; }
+    .vnc-title { font-size: 20px; }
+    .waveform-player { padding: 18px 16px; }
+    .waveform-bars { height: 36px; }
+    .play-btn { width: 38px; height: 38px; }
+    .time-axis { padding-left: 48px; font-size: 10px; }
+    .tab-bar { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .tab-pill { padding: 8px 14px; font-size: 13px; }
+    .info-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .quotes-grid { grid-template-columns: 1fr; }
+    .chapter-summary { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
+
+  <span class="hero-badge">TRAE AI Creativity Competition 2026</span>
+  <h1>Opedrgent</h1>
+  <p class="hero-tagline">你只管说，剩下的交给它。</p>
+  <p class="hero-sub">一款完全本地化的 AI 知识工作站<br>语音转写、智能总结、知识发芽，全在设备端完成</p>
+  <a href="#problem" class="hero-cta">了解更多</a>
+</section>
+
+<!-- ===== PROBLEM: Inspired by Dedao Brain ===== -->
+<section id="problem">
+  <div class="container">
+    <span class="section-label fade-in">Inspiration</span>
+    <h2 class="section-title fade-in">一个问题，两条路。</h2>
+    <p class="section-desc fade-in">
+      2026 年 5 月 26 日，得到十周年。罗振宇在发布会上正式发布了酝酿七年的产品——<strong>得到大脑</strong>。<br><br>
+      发布会的主题是：<strong>"AI 不应该被动，应该主动。"</strong><br><br>
+      得到的首席科学家杨溥在七年前的内部演讲中，给「得到大脑」下过一个定义——它想做的是<strong>给每个学习者当行车导航仪</strong>。不是帮你记住知识，也不是给你推荐更多课程，而是<strong>主动帮你搭建知识之间的关联，在你脑子里建成一张属于你自己的知识地图</strong>。
+    </p>
+    <div class="quote-block fade-in">
+      <p>"只要你用 AI，本质上都是把自己的数据掏出来，到人家那去算。这一定是资源极其匮乏时代的方式。一旦门槛降下来，应该是 AI 到你的数据这里来算，算完走人。"</p>
+      <cite>-- 罗振宇，得到十周年 AI 知识发布会 2026.05.26</cite>
+    </div>
+    <p class="section-desc fade-in" style="margin-top:36px;">
+      这句话点出了一个行业共性问题：当前几乎所有 AI 产品都遵循同一个模式——数据上云、云端计算、结果回传。<br><br>
+      <strong>得到大脑用云端的强大算力，给出了"主动式 AI 知识伴侣"的产品答案。</strong><br><br>
+      而 Opedrgent 想探索的是另一条路：如果算力可以装进设备呢？如果 AI 能走到你的数据这里来算呢？
+    </p>
+  </div>
+</section>
+
+<!-- ===== SOLUTION: The Local-First Path ===== -->
+<section id="solution">
+  <div class="container">
+    <span class="section-label fade-in">Our Approach</span>
+    <h2 class="section-title fade-in">让 AI 走到你的数据这里来算。</h2>
+    <p class="section-desc fade-in">
+      罗振宇在发布会上说："一旦门槛降下来，应该是 AI 到你的数据这里来算，算完走人。"<br><br>
+      Opedrgent 就是这句话的一次技术实践。端侧算力已经足够强了——Sherpa-ONNX 可以在手机上跑语音识别，LiteRT-LM 可以在设备端跑大模型推理，SQLite 可以承载向量检索。<br><br>
+      所以我们把所有能力装进设备里。转写在本地、推理在本地、存储在本地。你的手机，就是你的服务器。
+    </p>
+    <div class="solution-grid">
+      <div class="solution-card" data-tilt>
+        <div class="solution-icon">STT</div>
+        <h3>语音转写本地化</h3>
+        <p>Sherpa-ONNX 离线引擎 + MiMo ASR 在线引擎双保险，语音识别全程在设备端完成。27 种汉语方言支持，录音文件无需离开设备。</p>
+      </div>
+      <div class="solution-card" data-tilt>
+        <div class="solution-icon">LLM</div>
+        <h3>AI 推理本地化</h3>
+        <p>基于 LiteRT-LM 的本地大模型推理能力，对话内容不经过任何云端 API。即使断网，AI 依然完整可用。</p>
+      </div>
+      <div class="solution-card" data-tilt>
+        <div class="solution-icon">DB</div>
+        <h3>记忆系统本地化</h3>
+        <p>三层记忆架构（内存索引 + 向量存储 + 持久化层）全部基于 SQLite 本地数据库构建。笔记、洞察、关联关系，只存在于你的设备中。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURES ===== -->
+<section id="features">
+  <div class="container">
+    <span class="section-label fade-in">Core Features</span>
+    <h2 class="section-title fade-in">不只是记录，是陪伴。</h2>
+    <p class="section-desc fade-in">从语音输入到知识洞察的全链路能力。</p>
+    <div class="features-grid">
+      <div class="feature-item"><div class="feature-icon">V</div><h4>全双工语音对话</h4><p>Interview 模式 — 像跟真人聊天一样与 AI 对话，支持打断、抢话、硬件级回声消除</p></div>
+      <div class="feature-item"><div class="feature-icon">M</div><h4>会议自动纪要</h4><p>录音结束即出结构化纪要：按议题归类、结论前置、待办事项提取</p></div>
+      <div class="feature-item"><div class="feature-icon">S</div><h4>知识发芽引擎</h4><p>4 阶段洞察生成：种子提取 → 关联发现 → 洞察深化 → 金句提炼</p></div>
+      <div class="feature-item"><div class="feature-icon">A</div><h4>多引擎 ASR 容错</h4><p>Sherpa-ONNX 离线 + MiMo 在线双引擎自动切换，方言识别覆盖 27 种</p></div>
+      <div class="feature-item"><div class="feature-icon">E</div><h4>编辑团队协作</h4><p>8 角色 AI 写作班子：选题 / 素材 / 文章 / 审稿 / 查证 / 风格 / 整理 / 排版</p></div>
+      <div class="feature-item"><div class="feature-icon">P</div><h4>声纹识别</h4><p>说话人自动标记与登记，会议中区分不同发言者身份</p></div>
+      <div class="feature-item"><div class="feature-icon">R</div><h4>系统内录</h4><p>Android 10+ MediaProjection 系统音频捕获，录制播客/视频/直播声音</p></div>
+      <div class="feature-item"><div class="feature-icon">Q</div><h4>AI 自然语言搜索</h4><p>用日常语言搜索笔记，LLM 理解意图并按相关度排序返回结果</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== VOICE NOTE DEMO ===== -->
+<section id="voice-demo" class="voice-demo-section">
+  <div class="container">
+    <span class="section-label fade-in">Live Demo</span>
+    <h2 class="section-title fade-in">语音笔记：从录音到洞察，一步到位</h2>
+    <p class="section-desc fade-in">录音完成的那一刻，AI 已经帮你整理好了一切</p>
+
+    <div class="voice-note-card fade-in" id="voiceNoteCard">
+      <div class="vnc-inner">
+
+        <!-- Meta Header -->
+        <div class="vnc-header">
+          <h3 class="vnc-title">秋日露营：告白与心意</h3>
+          <div class="tag-row">
+            <span class="tag-pill system-tag"><span class="tag-dot"></span>ASR</span>
+            <span class="tag-pill">情感故事</span>
+            <span class="tag-pill">秋日出游</span>
+            <span class="tag-pill ai-tag">AI 总结就绪</span>
+          </div>
+        </div>
+
+        <!-- Waveform Player -->
+        <div class="waveform-player" id="waveformPlayer">
+          <div class="waveform-top-row">
+            <button class="play-btn" id="playBtn" aria-label="播放/暂停">
+              <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>
+            </button>
+            <div class="waveform-area" id="waveformArea">
+              <div class="progress-line" id="progressLine"></div>
+              <div class="waveform-bars" id="waveformBars"></div>
+            </div>
+            <span class="duration-label" id="durationLabel">21:58</span>
+          </div>
+          <div class="time-axis">
+            <span>0:00</span><span>5:10</span><span>10:20</span><span>15:30</span><span>21:58</span>
+          </div>
+        </div>
+
+        <!-- Tab Bar -->
+        <div class="tab-bar" id="tabBar">
+          <button class="tab-pill active" data-tab="content">笔记内容</button>
+          <button class="tab-pill" data-tab="source">链接原文</button>
+          <button class="tab-pill" data-tab="append">追加笔记</button>
+          <button class="tab-pill" data-tab="sprout">发芽报告</button>
+        </div>
+
+        <!-- Tab: 笔记内容 -->
+        <div class="tab-content active" id="tab-content">
+          <div class="voice-note-content">
+            <h3 class="section-label">智能总结</h3>
+
+            <div class="info-grid">
+              <div class="info-item"><span class="info-label">时长</span><span class="info-value">21分58秒</span></div>
+              <div class="info-item"><span class="info-label">类型</span><span class="info-value">广播剧 / 情感故事</span></div>
+              <div class="info-item"><span class="info-label">转写引擎</span><span class="info-value">Sherpa-ONNX (本地)</span></div>
+              <div class="info-item"><span class="info-label">字数</span><span class="info-value">3,888 字</span></div>
+            </div>
+
+            <div class="summary-block">
+              <p>本内容是多组女性友人的秋日互动故事，包含宅饮酒聊天、温泉旅馆告白、登山看星吃烧烤等场景。核心情感线围绕牡丹对伊吹的告白展开，从日常闲聊中逐渐酝酿的心意，到露天温泉中的真情流露，展现了细腻的情感变化。</p>
+            </div>
+
+            <!-- Chapter List -->
+            <div class="chapter-list" id="chapterList">
+              <div class="chapter-item" data-time="0">
+                <span class="chapter-time">[00:00:00]</span>
+                <span class="chapter-title">开场抒情歌词</span>
+              </div>
+              <div class="chapter-item" data-time="127">
+                <span class="chapter-time">[00:02:07]</span>
+                <span class="chapter-title">九条前辈到访伊吹家</span>
+              </div>
+              <div class="chapter-item" data-time="195">
+                <span class="chapter-time">[00:03:15]</span>
+                <span class="chapter-title">闲聊爱好与准备第一杯酒</span>
+              </div>
+              <div class="chapter-item" data-time="313">
+                <span class="chapter-time">[00:05:13]</span>
+                <span class="chapter-title">品酒与工作话题闲聊</span>
+              </div>
+              <div class="chapter-item" data-time="370">
+                <span class="chapter-time">[00:06:10]</span>
+                <span class="chapter-title">威士忌品鉴与饮食文化讨论</span>
+              </div>
+              <div class="chapter-item" data-time="429">
+                <span class="chapter-time">[00:07:09]</span>
+                <span class="chapter-title">实习想法与兴趣分享</span>
+              </div>
+              <div class="chapter-item" data-time="526">
+                <span class="chapter-time">[00:08:46]</span>
+                <span class="chapter-title">蜜酒品鉴与秋日闲谈</span>
+              </div>
+              <div class="chapter-item" data-time="631">
+                <span class="chapter-time">[00:10:31]</span>
+                <span class="chapter-title">出行安排与心情确认</span>
+              </div>
+              <div class="chapter-item active" data-time="715">
+                <span class="chapter-time">[00:11:55]</span>
+                <span class="chapter-title">出行准备与心意酝酿</span>
+                <p class="chapter-summary">牡丹在心里反复确认，自己对伊吹的感觉已经超出普通朋友...</p>
+              </div>
+              <div class="chapter-item" data-time="852">
+                <span class="chapter-time">[00:14:12]</span>
+                <span class="chapter-title">露天温泉告白</span>
+              </div>
+              <div class="chapter-item" data-time="937">
+                <span class="chapter-time">[00:15:37]</span>
+                <span class="chapter-title">高尾山山顶烧烤</span>
+              </div>
+              <div class="chapter-item" data-time="1018">
+                <span class="chapter-time">[00:17:04]</span>
+                <span class="chapter-title">烧烤后的休息安排</span>
+              </div>
+              <div class="chapter-item highlight" data-time="1158">
+                <span class="chapter-time">[00:19:18]</span>
+                <span class="chapter-title">露天温泉告白</span>
+                <p class="chapter-summary">牡丹说：哪怕是最好的朋友，能一起喝酒的次数也是有限的。我想要独占你。</p>
+              </div>
+              <div class="chapter-item" data-time="1318">
+                <span class="chapter-time">[00:21:58]</span>
+                <span class="chapter-title">结尾情感歌词</span>
+              </div>
+            </div>
+
+            <!-- Quotes -->
+            <h3 class="section-label">金句精选</h3>
+            <div class="quotes-grid">
+              <div class="quote-card">"お酒が一番楽しいんです。牡丹とお酒飲むのが楽しい。"</div>
+              <div class="quote-card">"だんだん実感してきた。大変な幸福。"</div>
+              <div class="quote-card highlight">"いくら仲がよくても、友達と飲める回数なんてたかが知れてる。私はあなたを独り占めしたいよ。"</div>
+              <div class="quote-card">"ワインが体を中から温めて、山の空気が外から冷ましてくれる。"</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: 链接原文 -->
+        <div class="tab-content" id="tab-source">
+          <div class="source-url-card">
+            <div class="url-favicon">音</div>
+            <div class="url-info">
+              <strong>秋日露营：告白与心意 - 原始音频</strong>
+              <span>file://local/storage/voice_notes/2025_autumn_camp_m4a</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: 追加笔记 -->
+        <div class="tab-content" id="tab-append">
+          <div class="empty-state">
+            <div class="empty-state-icon">&#9998;</div>
+            <p>暂无追加笔记<br><small style="opacity:0.6">在听这条录音时，随时可以添加你的想法和补充</small></p>
+          </div>
+        </div>
+
+        <!-- Tab: 发芽报告 -->
+        <div class="tab-content" id="tab-sprout">
+          <div class="sprout-status">
+            <div class="sprout-spinner"></div>
+            <div class="sprout-status-text">
+              <h4>Insight Sprout Engine 分析中...</h4>
+              <p>AI 正在分析这条笔记的知识关联，提取种子、发现连接、生成洞察</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ARCHITECTURE ===== -->
+<section id="architecture">
+  <div class="container">
+    <span class="section-label fade-in">Architecture</span>
+    <h2 class="section-title fade-in">技术架构</h2>
+    <p class="section-desc fade-in">从输入到输出，每一步都在你的设备上完成。</p>
+    <div class="arch-diagram fade-in">
+      <div class="arch-layer input-layer">
+        <div class="arch-label">Input Layer</div>
+        <div class="arch-items">
+          <span class="arch-chip">录音</span>
+          <span class="arch-chip">语音</span>
+          <span class="arch-chip">文字</span>
+          <span class="arch-chip">图片</span>
+          <span class="arch-chip">链接</span>
+          <span class="arch-chip">文件</span>
+        </div>
+      </div>
+      <div class="arch-arrow"></div>
+      <div class="arch-layer process-layer">
+        <div class="arch-label">Processing Layer (All Local)</div>
+        <div class="arch-items">
+          <span class="arch-chip">ASR Engine</span>
+          <span class="arch-chip">LLM Inference</span>
+          <span class="arch-chip">Memory System</span>
+          <span class="arch-chip">Insight Engine</span>
+          <span class="arch-chip">Voiceprint Match</span>
+        </div>
+      </div>
+      <div class="arch-arrow"></div>
+      <div class="arch-layer output-layer">
+        <div class="arch-label">Output Layer</div>
+        <div class="arch-items">
+          <span class="arch-chip">笔记</span>
+          <span class="arch-chip">会议纪要</span>
+          <span class="arch-chip">发芽报告</span>
+          <span class="arch-chip">导出 / 分享</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRIVACY (重写为优雅陈述) ===== -->
+<section id="privacy" class="privacy-section">
+  <div class="container">
+    <span class="section-label fade-in">Core Differentiator</span>
+    <h2 class="section-title fade-in" style="text-align:center;">隐私不是功能，是底线。</h2>
+    <p class="privacy-hero-text fade-in">你的每一次倾诉，<br>都留在你的设备里。</p>
+
+    <div class="privacy-statement fade-in">
+      <p>Opedrgent 的所有数据处理均在设备本地完成。语音转写由 Sherpa-ONNX 离线引擎或 MiMo 在线引擎处理，音频文件不会离开手机存储；AI 推理基于 LiteRT-LM 本地模型运行，对话内容不经过任何云端 API；记忆系统采用 SQLite 本地数据库构建的三层架构，笔记、向量索引与持久化记录全部存储于设备内部。</p>
+      <p>关闭应用后，所有处理即刻停止，不存在后台数据传输行为。用户的数据仅存在于其自有设备之上，不被用于任何形式的模型训练或服务改进。这是代码层面的保证，而非一纸隐私政策所能替代的承诺。</p>
+    </div>
+
+    <div class="privacy-quote fade-in">
+      <p>"只要你用 AI，本质上都是把自己的数据掏出来，到人家那去算。这一定是资源极其匮乏时代的方式。一旦门槛降下来，应该是 AI 到你的数据这里来算，算完走人。"</p>
+      <cite>-- 罗振宇，得到十周年 AI 知识发布会 2026.05.26</cite>
+    </div>
+
+    <p class="privacy-footer-note fade-in">真正的信任来自代码层面的保证，而非一纸隐私政策。</p>
+  </div>
+</section>
+
+<!-- ===== TECH SPECS ===== -->
+<section id="specs">
+  <div class="container">
+    <span class="section-label fade-in">Tech Specs</span>
+    <h2 class="section-title fade-in">技术规格一览</h2>
+    <p class="section-desc fade-in">Opedrgent 的全链路本地化能力。</p>
+    <div class="specs-table-wrap fade-in">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:28%">能力维度</th>
+            <th style="width:72%">实现方式</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>语音转写</td>
+            <td>Sherpa-ONNX 离线 + MiMo 在线双引擎，27 种汉语方言，设备端完成</td>
+          </tr>
+          <tr>
+            <td>AI 对话推理</td>
+            <td>LiteRT-LM 本地模型推理，不调用任何云端 API，支持离线</td>
+          </tr>
+          <tr>
+            <td>数据存储</td>
+            <td>SQLite 本地数据库，三层记忆架构（内存 + 向量 + 持久化）</td>
+          </tr>
+          <tr>
+            <td>语音交互</td>
+            <td>全双工 AudioEngine，硬件 AEC 回声消除，VAD 语音检测，BargeIn 抢话</td>
+          </tr>
+          <tr>
+            <td>知识挖掘</td>
+            <td>4 阶段 Insight Sprout Engine，种子 → 关联 → 洞察 → 金句</td>
+          </tr>
+          <tr>
+            <td>系统音频捕获</td>
+            <td>MediaProjection API（Android 10+），AudioPlaybackCaptureConfig</td>
+          </tr>
+          <tr>
+            <td>开发框架</td>
+            <td>Kotlin + Jetpack Compose，Material3 UI，手动 DI 架构</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+    <div class="brand">Opedrgent</div>
+    <p class="tagline">Your AI Second Brain, On Device.</p>
+    <p class="tech-stack">Kotlin &middot; Jetpack Compose &middot; Sherpa-ONNX &middot; MiMo ASR &middot; LiteRT-LM &middot; SQLite</p>
+    <p class="author-note">Powered by BI4MIB</p>
+  </div>
+</footer>
+
+<script>
+  // IntersectionObserver for scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  document.querySelectorAll('.fade-in, .solution-card, .feature-item').forEach(el => {
+    observer.observe(el);
+  });
+
+  // Smooth scroll for CTA
+  document.querySelector('.hero-cta').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.querySelector('#problem').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // Mouse-follow refraction effect on cards with data-tilt attribute
+  document.querySelectorAll('[data-tilt]').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      // Calculate rotation based on mouse position (subtle tilt)
+      const rotateX = ((y - centerY) / centerY) * -3;
+      const rotateY = ((x - centerX) / centerX) * 3;
+
+      card.style.transform = `translateY(-8px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+
+      // Update refraction gradient angle based on mouse position
+      const angle = Math.atan2(y - centerY, x - centerX) * (180 / Math.PI) + 135;
+      const beforeEl = card.querySelector('::before');
+      if (card.style.setProperty) {
+        card.style.setProperty('--refraction-angle', `${angle}deg`);
+      }
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'translateY(0)';
+      card.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    });
+
+    card.addEventListener('mouseenter', () => {
+      card.style.transition = 'transform 0.1s ease';
+    });
+  });
+</script>
+
+<script>
+// ===== Voice Note Demo Interactive Logic =====
+(function() {
+  const TOTAL_DURATION = 1318; // seconds (21:58)
+  let isPlaying = false;
+  let currentTime = 715; // default to active chapter position
+  let playInterval = null;
+
+  // DOM refs
+  const playBtn = document.getElementById('playBtn');
+  const waveformArea = document.getElementById('waveformArea');
+  const waveformBars = document.getElementById('waveformBars');
+  const progressLine = document.getElementById('progressLine');
+  const durationLabel = document.getElementById('durationLabel');
+  const chapterList = document.getElementById('chapterList');
+  const tabBar = document.getElementById('tabBar');
+
+  // ---- Generate waveform bars ----
+  function generateWaveform() {
+    const barCount = 80;
+    waveformBars.innerHTML = '';
+    for (let i = 0; i < barCount; i++) {
+      const bar = document.createElement('div');
+      bar.className = 'w-bar';
+      // Simulate varied heights with some randomness
+      const baseHeight = 8 + Math.random() * 32;
+      // Add some "peaks" at specific positions to look like real audio
+      const peakFactor = (i > 40 && i < 55) ? 1.4 : 1; // highlight area around confession scene
+      bar.style.height = (baseHeight * peakFactor) + 'px';
+      waveformBars.appendChild(bar);
+    }
+    updateWaveformDisplay();
+  }
+
+  // ---- Format time mm:ss ----
+  function formatTime(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  // ---- Update waveform visual state based on current time ----
+  function updateWaveformDisplay() {
+    const bars = waveformBars.querySelectorAll('.w-bar');
+    const ratio = currentTime / TOTAL_DURATION;
+    const playedCount = Math.floor(ratio * bars.length);
+
+    bars.forEach((bar, i) => {
+      bar.classList.remove('played', 'active-chapter');
+      if (i < playedCount) {
+        bar.classList.add('played');
+      }
+      if (i === playedCount && i < bars.length) {
+        bar.classList.add('active-chapter');
+      }
+    });
+
+    progressLine.style.left = (ratio * 100) + '%';
+    durationLabel.textContent = formatTime(currentTime) + ' / 21:58';
+  }
+
+  // ---- Highlight the chapter that matches current time ----
+  function highlightActiveChapter() {
+    const chapters = chapterList.querySelectorAll('.chapter-item');
+    let activeChapter = null;
+    let closestDiff = Infinity;
+
+    chapters.forEach(ch => {
+      ch.classList.remove('active');
+      const t = parseInt(ch.dataset.time, 10);
+      if (t <= currentTime) {
+        const diff = currentTime - t;
+        if (diff < closestDiff) {
+          closestDiff = diff;
+          activeChapter = ch;
+        }
+      }
+    });
+
+    if (activeChapter) {
+      activeChapter.classList.add('active');
+    }
+  }
+
+  // ---- Seek to time position ----
+  function seekTo(timeSeconds) {
+    currentTime = Math.max(0, Math.min(TOTAL_DURATION, timeSeconds));
+    updateWaveformDisplay();
+    highlightActiveChapter();
+  }
+
+  // ---- Play/Pause toggle ----
+  function togglePlay() {
+    isPlaying = !isPlaying;
+    playBtn.classList.toggle('playing', isPlaying);
+
+    if (isPlaying) {
+      playInterval = setInterval(() => {
+        currentTime += 0.15; // advance ~150ms per tick for smooth animation
+        if (currentTime >= TOTAL_DURATION) {
+          currentTime = 0;
+        }
+        updateWaveformDisplay();
+        highlightActiveChapter();
+      }, 150);
+    } else {
+      clearInterval(playInterval);
+      playInterval = null;
+    }
+  }
+
+  // ---- Tab switching ----
+  function switchTab(tabId) {
+    // Update pills
+    tabBar.querySelectorAll('.tab-pill').forEach(pill => {
+      pill.classList.toggle('active', pill.dataset.tab === tabId);
+    });
+    // Update content panels
+    document.querySelectorAll('.tab-content').forEach(content => {
+      content.classList.toggle('active', content.id === 'tab-' + tabId);
+    });
+  }
+
+  // ---- Event Listeners ----
+
+  // Play button
+  if (playBtn) {
+    playBtn.addEventListener('click', togglePlay);
+  }
+
+  // Waveform click-to-seek
+  if (waveformArea) {
+    waveformArea.addEventListener('click', (e) => {
+      const rect = waveformArea.getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      seekTo(ratio * TOTAL_DURATION);
+    });
+  }
+
+  // Chapter click-to-seek
+  if (chapterList) {
+    chapterList.addEventListener('click', (e) => {
+      const item = e.target.closest('.chapter-item');
+      if (item) {
+        seekTo(parseInt(item.dataset.time, 10));
+      }
+    });
+  }
+
+  // Tab bar click
+  if (tabBar) {
+    tabBar.addEventListener('click', (e) => {
+      const pill = e.target.closest('.tab-pill');
+      if (pill && pill.dataset.tab) {
+        switchTab(pill.dataset.tab);
+      }
+    });
+  }
+
+  // Initialize
+  generateWaveform();
+  highlightActiveChapter();
+
+  // Register fade-in elements with observer
+  const demoObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+  document.querySelectorAll('#voice-demo .fade-in').forEach(el => {
+    demoObserver.observe(el);
+  });
+})();
+</script>
+
+<!-- ===== Liquid Glass Optical Refraction (shuding/liquid-glass) ===== -->
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:fixed;pointer-events:none">
+  <defs>
+    <filter id="lg-refraction" filterUnits="userSpaceOnUse" x="0" y="0" width="400" height="300" colorInterpolationFilters="sRGB">
+      <feImage id="lg-displacement-map" width="400" height="300" />
+      <feDisplacementMap in="SourceGraphic" in2="lg-displacement-map" xChannelSelector="R" yChannelSelector="G" scale="30" />
+    </filter>
+  </defs>
+</svg>
+
+<script>
+// Liquid Glass Refraction Engine
+// Based on shuding/liquid-glass SVG feDisplacementMap technique
+(function() {
+  function generateDisplacementMap(width, height) {
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    const imgData = ctx.createImageData(width, height);
+    const data = imgData.data;
+
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const u = x / width;
+        const v = y / height;
+
+        // Normalized coordinates centered at origin
+        const nx = (u - 0.5) * 2;
+        const nv = (v - 0.5) * 2;
+
+        // Rounded rectangle SDF
+        const rectW = 0.85, rectH = 0.7, radius = 0.15;
+        const qx = Math.abs(nx) - rectW + radius;
+        const qv = Math.abs(nv) - rectH + radius;
+        const sdf = Math.min(Math.max(qx, qv), 0) + Math.hypot(Math.max(qx, 0), Math.max(qv, 0)) - radius;
+
+        // Edge inflation effect: closer to edge = more displacement
+        const edgeFactor = Math.max(0, 1 - sdf / 0.18);
+        const smoothEdge = edgeFactor * edgeFactor * (3 - 2 * edgeFactor); // smoothstep
+
+        // Radial displacement: push outward from center
+        const angle = Math.atan2(nv, nx);
+        const pushStrength = smoothEdge * 0.12;
+        const dx = Math.cos(angle) * pushStrength;
+        const dy = Math.sin(angle) * pushStrength;
+
+        // Subtle noise for natural refraction
+        const noise = (Math.sin(u * 40) * Math.cos(v * 30) + Math.sin(u * 15 + v * 20)) * 0.008;
+
+        const i = (y * width + x) * 4;
+        data[i]     = Math.round((dx + noise + 0.5) * 255);         // R = X displacement
+        data[i + 1] = Math.round((dy + noise * 0.7 + 0.5) * 255);   // G = Y displacement
+        data[i + 2] = 0;                                             // B = 0
+        data[i + 3] = 255;                                           // A = fully opaque
+      }
+    }
+
+    ctx.putImageData(imgData, 0, 0);
+    return canvas.toDataURL('image/png');
+  }
+
+  function applyLiquidGlass() {
+    const filter = document.getElementById('lg-refraction');
+    const feImage = document.getElementById('lg-displacement-map');
+    if (!filter || !feImage) return;
+
+    // Generate 400x300 displacement map
+    const mapUrl = generateDisplacementMap(400, 300);
+    feImage.setAttributeNS('http://www.w3.org/1999/xlink', 'href', mapUrl);
+
+    // Mark as active for CSS enhancement layer
+    document.documentElement.classList.add('liquid-glass-active');
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyLiquidGlass);
+  } else {
+    applyLiquidGlass();
+  }
+})();
+</script>
+</body>
+</html>
