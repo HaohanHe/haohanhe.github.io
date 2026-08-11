@@ -3,36 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Opedrgent - 主动型 AI 第二大脑</title>
-<meta name="description" content="Opedrgent 是一款开源 Android AI 第二大脑，集多模型对话、全双工语音、知识发芽、海马记忆、卫星通信、技能系统、20+ 工具调用、日历健康数据集成于一体。AI 不应该被动等待提问，你的言行本身就是提问。">
-<meta property="og:title" content="Opedrgent - 主动型 AI 第二大脑">
+<title>Opedrgent — 主动型 AI 第二大脑</title>
+<meta name="description" content="Opedrgent 是一款开源 Android AI 第二大脑。117,527 行 Kotlin，332 个文件，集多模型对话、全双工语音、知识发芽、海马记忆、卫星通信、技能系统、20+ 工具调用于一体。AI 不该被动等待提问——你的言行本身就是提问。">
+<meta name="keywords" content="Opedrgent, AI, Android, 开源, 第二大脑, 语音助手, 本地大模型, 业余无线电, 卫星通信">
+<meta property="og:title" content="Opedrgent — 主动型 AI 第二大脑">
 <meta property="og:description" content="颗粒归仓，向前一步。一款让 AI 主动帮助你的 Android 开源应用。">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://hsyscn.top/Opedrgent.html">
+<meta name="author" content="BI4MIB 何浩瀚">
+<meta name="theme-color" content="#007AFF">
+<link rel="preconnect" href="https://unpkg.com">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Opedrgent",
+  "applicationCategory": "ProductivityApplication",
+  "operatingSystem": "Android 8.0+",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" },
+  "license": "MIT",
+  "codeRepository": "https://github.com/HaohanHe/Opedrgent"
+}
+</script>
 <style>
   :root {
     --bg: #ffffff;
-    --bg-secondary: #fafafa;
-    --bg-tertiary: #f5f5f7;
+    --bg-secondary: #f5f5f7;
+    --bg-tertiary: #fafafa;
     --text-primary: #1d1d1f;
     --text-secondary: #6e6e73;
     --text-tertiary: #86868b;
-    --accent: #007AFF;
-    --accent-hover: #0066D6;
-    --purple: #AF52DE;
+    --accent: #0071e3;
+    --accent-hover: #0077ed;
+    --accent-light: rgba(0, 113, 227, 0.08);
+    --purple: #6e56cf;
     --cyan: #32ADE6;
-    --pink: #FF375F;
     --green: #30D158;
-    --orange: #FF9500;
-    --glass-bg: rgba(255, 255, 255, 0.18);
-    --glass-border: rgba(255, 255, 255, 0.28);
-    --glass-highlight: rgba(255, 255, 255, 0.25);
-    --glass-shadow-outer: 0 8px 32px rgba(0, 0, 0, 0.06);
-    --glass-shadow-inner-top: inset 0 1px 2px rgba(255, 255, 255, 0.5);
-    --glass-shadow-inner-bottom: inset 0 -1px 2px rgba(0, 0, 0, 0.04);
-    --radius: 20px;
-    --radius-sm: 12px;
-    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'PingFang SC', sans-serif;
-    --spring-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --glass-bg: rgba(255, 255, 255, 0.72);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.8);
+    --radius: 22px;
+    --radius-sm: 14px;
+    --radius-xs: 10px;
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --font-mono: 'SF Mono', 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -44,393 +61,518 @@
       --text-tertiary: #6e6e73;
       --accent: #0A84FF;
       --accent-hover: #409CFF;
-      --glass-bg: rgba(30, 30, 32, 0.55);
-      --glass-border: rgba(255, 255, 255, 0.12);
-      --glass-highlight: rgba(255, 255, 255, 0.06);
-      --glass-shadow-outer: 0 8px 32px rgba(0, 0, 0, 0.18);
-      --glass-shadow-inner-top: inset 0 1px 2px rgba(255, 255, 255, 0.15);
-      --glass-shadow-inner-bottom: inset 0 -1px 2px rgba(0, 0, 0, 0.12);
+      --accent-light: rgba(10, 132, 255, 0.15);
+      --glass-bg: rgba(30, 30, 32, 0.72);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.08);
     }
   }
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-  body { font-family: var(--font); background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text-primary); line-height: 1.5; overflow-x: hidden; }
   .container { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+  .lucide { width: 24px; height: 24px; stroke-width: 1.75; flex-shrink: 0; }
+  h1, h2, h3, h4 { text-wrap: balance; }
+  p { text-wrap: pretty; }
 
-  /* SVG 图标通用 */
-  .icon { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
-
-  .liquid-glass {
-    backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
-    -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow-outer), var(--glass-shadow-inner-top), var(--glass-shadow-inner-bottom);
-    position: relative; overflow: hidden;
+  /* ===== Nav ===== */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--glass-bg); backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--glass-border);
+    transition: all 0.3s var(--ease-out);
   }
-  .liquid-glass::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 50%; border-radius: inherit;
-    background: linear-gradient(135deg, var(--glass-highlight) 0%, rgba(255,255,255,0.05) 50%, transparent 100%);
-    pointer-events: none; z-index: 1; transition: all 0.4s var(--spring-ease);
+  .nav-inner {
+    max-width: 980px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between; height: 52px;
   }
+  .nav-logo {
+    font-size: 17px; font-weight: 600; letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--text-primary), var(--accent));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a {
+    font-size: 13px; color: var(--text-secondary); text-decoration: none;
+    transition: color 0.2s; font-weight: 400;
+  }
+  .nav-links a:hover { color: var(--text-primary); }
+  .nav-cta {
+    font-size: 13px !important; padding: 6px 14px; background: var(--accent); color: #fff !important;
+    border-radius: 100px; font-weight: 500 !important;
+  }
+  .nav-cta:hover { background: var(--accent-hover); color: #fff !important; }
+  @media (max-width: 640px) { .nav-links a:not(.nav-cta) { display: none; } }
 
   /* ===== Hero ===== */
   .hero {
-    min-height: 92vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 80px 24px; position: relative; overflow: hidden;
+    min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 120px 24px 80px; position: relative; overflow: hidden;
   }
-  .hero-orb { position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none; }
-  .hero-orb-1 { width: 520px; height: 520px; top: -120px; right: -140px;
-    background: radial-gradient(circle at 35% 35%, rgba(0,122,255,0.18), rgba(175,82,222,0.12) 45%, transparent 70%);
-    animation: floatOrb 14s ease-in-out infinite; }
-  .hero-orb-2 { width: 400px; height: 400px; bottom: -80px; left: -100px;
-    background: radial-gradient(circle at 65% 65%, rgba(50,173,230,0.14), rgba(255,55,95,0.08) 50%, transparent 65%);
-    animation: floatOrb 18s ease-in-out infinite reverse; }
-  .hero-orb-3 { width: 280px; height: 280px; top: 40%; left: 45%;
-    background: radial-gradient(circle at 50% 50%, rgba(175,82,222,0.08), transparent 60%);
-    animation: floatOrb 22s ease-in-out infinite 3s; }
+  .hero-orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; opacity: 0.6; }
+  .hero-orb-1 { width: 600px; height: 600px; top: -200px; right: -200px;
+    background: radial-gradient(circle, rgba(0,113,227,0.15), transparent 70%);
+    animation: floatOrb 16s ease-in-out infinite; }
+  .hero-orb-2 { width: 500px; height: 500px; bottom: -150px; left: -150px;
+    background: radial-gradient(circle, rgba(110,86,207,0.12), transparent 70%);
+    animation: floatOrb 20s ease-in-out infinite reverse; }
   @keyframes floatOrb {
     0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(35px, -25px) scale(1.08); }
-    66% { transform: translate(-20px, 28px) scale(0.94); }
+    50% { transform: translate(40px, -30px) scale(1.1); }
   }
   .hero-badge {
-    display: inline-block; padding: 7px 18px; font-size: 13px; font-weight: 500; color: var(--accent);
-    background: var(--glass-bg); backdrop-filter: blur(16px) saturate(150%); -webkit-backdrop-filter: blur(16px) saturate(150%);
-    border: 1px solid var(--glass-border); border-radius: 100px; letter-spacing: 0.02em; margin-bottom: 28px;
-    position: relative; z-index: 1; transition: all 0.4s var(--spring-ease);
+    display: inline-flex; align-items: center; gap: 7px; padding: 7px 16px; font-size: 13px; font-weight: 500;
+    color: var(--accent); background: var(--accent-light); border: 1px solid rgba(0,113,227,0.15);
+    border-radius: 100px; margin-bottom: 28px; position: relative; z-index: 1;
+    animation: fadeInDown 0.8s var(--ease-out) both;
   }
-  .hero-badge:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,122,255,0.15); }
+  .hero-badge .lucide { width: 13px; height: 13px; }
   .hero h1 {
-    font-size: clamp(48px, 9vw, 82px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05;
-    background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-primary) 35%, var(--accent) 55%, var(--purple) 75%, var(--cyan) 100%);
+    font-size: clamp(52px, 10vw, 88px); font-weight: 700; letter-spacing: -0.035em; line-height: 1.05;
+    background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent) 60%, var(--purple) 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    position: relative; z-index: 1; margin-bottom: 20px;
+    position: relative; z-index: 1; margin-bottom: 16px;
+    animation: fadeInUp 0.9s var(--ease-out) 0.1s both;
   }
   .hero-tagline {
-    font-size: clamp(22px, 4vw, 34px); font-weight: 300; color: var(--text-secondary);
-    letter-spacing: -0.01em; line-height: 1.3; position: relative; z-index: 1; margin-bottom: 14px;
+    font-size: clamp(24px, 4.5vw, 38px); font-weight: 300; color: var(--text-primary);
+    letter-spacing: -0.015em; line-height: 1.25; position: relative; z-index: 1; margin-bottom: 18px;
+    animation: fadeInUp 0.9s var(--ease-out) 0.2s both;
   }
+  .hero-tagline strong { font-weight: 600; color: var(--accent); }
   .hero-sub {
-    font-size: 17px; color: var(--text-tertiary); max-width: 560px; margin: 0 auto 40px;
-    line-height: 1.55; position: relative; z-index: 1;
+    font-size: 18px; color: var(--text-secondary); max-width: 580px; margin: 0 auto 40px;
+    line-height: 1.6; position: relative; z-index: 1;
+    animation: fadeInUp 0.9s var(--ease-out) 0.3s both;
   }
-  .hero-cta-group { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; position: relative; z-index: 1; }
-  .hero-cta {
-    display: inline-flex; align-items: center; gap: 8px; padding: 14px 36px; background: var(--accent);
-    color: #fff; font-size: 17px; font-weight: 500; border-radius: 100px; text-decoration: none;
-    transition: all 0.5s var(--spring-ease); cursor: pointer; border: none; outline: none;
+  .hero-cta-group {
+    display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; position: relative; z-index: 1;
+    animation: fadeInUp 0.9s var(--ease-out) 0.4s both;
   }
-  .hero-cta:hover { background: var(--accent-hover); transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 36px rgba(0,122,255,0.28); }
-  .hero-cta:active { transform: translateY(0) scale(0.97); }
-  .hero-cta-secondary {
-    display: inline-flex; align-items: center; gap: 8px; padding: 14px 36px;
-    background: var(--glass-bg); color: var(--text-primary); font-size: 17px; font-weight: 500;
-    border-radius: 100px; text-decoration: none; border: 1px solid var(--glass-border);
-    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    transition: all 0.5s var(--spring-ease); cursor: pointer;
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; font-size: 17px; font-weight: 500;
+    border-radius: 100px; text-decoration: none; transition: all 0.4s var(--spring); cursor: pointer; border: none; outline: none;
   }
-  .hero-cta-secondary:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.08); }
+  .btn .lucide { width: 18px; height: 18px; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,113,227,0.3); }
+  .btn-secondary { background: var(--glass-bg); color: var(--text-primary); border: 1px solid var(--glass-border); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+  .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+
+  /* ===== Stats Bar ===== */
+  .stats-bar {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    max-width: 720px; margin: 64px auto 0; position: relative; z-index: 1;
+    animation: fadeInUp 0.9s var(--ease-out) 0.5s both;
+  }
+  .stat-item { text-align: center; padding: 0 16px; border-right: 1px solid var(--glass-border); }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-size: clamp(28px, 5vw, 40px); font-weight: 700; letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--accent), var(--purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    line-height: 1.1;
+  }
+  .stat-label { font-size: 12px; color: var(--text-tertiary); margin-top: 4px; letter-spacing: 0.02em; }
+  @media (max-width: 640px) {
+    .stats-bar { grid-template-columns: repeat(2, 1fr); gap: 24px 0; }
+    .stat-item:nth-child(2) { border-right: none; }
+  }
 
   /* ===== Section Base ===== */
-  section { padding: 100px 0; position: relative; }
+  section { padding: 110px 0; position: relative; }
   section:nth-child(even) { background: var(--bg-secondary); }
+  .section-header { margin-bottom: 56px; }
   .section-label {
-    display: inline-block; font-size: 13px; font-weight: 600; color: var(--accent);
-    letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px;
+    display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600;
+    color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 12px;
   }
+  .section-label .lucide { width: 14px; height: 14px; }
   .section-title {
-    font-size: clamp(32px, 5vw, 48px); font-weight: 700; letter-spacing: -0.025em;
-    line-height: 1.15; color: var(--text-primary); margin-bottom: 20px;
+    font-size: clamp(34px, 5.5vw, 52px); font-weight: 700; letter-spacing: -0.025em;
+    line-height: 1.1; color: var(--text-primary); margin-bottom: 16px;
   }
-  .section-desc { font-size: 19px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; }
+  .section-desc { font-size: 19px; color: var(--text-secondary); max-width: 680px; line-height: 1.6; font-weight: 400; }
 
-  /* ===== Quote Block ===== */
+  /* ===== Quote ===== */
   .quote-block {
-    margin-top: 48px; padding: 44px 40px; border-radius: var(--radius);
-    backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
-    -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
-    background: var(--glass-bg); border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow-outer), var(--glass-shadow-inner-top), var(--glass-shadow-inner-bottom);
+    margin-top: 48px; padding: 40px 36px; border-radius: var(--radius);
+    background: var(--glass-bg); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow);
     position: relative; overflow: hidden;
   }
   .quote-block::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 50%; border-radius: inherit;
-    background: linear-gradient(135deg, var(--glass-highlight) 0%, rgba(255,255,255,0.05) 50%, transparent 100%);
-    pointer-events: none; z-index: 1;
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(180deg, var(--accent), var(--purple));
   }
-  .quote-block::after {
-    content: ''; position: absolute; left: 0; top: 10%; bottom: 10%; width: 3px; border-radius: 2px;
-    background: linear-gradient(180deg, var(--accent) 0%, var(--purple) 50%, var(--cyan) 100%); opacity: 0.7;
-  }
+  .quote-icon { position: absolute; top: 24px; right: 28px; opacity: 0.1; color: var(--accent); }
+  .quote-icon .lucide { width: 40px; height: 40px; }
   .quote-block p {
-    font-size: 21px; font-weight: 400; line-height: 1.65; color: var(--text-primary);
-    font-style: italic; position: relative; z-index: 2; padding-left: 20px;
+    font-size: 20px; font-weight: 400; line-height: 1.65; color: var(--text-primary);
+    font-style: italic; padding-left: 16px; position: relative; z-index: 1;
   }
   .quote-block cite {
-    display: block; margin-top: 18px; font-size: 15px; color: var(--text-tertiary);
-    font-style: normal; position: relative; z-index: 2; padding-left: 20px;
+    display: block; margin-top: 16px; font-size: 14px; color: var(--text-tertiary);
+    font-style: normal; padding-left: 16px; position: relative; z-index: 1;
   }
 
   /* ===== Concept Cards ===== */
   .concept-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 56px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 56px;
   }
   .concept-card {
-    border-radius: var(--radius); padding: 38px 30px;
-    backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
-    -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
-    background: var(--glass-bg); border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow-outer), var(--glass-shadow-inner-top), var(--glass-shadow-inner-bottom);
-    position: relative; overflow: hidden; transition: all 0.5s var(--spring-ease);
-    opacity: 0; transform: translateY(30px);
-  }
-  .concept-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 50%; border-radius: inherit;
-    background: linear-gradient(135deg, var(--glass-highlight) 0%, rgba(255,255,255,0.04) 50%, transparent 100%);
-    pointer-events: none; z-index: 1; transition: all 0.4s var(--spring-ease);
+    border-radius: var(--radius); padding: 36px 28px; background: var(--glass-bg);
+    border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow);
+    position: relative; overflow: hidden; transition: all 0.5s var(--spring);
+    opacity: 0; transform: translateY(24px);
   }
   .concept-card.visible { opacity: 1; transform: translateY(0); }
-  .concept-card:hover {
-    transform: translateY(-8px); box-shadow: 0 16px 48px rgba(0,0,0,0.1), inset 0 1px 3px rgba(255,255,255,0.6), inset 0 -1px 3px rgba(0,0,0,0.06);
-    border-color: rgba(255,255,255,0.38);
-  }
+  .concept-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
   .concept-icon {
-    width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
-    font-size: 22px; margin-bottom: 22px; position: relative; z-index: 2;
+    width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px; background: var(--accent-light); color: var(--accent);
   }
-  .concept-card h3 {
-    font-size: 19px; font-weight: 600; margin-bottom: 10px; letter-spacing: -0.01em; position: relative; z-index: 2;
-  }
-  .concept-card p { font-size: 15px; color: var(--text-secondary); line-height: 1.65; position: relative; z-index: 2; }
+  .concept-icon .lucide { width: 24px; height: 24px; }
+  .concept-card h3 { font-size: 20px; font-weight: 600; margin-bottom: 10px; letter-spacing: -0.01em; }
+  .concept-card p { font-size: 15px; color: var(--text-secondary); line-height: 1.65; }
+  @media (max-width: 768px) { .concept-grid { grid-template-columns: 1fr; } }
 
-  /* ===== Features Grid ===== */
-  .features-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-top: 56px;
+  /* ===== Bento Grid (Features) ===== */
+  .bento-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 56px;
   }
-  .feature-item {
-    padding: 28px 24px; border-radius: var(--radius-sm);
-    backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%);
-    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.16);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.03); transition: all 0.5s var(--spring-ease);
-    opacity: 0; transform: translateY(20px); position: relative; overflow: hidden;
+  .bento-item {
+    padding: 28px 24px; border-radius: var(--radius-sm); background: var(--glass-bg);
+    border: 1px solid var(--glass-border); transition: all 0.4s var(--spring);
+    opacity: 0; transform: translateY(16px);
   }
-  .feature-item.visible { opacity: 1; transform: translateY(0); }
-  .feature-item:hover { transform: translateY(-4px); background: rgba(255,255,255,0.15); }
-  .feature-icon {
-    width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
-    margin-bottom: 14px; font-size: 22px; color: var(--accent);
+  .bento-item.visible { opacity: 1; transform: translateY(0); }
+  .bento-item:hover { transform: translateY(-3px); border-color: rgba(0,113,227,0.2); }
+  .bento-item.wide { grid-column: span 2; }
+  .bento-item.tall { grid-row: span 2; }
+  .bento-icon {
+    width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px; background: var(--accent-light); color: var(--accent);
   }
-  .feature-item h4 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
-  .feature-item p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+  .bento-icon .lucide { width: 18px; height: 18px; }
+  .bento-item h4 { font-size: 16px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .bento-item p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+  .bento-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .bento-tag { font-size: 11px; padding: 3px 9px; background: var(--accent-light); color: var(--accent); border-radius: 100px; font-weight: 500; }
+  @media (max-width: 768px) {
+    .bento-grid { grid-template-columns: 1fr; }
+    .bento-item.wide, .bento-item.tall { grid-column: span 1; grid-row: span 1; }
+  }
 
-  /* ===== Highlight Section ===== */
-  .highlight-section {
-    padding: 80px 0; position: relative; overflow: hidden;
-  }
-  .highlight-bg {
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(0,122,255,0.04) 0%, rgba(175,82,222,0.03) 50%, rgba(50,173,230,0.04) 100%);
-  }
-  .highlight-content { position: relative; z-index: 1; }
+  /* ===== Highlight (Ham) ===== */
   .highlight-row {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-bottom: 80px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-bottom: 100px;
   }
   .highlight-row:last-child { margin-bottom: 0; }
   .highlight-row.reverse { direction: rtl; }
   .highlight-row.reverse > * { direction: ltr; }
   .highlight-text h3 {
-    font-size: clamp(26px, 4vw, 36px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 16px; line-height: 1.2;
+    font-size: clamp(28px, 4vw, 40px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 16px; line-height: 1.15;
   }
-  .highlight-text p { font-size: 17px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 14px; }
-  .highlight-text ul { list-style: none; padding: 0; }
-  .highlight-text li {
-    font-size: 15px; color: var(--text-secondary); padding: 8px 0; padding-left: 24px; position: relative;
+  .highlight-text > p { font-size: 17px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 20px; }
+  .highlight-list { list-style: none; padding: 0; }
+  .highlight-list li {
+    font-size: 15px; color: var(--text-secondary); padding: 10px 0 10px 32px; position: relative; line-height: 1.5;
   }
-  .highlight-text li::before {
-    content: ''; position: absolute; left: 0; top: 16px; width: 8px; height: 8px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), var(--purple));
+  .highlight-list li::before {
+    content: ''; position: absolute; left: 0; top: 14px; width: 20px; height: 20px;
+    background: var(--accent-light); border-radius: 50%;
+  }
+  .highlight-list li::after {
+    content: ''; position: absolute; left: 6px; top: 20px; width: 8px; height: 4px;
+    border-left: 2px solid var(--accent); border-bottom: 2px solid var(--accent); transform: rotate(-45deg);
   }
   .highlight-visual {
-    border-radius: var(--radius); padding: 40px; min-height: 280px;
-    backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
-    -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
-    background: var(--glass-bg); border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow-outer), var(--glass-shadow-inner-top), var(--glass-shadow-inner-bottom);
+    border-radius: var(--radius); padding: 36px; min-height: 300px;
+    background: var(--glass-bg); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow);
     position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center;
   }
-  .highlight-visual::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 50%; border-radius: inherit;
-    background: linear-gradient(135deg, var(--glass-highlight) 0%, rgba(255,255,255,0.04) 50%, transparent 100%);
-    pointer-events: none; z-index: 1;
-  }
   .visual-tag {
-    display: inline-block; padding: 5px 14px; font-size: 12px; font-weight: 600; border-radius: 100px;
-    margin-bottom: 16px; position: relative; z-index: 2; width: fit-content;
+    display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; font-size: 11px; font-weight: 600;
+    border-radius: 100px; margin-bottom: 18px; width: fit-content; letter-spacing: 0.03em;
   }
+  .visual-tag .lucide { width: 12px; height: 12px; }
   .visual-title {
-    font-size: 22px; font-weight: 700; margin-bottom: 12px; position: relative; z-index: 2;
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.01em;
   }
-  .visual-desc { font-size: 15px; color: var(--text-secondary); line-height: 1.6; position: relative; z-index: 2; }
-  .visual-stats {
-    display: flex; gap: 24px; margin-top: 20px; position: relative; z-index: 2; flex-wrap: wrap;
+  .visual-title .lucide { width: 24px; height: 24px; }
+  .visual-desc { font-size: 15px; color: var(--text-secondary); line-height: 1.65; }
+  .visual-stats { display: flex; gap: 28px; margin-top: 24px; flex-wrap: wrap; }
+  .visual-stat-num {
+    font-size: 30px; font-weight: 700; letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--accent), var(--purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.1;
   }
-  .visual-stat { text-align: left; }
-  .visual-stat-num { font-size: 28px; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   .visual-stat-label { font-size: 12px; color: var(--text-tertiary); margin-top: 2px; }
+  @media (max-width: 768px) {
+    .highlight-row { grid-template-columns: 1fr; gap: 32px; }
+    .highlight-row.reverse { direction: ltr; }
+  }
 
-  /* ===== Demo Section ===== */
+  /* ===== Code Block ===== */
+  .code-section { padding: 110px 0; }
+  .code-block {
+    margin-top: 48px; border-radius: var(--radius); overflow: hidden;
+    background: #1d1d1f; border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+  .code-header {
+    display: flex; align-items: center; gap: 8px; padding: 14px 20px;
+    background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .code-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .code-dot.red { background: #ff5f57; }
+  .code-dot.yellow { background: #febc2e; }
+  .code-dot.green { background: #28c840; }
+  .code-title { margin-left: 12px; font-size: 13px; color: rgba(255,255,255,0.5); font-family: var(--font-mono); }
+  .code-body { padding: 24px 28px; font-family: var(--font-mono); font-size: 14px; line-height: 1.8; overflow-x: auto; }
+  .code-body .comment { color: #6e6e73; }
+  .code-body .cmd { color: #30D158; }
+  .code-body .path { color: #32ADE6; }
+  .code-body .string { color: #ff9f0a; }
+  .code-body .key { color: #bf5af2; }
+
+  /* ===== Timeline ===== */
+  .timeline { margin-top: 56px; position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px;
+    background: linear-gradient(180deg, var(--accent), var(--purple), transparent); opacity: 0.3;
+  }
+  .timeline-item { position: relative; padding-bottom: 36px; }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -32px; top: 6px; width: 16px; height: 16px;
+    border-radius: 50%; background: var(--bg); border: 3px solid var(--accent);
+  }
+  .timeline-version { font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 4px; font-family: var(--font-mono); }
+  .timeline-title { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+  .timeline-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* ===== Demo ===== */
   .demo-container {
-    margin-top: 56px; border-radius: var(--radius); overflow: hidden;
-    backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
-    -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
-    background: var(--glass-bg); border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow-outer), var(--glass-shadow-inner-top), var(--glass-shadow-inner-bottom);
+    margin-top: 48px; border-radius: var(--radius); overflow: hidden;
+    background: var(--glass-bg); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow);
   }
   .demo-header {
-    padding: 20px 28px; border-bottom: 1px solid var(--glass-border);
-    display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 2;
+    padding: 18px 24px; border-bottom: 1px solid var(--glass-border);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
   }
-  .demo-title { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-  .demo-meta { font-size: 13px; color: var(--text-tertiary); }
-  .demo-body { padding: 28px; position: relative; z-index: 2; }
-  .demo-waveform { display: flex; align-items: flex-end; gap: 3px; height: 60px; margin-bottom: 20px; }
-  .demo-bar {
-    width: 4px; background: linear-gradient(180deg, var(--accent), var(--purple));
-    border-radius: 2px; opacity: 0.7; transition: height 0.3s ease;
-  }
-  .demo-transcript {
-    max-height: 200px; overflow-y: auto; font-size: 14px; line-height: 1.8; color: var(--text-secondary);
-  }
-  .demo-transcript p { margin-bottom: 8px; }
-  .demo-transcript .time { color: var(--accent); font-weight: 500; margin-right: 8px; }
-  .demo-transcript .highlight-text { color: var(--text-primary); font-weight: 500; }
+  .demo-title { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600; }
+  .demo-title .lucide { width: 18px; height: 18px; color: var(--accent); }
+  .demo-meta { display: flex; align-items: center; gap: 14px; font-size: 13px; color: var(--text-tertiary); }
+  .demo-meta span { display: inline-flex; align-items: center; gap: 4px; }
+  .demo-meta .lucide { width: 13px; height: 13px; }
+  .demo-body { padding: 24px; }
+  .demo-waveform { display: flex; align-items: flex-end; gap: 2px; height: 56px; margin-bottom: 20px; }
+  .demo-bar { width: 3px; background: linear-gradient(180deg, var(--accent), var(--purple)); border-radius: 2px; opacity: 0.6; }
+  .demo-transcript { max-height: 180px; overflow-y: auto; font-size: 14px; line-height: 1.85; color: var(--text-secondary); }
+  .demo-transcript p { margin-bottom: 6px; }
+  .demo-transcript .time { color: var(--accent); font-weight: 500; margin-right: 8px; font-family: var(--font-mono); font-size: 12px; }
+  .demo-transcript .hl { color: var(--text-primary); font-weight: 500; }
 
-  /* ===== Tech Specs ===== */
+  /* ===== Specs ===== */
   .specs-table {
-    margin-top: 56px; border-radius: var(--radius); overflow: hidden;
-    backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
-    -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
+    margin-top: 48px; border-radius: var(--radius); overflow: hidden;
     background: var(--glass-bg); border: 1px solid var(--glass-border);
   }
   .spec-row {
-    display: grid; grid-template-columns: 180px 1fr; padding: 20px 28px;
-    border-bottom: 1px solid var(--glass-border); position: relative; z-index: 2;
+    display: grid; grid-template-columns: 160px 1fr; padding: 18px 24px;
+    border-bottom: 1px solid var(--glass-border); align-items: center;
   }
   .spec-row:last-child { border-bottom: none; }
-  .spec-label { font-size: 14px; font-weight: 600; color: var(--text-secondary); }
+  .spec-label { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+  .spec-label .lucide { width: 15px; height: 15px; opacity: 0.7; }
   .spec-value { font-size: 14px; color: var(--text-primary); line-height: 1.6; }
-  .spec-value span { display: inline-block; padding: 2px 10px; margin: 2px 4px 2px 0; background: rgba(0,122,255,0.1); color: var(--accent); border-radius: 100px; font-size: 13px; }
+  .spec-value span {
+    display: inline-block; padding: 3px 10px; margin: 2px 4px 2px 0;
+    background: var(--accent-light); color: var(--accent); border-radius: 100px; font-size: 12px; font-weight: 500;
+  }
+  @media (max-width: 640px) { .spec-row { grid-template-columns: 1fr; gap: 6px; } }
+
+  /* ===== CTA Section ===== */
+  .cta-section { text-align: center; padding: 120px 0; position: relative; overflow: hidden; }
+  .cta-section::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, var(--accent-light) 0%, transparent 70%);
+  }
+  .cta-section h2 {
+    font-size: clamp(36px, 6vw, 56px); font-weight: 700; letter-spacing: -0.025em;
+    margin-bottom: 16px; position: relative; z-index: 1;
+  }
+  .cta-section p {
+    font-size: 19px; color: var(--text-secondary); max-width: 520px; margin: 0 auto 36px;
+    position: relative; z-index: 1; line-height: 1.6;
+  }
+  .cta-section .hero-cta-group { position: relative; z-index: 1; }
 
   /* ===== Footer ===== */
-  footer {
-    padding: 60px 0 40px; text-align: center; border-top: 1px solid var(--glass-border);
+  footer { padding: 56px 0 40px; border-top: 1px solid var(--glass-border); }
+  .footer-inner { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 32px; }
+  .footer-brand { max-width: 300px; }
+  .footer-brand-name {
+    font-size: 20px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--text-primary), var(--accent));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   }
-  .footer-links { display: flex; gap: 24px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
-  .footer-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; transition: color 0.3s; }
-  .footer-links a:hover { color: var(--accent); }
+  .footer-brand-desc { font-size: 14px; color: var(--text-tertiary); line-height: 1.6; }
+  .footer-links { display: flex; gap: 48px; flex-wrap: wrap; }
+  .footer-col h5 { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 14px; }
+  .footer-col a {
+    display: flex; align-items: center; gap: 6px; color: var(--text-secondary); text-decoration: none;
+    font-size: 14px; margin-bottom: 10px; transition: color 0.2s;
+  }
+  .footer-col a .lucide { width: 14px; height: 14px; }
+  .footer-col a:hover { color: var(--accent); }
+  .footer-bottom {
+    margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--glass-border);
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+  }
   .footer-copy { font-size: 13px; color: var(--text-tertiary); }
-
-  /* ===== Responsive ===== */
-  @media (max-width: 768px) {
-    .highlight-row { grid-template-columns: 1fr; gap: 30px; }
-    .highlight-row.reverse { direction: ltr; }
-    .spec-row { grid-template-columns: 1fr; gap: 4px; }
-    section { padding: 70px 0; }
-  }
+  .footer-license { font-size: 12px; color: var(--text-tertiary); padding: 4px 10px; background: var(--accent-light); border-radius: 100px; }
 
   /* ===== Animations ===== */
   @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
+    from { opacity: 0; transform: translateY(24px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  .fade-in { animation: fadeInUp 0.8s var(--spring-ease) forwards; }
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== Scroll reveal ===== */
+  .reveal { opacity: 0; transform: translateY(24px); transition: all 0.7s var(--ease-out); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
+
+<!-- ===== Nav ===== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">Opedrgent</a>
+    <div class="nav-links">
+      <a href="#philosophy">理念</a>
+      <a href="#features">功能</a>
+      <a href="#ham">卫星</a>
+      <a href="#code">代码</a>
+      <a href="https://github.com/HaohanHe/Opedrgent" class="nav-cta" target="_blank">
+        <i data-lucide="github" style="width:14px;height:14px;"></i> Star
+      </a>
+    </div>
+  </div>
+</nav>
 
 <!-- ===== Hero ===== -->
 <section class="hero">
   <div class="hero-orb hero-orb-1"></div>
   <div class="hero-orb hero-orb-2"></div>
-  <div class="hero-orb hero-orb-3"></div>
-  <div class="hero-badge">v1.2.1 &middot; 开源 &middot; 117,527 行 Kotlin</div>
+  <div class="hero-badge">
+    <i data-lucide="sparkles"></i>
+    v1.2.1 · 开源 · MIT License
+  </div>
   <h1>Opedrgent</h1>
-  <p class="hero-tagline">主动型 AI 第二大脑</p>
-  <p class="hero-sub">AI 不应该被动等待提问。你的言行、你的状态、你走过的路，本身就是对智者的提问。颗粒归仓，向前一步——让 AI 在你开口之前，已经伸出援手。</p>
+  <p class="hero-tagline">AI 不该等你提问。<br><strong>它该主动。</strong></p>
+  <p class="hero-sub">你的言行、你的状态、你走过的路——本身就是对智者的提问。颗粒归仓，向前一步。一款完全本地化的 Android AI 第二大脑。</p>
   <div class="hero-cta-group">
-    <a href="https://github.com/HaohanHe/Opedrgent" class="hero-cta" target="_blank">GitHub 仓库</a>
-    <a href="#features" class="hero-cta-secondary">查看功能</a>
+    <a href="https://github.com/HaohanHe/Opedrgent" class="btn btn-primary" target="_blank">
+      <i data-lucide="github"></i> 查看 GitHub
+    </a>
+    <a href="#features" class="btn btn-secondary">
+      <i data-lucide="play-circle"></i> 了解功能
+    </a>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-num" data-target="117527">0</div>
+      <div class="stat-label">行 Kotlin 代码</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" data-target="332">0</div>
+      <div class="stat-label">个源文件</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" data-target="20">0</div>
+      <div class="stat-label">+ 工具调用</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" data-target="16">0</div>
+      <div class="stat-label">颗业余卫星</div>
+    </div>
   </div>
 </section>
 
 <!-- ===== 核心理念 ===== -->
 <section id="philosophy">
   <div class="container">
-    <span class="section-label">核心理念</span>
-    <h2 class="section-title">AI 不该是个搜索框</h2>
-    <p class="section-desc">第一代 AI 模仿搜索引擎，给你一个框，有问题你问。但这不对——就像电影不该模仿舞台剧，电视不该模仿电影院。AI 时代的人机交互，应该有自己的天命。</p>
+    <div class="section-header reveal">
+      <span class="section-label"><i data-lucide="lightbulb"></i> 核心理念</span>
+      <h2 class="section-title">第一代 AI 是搜索框。<br>这一代，该有自己的天命。</h2>
+      <p class="section-desc">印刷机模仿手抄本，电影模仿舞台剧，电视模仿广播。每一代新媒体都先模仿上一代，然后才找到自己的语言。AI 也一样——它不该只是一个你问它答的框。</p>
+    </div>
 
-    <div class="quote-block">
-      <p>"你是个智者，你怎么能这么对我呢？我不问你还就不答了，我问的水平不高，你还就敷衍我了，有这么当智者的吗？……一个病人去看病，他必须开口对医生说我哪哪不舒服吗？医院之所以存在，就是一个采集病人数据的地方。病人即使不开口，他的身体也在开口。"</p>
-      <cite>—— 罗振宇，得到大脑发布会，2026 年 5 月 26 日</cite>
+    <div class="quote-block reveal">
+      <div class="quote-icon"><i data-lucide="quote"></i></div>
+      <p>"你是个智者，我不问你还就不答了？一个病人去看病，必须开口说我哪不舒服吗？医院之所以存在，就是采集病人数据的地方。病人即使昏迷，他的身体也在开口。"</p>
+      <cite>—— 罗振宇，得到大脑发布会，2026.05.26</cite>
     </div>
 
     <div class="concept-grid">
-      <div class="concept-card">
-        <div class="concept-icon" style="background:linear-gradient(135deg,rgba(0,122,255,0.12),rgba(175,82,222,0.1));color:var(--accent);">
-          <svg class="icon" viewBox="0 0 24 24" width="24" height="24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
-        </div>
+      <div class="concept-card reveal">
+        <div class="concept-icon"><i data-lucide="archive"></i></div>
         <h3>颗粒归仓</h3>
-        <p>语音、会议、笔记、文件、位置、健康数据——你行走在世界上的所有痕迹，尽可能记录下来。不是为了占有，而是为了让 AI 看得见你是谁。</p>
+        <p>语音、会议、笔记、文件、位置、健康数据——你在世界上留下的每一道痕迹，都值得被记录。不是为了占有，是为了让 AI 看得见你是谁。</p>
       </div>
-      <div class="concept-card">
-        <div class="concept-icon" style="background:linear-gradient(135deg,rgba(50,173,230,0.12),rgba(48,209,88,0.1));color:var(--cyan);">
-          <svg class="icon" viewBox="0 0 24 24" width="24" height="24"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.6-2 .4-3.5.4-4.8-.3-1.2-.6-2-1.8-2-3 1.8-.4 3.3-.1 4.5-.3z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.3-2.3 1-3.6-1.5.1-2.8.6-4.2 1z"/></svg>
-        </div>
-        <h3>发芽，而非总结</h3>
-        <p>一段录音、一条笔记、一个随手的念头，对你只是记录。对 AI 是线索——顺着它，帮你挖出知识盲区，接上更广阔的知识，让一颗种子长成参天大树。</p>
+      <div class="concept-card reveal">
+        <div class="concept-icon" style="background:rgba(50,173,230,0.1);color:var(--cyan);"><i data-lucide="sprout"></i></div>
+        <h3>发芽，不是总结</h3>
+        <p>一条笔记对你只是记录。对 AI 是线索——顺着它挖出你的知识盲区，接上更广阔的世界，让一颗种子自己长成树。</p>
       </div>
-      <div class="concept-card">
-        <div class="concept-icon" style="background:linear-gradient(135deg,rgba(255,149,0,0.12),rgba(255,55,95,0.1));color:var(--orange);">
-          <svg class="icon" viewBox="0 0 24 24" width="24" height="24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-        </div>
-        <h3>向前一步，助推</h3>
-        <p>你缺的不是"每天该喝 2000ml 水"的知识，缺的是有人及时把杯子倒满。AI 的价值不是告诉你答案，而是在你需要的时候，已经推了你一把。</p>
+      <div class="concept-card reveal">
+        <div class="concept-icon" style="background:rgba(255,149,0,0.1);color:#ff9500;"><i data-lucide="arrow-up-right"></i></div>
+        <h3>向前一步</h3>
+        <p>你缺的不是"每天该喝 2000ml 水"的知识，是有人及时把杯子倒满。AI 的价值不是给答案，是在你需要时已经推了你一把。</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== 三大本地化 ===== -->
+<!-- ===== 本地化 ===== -->
 <section id="local">
   <div class="container">
-    <span class="section-label">完全本地化</span>
-    <h2 class="section-title">AI 到你的数据这里来算，算完走人</h2>
-    <p class="section-desc">语音转写、大模型推理、记忆存储——核心能力全部在设备端完成。你的数据从不离开手机。</p>
+    <div class="section-header reveal">
+      <span class="section-label"><i data-lucide="shield-check"></i> 完全本地化</span>
+      <h2 class="section-title">AI 到你的数据这里来算，<br>算完走人。</h2>
+      <p class="section-desc">语音转写、大模型推理、记忆存储——核心能力全部在设备端完成。你的数据从不离开手机。</p>
+    </div>
 
-    <div class="features-grid">
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+    <div class="bento-grid">
+      <div class="bento-item wide reveal">
+        <div class="bento-icon"><i data-lucide="audio-lines"></i></div>
+        <h4>语音转写 STT — 三引擎自动降级</h4>
+        <p>Sherpa-ONNX 离线推理（Paraformer / SenseVoice）→ MiMO ASR → Android 系统识别，自动检测可用性无缝切换。支持 30+ 语种与汉语方言。</p>
+        <div class="bento-tags">
+          <span class="bento-tag">Sherpa-ONNX</span>
+          <span class="bento-tag">MiMO ASR</span>
+          <span class="bento-tag">离线可用</span>
         </div>
-        <h4>语音转写 STT</h4>
-        <p>Sherpa-ONNX 离线推理（Paraformer / SenseVoice）+ MiMO ASR + 系统识别，三引擎自动降级。支持 30+ 语种与汉语方言。</p>
       </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2z"/></svg>
-        </div>
+      <div class="bento-item reveal">
+        <div class="bento-icon" style="background:rgba(110,86,207,0.1);color:var(--purple);"><i data-lucide="brain"></i></div>
         <h4>端侧 LLM 推理</h4>
-        <p>LiteRT-LM v0.12.0+ 集成，支持 Gemma 4 等模型，GPU/NPU 加速。离线模式自动降级，断网也能用。</p>
+        <p>LiteRT-LM v0.12.0+，Gemma 4 支持，GPU/NPU 加速。断网也能用。</p>
       </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
-        </div>
+      <div class="bento-item reveal">
+        <div class="bento-icon" style="background:rgba(50,173,230,0.1);color:var(--cyan);"><i data-lucide="database"></i></div>
         <h4>海马记忆系统</h4>
-        <p>SQLite 全局索引，自动索引笔记、对话、录音、发芽、面试、用户偏好。关键词提取 + LIKE 模糊匹配，三层渐进式上下文注入。</p>
+        <p>SQLite 全局索引，自动索引笔记/对话/录音/发芽。关键词提取 + 模糊匹配，三层渐进式上下文注入。</p>
       </div>
     </div>
   </div>
@@ -439,94 +581,54 @@
 <!-- ===== 核心功能 ===== -->
 <section id="features">
   <div class="container">
-    <span class="section-label">核心功能</span>
-    <h2 class="section-title">不只是对话，是一整套主动服务</h2>
-    <p class="section-desc">从全双工语音对话到卫星过境预测，从知识发芽到自动化工作流——Opedrgent 把 AI 的主动性落到每一个具体场景。</p>
+    <div class="section-header reveal">
+      <span class="section-label"><i data-lucide="zap"></i> 核心能力</span>
+      <h2 class="section-title">不只是对话。<br>是一整套主动服务。</h2>
+      <p class="section-desc">从全双工语音到卫星过境预测，从知识发芽到手机操作 Agent——把 AI 的主动性落到每一个具体场景。</p>
+    </div>
 
-    <div class="features-grid">
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        </div>
-        <h4>全双工语音对话</h4>
-        <p>Interview Mode：AudioRecord||AudioTrack + 硬件 AEC + VAD + BargeIn + 5 状态 FSM，接近真实对话的边说边听体验。</p>
+    <div class="bento-grid">
+      <div class="bento-item wide reveal">
+        <div class="bento-icon"><i data-lucide="message-circle"></i></div>
+        <h4>全双工语音对话 — Interview Mode</h4>
+        <p>AudioRecord||AudioTrack + 硬件 AEC + VAD + BargeIn + 5 状态有限状态机。接近真人对话的边说边听，你可以随时打断它。</p>
+        <div class="bento-tags"><span class="bento-tag">AEC 回声消除</span><span class="bento-tag">VAD 端点检测</span><span class="bento-tag">BargeIn 打断</span></div>
       </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        </div>
+      <div class="bento-item reveal">
+        <div class="bento-icon" style="background:rgba(48,209,88,0.1);color:var(--green);"><i data-lucide="file-text"></i></div>
         <h4>会议自动纪要</h4>
-        <p>说话人分离 + 多人语音转文字 + MeetingTranscriber 持久化。录音中可拍照关联时间点，支持系统内录。</p>
+        <p>说话人分离 + 多人转写 + 持久化存储。录音中可拍照关联时间点。</p>
       </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.6-2 .4-3.5.4-4.8-.3-1.2-.6-2-1.8-2-3 1.8-.4 3.3-.1 4.5-.3z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.3-2.3 1-3.6-1.5.1-2.8.6-4.2 1z"/></svg>
-        </div>
+      <div class="bento-item reveal">
+        <div class="bento-icon" style="background:rgba(50,173,230,0.1);color:var(--cyan);"><i data-lucide="sprout"></i></div>
         <h4>知识发芽引擎</h4>
-        <p>四阶段洞察引擎：种子提取 → 跨域关联 → AHA 洞察 → 金句回响。叙事式文章输出，非结构化要点。</p>
+        <p>四阶段：种子提取 → 跨域关联 → AHA 洞察 → 金句回响。叙事式输出。</p>
       </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><path d="M2 12h2"/><path d="M6 8h.01"/><path d="M6 16h.01"/><path d="M10 5v14"/><path d="M14 8h.01"/><path d="M14 16h.01"/><path d="M18 12h2"/><circle cx="12" cy="12" r="10"/></svg>
-        </div>
-        <h4>多引擎 ASR 容错</h4>
-        <p>Sherpa-ONNX（离线）→ MiMO ASR → Android SpeechRecognizer，自动检测可用性无缝切换。</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
-        </div>
-        <h4>编辑团队协作</h4>
-        <p>EditorTeamService 多角色编辑管道，Skill 深度集成，SkillModelUnifier 模型统一。</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><path d="M3 10v4"/><path d="M7 7v10"/><path d="M11 4v16"/><path d="M15 8v8"/><path d="M19 11v2"/></svg>
-        </div>
-        <h4>声纹识别 &amp; TTS</h4>
-        <p>三引擎 TTS 路由：System TTS + StepAudio TTS（Global+Inline）+ MiMO TTS。StepRealtimeClient WebSocket 实时语音。</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
-        </div>
+      <div class="bento-item reveal">
+        <div class="bento-icon" style="background:rgba(255,55,95,0.1);color:#ff375f;"><i data-lucide="circle-dot"></i></div>
         <h4>系统内录</h4>
-        <p>MediaProjection 捕获系统内部音频（Android 10+），无需 Root。前台服务保活，不被电话中断。</p>
+        <p>MediaProjection 捕获系统音频（Android 10+），无需 Root。前台服务保活。</p>
       </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </div>
+      <div class="bento-item reveal">
+        <div class="bento-icon"><i data-lucide="search"></i></div>
         <h4>AI 自然语言搜索</h4>
-        <p>海马记忆全局检索 + 知识库 RAG 向量存储。以任何维度、任何刁钻的角度调取你的记录。</p>
+        <p>海马记忆全局检索 + 知识库 RAG 向量存储。任何维度调取你的记录。</p>
       </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>
-        </div>
-        <h4>多模型对话</h4>
-        <p>双协议 LLM：OpenAI Chat Completions + Anthropic Messages。流式 SSE 输出 + Thinking Mode + JSON Mode。</p>
+      <div class="bento-item wide reveal">
+        <div class="bento-icon" style="background:rgba(110,86,207,0.1);color:var(--purple);"><i data-lucide="bot"></i></div>
+        <h4>多模型对话 + 20+ 工具调用</h4>
+        <p>双协议 LLM（OpenAI + Anthropic），流式 SSE 输出 + Thinking Mode。工具覆盖搜索、URL 读取、JS 执行、日历 CRUD、健康数据、Intent 调度、反向地理编码、报告生成……Function Calling + System Prompt 双通道发现。</p>
+        <div class="bento-tags"><span class="bento-tag">OpenAI</span><span class="bento-tag">Anthropic</span><span class="bento-tag">Function Calling</span><span class="bento-tag">Deep Research</span></div>
       </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-        </div>
-        <h4>20+ 工具调用</h4>
-        <p>搜索、URL 读取、JS 执行、日历 CRUD、健康数据、Intent 调度、反向地理编码、报告生成……Function Calling + System Prompt 双通道发现。</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        </div>
+      <div class="bento-item reveal">
+        <div class="bento-icon" style="background:rgba(48,209,88,0.1);color:var(--green);"><i data-lucide="book-open"></i></div>
         <h4>深度研究</h4>
-        <p>DeepResearchTool 多步搜索 + 网页阅读 + 自动总结。HybridRankingEngine 混合排序 + 语义评分 + 动态权威评分。</p>
+        <p>多步搜索 + 网页阅读 + 自动总结。HybridRankingEngine 混合排序。</p>
       </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-        </div>
-        <h4>文档处理 &amp; OCR</h4>
-        <p>PDF 处理 + ML Kit 中英文 OCR + PP-OCRv6。DOCX 处理。导入即转写，扔进去就能整理。</p>
+      <div class="bento-item reveal">
+        <div class="bento-icon" style="background:rgba(50,173,230,0.1);color:var(--cyan);"><i data-lucide="scan"></i></div>
+        <h4>文档 & OCR</h4>
+        <p>PDF + DOCX 处理，ML Kit 中英文 OCR + PP-OCRv6。导入即转写。</p>
       </div>
     </div>
   </div>
@@ -535,245 +637,211 @@
 <!-- ===== Ham 模式 ===== -->
 <section id="ham">
   <div class="container">
-    <span class="section-label">Ham 模式 &middot; 业余卫星通信</span>
-    <h2 class="section-title">走到哪，AI 就把知识告诉你</h2>
-    <p class="section-desc">"我开到哪个县，车机就应该告诉我这个县秦朝叫什么、出过哪些名人。"——位置本身就是提问。Opedrgent 把这个理念延伸到了天空。</p>
+    <div class="section-header reveal">
+      <span class="section-label"><i data-lucide="satellite"></i> Ham 模式 · 业余卫星通信</span>
+      <h2 class="section-title">走到哪，<br>AI 就把知识告诉你。</h2>
+      <p class="section-desc">"我开到哪个县，车机就该告诉我这个县秦朝叫什么、出过哪些名人。"位置本身就是提问。Opedrgent 把这个理念延伸到了天空。</p>
+    </div>
 
-    <div class="highlight-section">
-      <div class="highlight-bg"></div>
-      <div class="container highlight-content">
-        <div class="highlight-row">
-          <div class="highlight-text">
-            <h3>卫星过境预测</h3>
-            <p>SGP4/SDP4 完整轨道传播引擎，支持 J2/J3/J4 摄动、BSTAR 大气阻力、GMST 修正、深空 SDP4。粗扫 + 精扫二阶策略，精确到秒。</p>
-            <ul>
-              <li>16 颗业余卫星内置数据库（ISS、SO-50、AO-91/92、FO-29、CAS-3H、RS-44 等）</li>
-              <li>多源 TLE Fallback：Celestrak → AMSAT → 旧 URL，24 小时本地缓存</li>
-              <li>活跃卫星搜索：按名称或 NORAD ID 搜索全部活跃卫星</li>
-              <li>上下行频率、调制方式、最低仰角一目了然</li>
-            </ul>
-          </div>
-          <div class="highlight-visual">
-            <span class="visual-tag" style="background:rgba(48,209,88,0.15);color:var(--green);">HAM RADIO</span>
-            <div class="visual-title">
-              <svg class="icon" viewBox="0 0 24 24" width="24" height="24" style="color:var(--green);"><path d="M13 7L9 3 5 7l4 4"/><path d="M17 11l4-4-4-4-4 4"/><path d="M8 12l-5 5 4 4 5-4"/><circle cx="12" cy="12" r="3"/></svg>
-              卫星就在你头顶
-            </div>
-            <p class="visual-desc">不用你问"现在哪颗卫星过境"。打开 Ham 模式，AI 已经知道你在哪、哪颗卫星正在飞过、该用什么频率守听。</p>
-            <div class="visual-stats">
-              <div class="visual-stat"><div class="visual-stat-num">16</div><div class="visual-stat-label">内置卫星</div></div>
-              <div class="visual-stat"><div class="visual-stat-num">SGP4</div><div class="visual-stat-label">轨道引擎</div></div>
-              <div class="visual-stat"><div class="visual-stat-num">ADIF</div><div class="visual-stat-label">日志导出</div></div>
-            </div>
-          </div>
+    <div class="highlight-row reveal">
+      <div class="highlight-text">
+        <h3>卫星过境预测</h3>
+        <p>SGP4/SDP4 完整轨道传播引擎，J2/J3/J4 摄动、BSTAR 大气阻力、GMST 修正、深空 SDP4。粗扫 + 精扫二阶策略，精确到秒。</p>
+        <ul class="highlight-list">
+          <li>16 颗业余卫星内置数据库（ISS、SO-50、AO-91/92、FO-29、CAS-3H、RS-44）</li>
+          <li>多源 TLE Fallback：Celestrak → AMSAT → 旧 URL，24 小时本地缓存</li>
+          <li>活跃卫星搜索：按名称或 NORAD ID 搜索全部活跃卫星</li>
+          <li>上下行频率、调制方式、最低仰角一目了然</li>
+        </ul>
+      </div>
+      <div class="highlight-visual">
+        <span class="visual-tag" style="background:rgba(48,209,88,0.12);color:var(--green);"><i data-lucide="radio"></i> HAM RADIO</span>
+        <div class="visual-title"><i data-lucide="satellite" style="color:var(--green);"></i> 卫星就在你头顶</div>
+        <p class="visual-desc">不用你问"现在哪颗卫星过境"。打开 Ham 模式，AI 已经知道你在哪、哪颗卫星正在飞过、该用什么频率守听。</p>
+        <div class="visual-stats">
+          <div><div class="visual-stat-num">16</div><div class="visual-stat-label">内置卫星</div></div>
+          <div><div class="visual-stat-num">SGP4</div><div class="visual-stat-label">轨道引擎</div></div>
+          <div><div class="visual-stat-num">ADIF</div><div class="visual-stat-label">日志导出</div></div>
         </div>
+      </div>
+    </div>
 
-        <div class="highlight-row reverse">
-          <div class="highlight-text">
-            <h3>智能通联日志</h3>
-            <p>通联结束后，AI 自动从卫星数据库预填充日志字段——呼号、频率、调制方式、卫星名称，只需要你补漏。可编辑校验，一键导出 ADIF 3.1.4 / CSV，兼容 QRZLOG / LoTW / ClubLog。</p>
-            <ul>
-              <li>转写后自动预填充，AI 仅补漏</li>
-              <li>可配置本台呼号和 QTH 网格</li>
-              <li>通联结果枚举约束（OK / PARTIAL / NO）</li>
-              <li>地名 → 经纬度 → 卫星过境全链路打通</li>
-            </ul>
-          </div>
-          <div class="highlight-visual">
-            <span class="visual-tag" style="background:rgba(0,122,255,0.15);color:var(--accent);">AI ASSISTED</span>
-            <div class="visual-title">
-              <svg class="icon" viewBox="0 0 24 24" width="24" height="24" style="color:var(--accent);"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
-              日志自动生成
-            </div>
-            <p class="visual-desc">通联完不用手动填表。AI 听着你的通联内容，已经把日志写好了，你只需要确认。</p>
-            <div class="visual-stats">
-              <div class="visual-stat"><div class="visual-stat-num">3.1.4</div><div class="visual-stat-label">ADIF 版本</div></div>
-              <div class="visual-stat"><div class="visual-stat-num">CSV</div><div class="visual-stat-label">导出格式</div></div>
-            </div>
-          </div>
+    <div class="highlight-row reverse reveal">
+      <div class="highlight-text">
+        <h3>智能通联日志</h3>
+        <p>通联结束，AI 自动从卫星数据库预填充日志字段——呼号、频率、调制方式、卫星名称，只需要你补漏。一键导出 ADIF 3.1.4 / CSV，兼容 QRZLOG / LoTW / ClubLog。</p>
+        <ul class="highlight-list">
+          <li>转写后自动预填充，AI 仅补漏</li>
+          <li>可配置本台呼号和 QTH 网格</li>
+          <li>通联结果枚举约束（OK / PARTIAL / NO）</li>
+          <li>地名 → 经纬度 → 卫星过境全链路打通</li>
+        </ul>
+      </div>
+      <div class="highlight-visual">
+        <span class="visual-tag" style="background:var(--accent-light);color:var(--accent);"><i data-lucide="sparkles"></i> AI ASSISTED</span>
+        <div class="visual-title"><i data-lucide="clipboard-list" style="color:var(--accent);"></i> 日志自动生成</div>
+        <p class="visual-desc">通联完不用手动填表。AI 听着你的通联内容，已经把日志写好了，你只需要确认。</p>
+        <div class="visual-stats">
+          <div><div class="visual-stat-num">3.1.4</div><div class="visual-stat-label">ADIF 版本</div></div>
+          <div><div class="visual-stat-num">CSV</div><div class="visual-stat-label">导出格式</div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== 技能系统 ===== -->
+<!-- ===== 技能 & 工具 ===== -->
 <section id="skills">
   <div class="container">
-    <span class="section-label">技能系统 V2</span>
-    <h2 class="section-title">能力可以随时生长</h2>
-    <p class="section-desc">SKILL.md 标准，像安装插件一样扩展 AI 的能力。JS 沙箱安全执行，远程 URL 动态加载，不重启 App 即可更新技能。</p>
+    <div class="section-header reveal">
+      <span class="section-label"><i data-lucide="puzzle"></i> 技能系统 V2 & 自动化</span>
+      <h2 class="section-title">能力可以随时生长。<br>AI 不只是说，还能做。</h2>
+      <p class="section-desc">SKILL.md 标准，像装插件一样扩展能力。20+ 工具让 LLM 动手做事——从浏览网页到操作日历，从手机自动化到 MCP 协议。</p>
+    </div>
 
-    <div class="features-grid">
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-        </div>
+    <div class="bento-grid">
+      <div class="bento-item reveal">
+        <div class="bento-icon" style="background:rgba(255,149,0,0.1);color:#ff9500;"><i data-lucide="package"></i></div>
         <h4>SKILL.md 标准</h4>
-        <p>Frontmatter 元数据：name / description / version / category / require-secret。纯文本定义，人人可写。</p>
+        <p>Frontmatter 元数据，纯文本定义，人人可写。URL 远程 / 本地文件 / 手动创建三种导入。</p>
       </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        </div>
-        <h4>JS 沙箱执行</h4>
-        <p>WebView + GalleryBridge 回调，资源/CPU/网络限制。ai_edge_gallery_get_result() 标准化回调接口。</p>
+      <div class="bento-item reveal">
+        <div class="bento-icon" style="background:rgba(255,55,95,0.1);color:#ff375f;"><i data-lucide="shield"></i></div>
+        <h4>JS 沙箱 + 三级授权</h4>
+        <p>WebView 安全执行。ALLOW / ASK / DENY per-skill 权限控制。</p>
       </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        </div>
-        <h4>三种导入方式</h4>
-        <p>URL 远程加载 / 本地文件导入 / 手动创建。Skill Marketplace 从远程动态加载技能定义。</p>
+      <div class="bento-item wide reveal">
+        <div class="bento-icon"><i data-lucide="globe"></i></div>
+        <h4>WebView Agent — 浏览器自动化</h4>
+        <p>网页内容抓取、搜索、截图、多模态交互点击。AI 可以自己打开网页、读内容、点按钮。</p>
+        <div class="bento-tags"><span class="bento-tag">内容抓取</span><span class="bento-tag">截图</span><span class="bento-tag">交互点击</span></div>
       </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
-        <h4>三级授权</h4>
-        <p>RequireSecretManager：ALLOW 自动允许 / ASK 每次询问 / DENY 禁止调用。per-skill 权限控制。</p>
+      <div class="bento-item reveal">
+        <div class="bento-icon" style="background:rgba(110,86,207,0.1);color:var(--purple);"><i data-lucide="smartphone"></i></div>
+        <h4>手机操作 Agent</h4>
+        <p>截图 → 分析 → 执行全自动链路。Accessibility Service 获取 UI 节点树。</p>
       </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-        </div>
-        <h4>内置 JS Skills</h4>
-        <p>calculate-hash（哈希计算）、mood-tracker-lite（心情追踪）、interactive-map（交互地图）、qr-code（二维码）、virtual-piano（虚拟钢琴）。</p>
+      <div class="bento-item reveal">
+        <div class="bento-icon" style="background:rgba(48,209,88,0.1);color:var(--green);"><i data-lucide="clock"></i></div>
+        <h4>自动化工作流</h4>
+        <p>定时/触发任务。到周末自动问你要不要生成周报。</p>
       </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        </div>
-        <h4>内置 Text Skills</h4>
-        <p>critical-inquiry（批判性探究）、insight-sprout（知识发芽）、insight-review（洞察评审）、text-refine（文本精炼）、mimo-tts、multi-agent-collaboration。</p>
+      <div class="bento-item reveal">
+        <div class="bento-icon" style="background:rgba(255,149,0,0.1);color:#ff9500;"><i data-lucide="calendar"></i></div>
+        <h4>日历 CRUD</h4>
+        <p>直接操作系统日历，无需确认。自然语言时间解析。</p>
+      </div>
+      <div class="bento-item reveal">
+        <div class="bento-icon" style="background:rgba(255,55,95,0.1);color:#ff375f;"><i data-lucide="heart"></i></div>
+        <h4>Health Connect</h4>
+        <p>步数/心率/卡路里/睡眠。今日摘要自动注入 system prompt。</p>
+      </div>
+      <div class="bento-item reveal">
+        <div class="bento-icon" style="background:rgba(50,173,230,0.1);color:var(--cyan);"><i data-lucide="plug"></i></div>
+        <h4>MCP 协议</h4>
+        <p>stdio/stream 传输，接入外部 MCP 服务器，无限扩展。</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== 工具与自动化 ===== -->
-<section id="tools">
+<!-- ===== 代码展示 ===== -->
+<section id="code" class="code-section">
   <div class="container">
-    <span class="section-label">工具调用 &amp; 自动化</span>
-    <h2 class="section-title">AI 不只是说，还能做</h2>
-    <p class="section-desc">20+ 工具让 LLM 可以动手做事。从搜索网页到操作日历，从浏览器自动化到手机操作 Agent——AI 的主观能动性，在这里兑现。</p>
+    <div class="section-header reveal">
+      <span class="section-label"><i data-lucide="code-2"></i> 工程实现</span>
+      <h2 class="section-title">手动 DI，无 Hilt/Koin。<br>全项目中文注释。</h2>
+      <p class="section-desc">332 个 Kotlin 文件，117,527 行代码。不依赖重型框架，每一行都知道自己在干什么。</p>
+    </div>
 
-    <div class="concept-grid">
-      <div class="concept-card">
-        <div class="concept-icon" style="background:linear-gradient(135deg,rgba(0,122,255,0.12),rgba(50,173,230,0.1));color:var(--accent);">
-          <svg class="icon" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        </div>
-        <h3>WebView Agent</h3>
-        <p>浏览器自动化引擎：网页内容抓取、搜索、截图、多模态交互点击。AI 可以自己打开网页、读内容、点按钮。</p>
+    <div class="code-block reveal">
+      <div class="code-header">
+        <div class="code-dot red"></div>
+        <div class="code-dot yellow"></div>
+        <div class="code-dot green"></div>
+        <span class="code-title">Terminal — Opedrgent</span>
       </div>
-      <div class="concept-card">
-        <div class="concept-icon" style="background:linear-gradient(135deg,rgba(175,82,222,0.12),rgba(255,55,95,0.1));color:var(--purple);">
-          <svg class="icon" viewBox="0 0 24 24" width="24" height="24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-        </div>
-        <h3>手机操作 Agent</h3>
-        <p>StepMobileAgentTool：截图 → 分析 → 执行全自动链路。Accessibility Service 获取 UI 节点树，操作历史记录与回放。</p>
+      <div class="code-body">
+<span class="comment"># 克隆项目</span>
+<span class="cmd">git clone</span> https://github.com/HaohanHe/Opedrgent.git
+<span class="cmd">cd</span> Opedrgent
+
+<span class="comment"># 项目结构</span>
+<span class="cmd">find</span> app/src/main/java -name <span class="string">"*.kt"</span> | <span class="cmd">wc -l</span>
+<span class="path">332</span>  <span class="comment"># Kotlin 源文件</span>
+
+<span class="cmd">wc -l</span> app/src/main/java/top/hsyscn/opedrgent/**/*.kt
+<span class="path">117527</span> total  <span class="comment"># 代码行数</span>
+
+<span class="comment"># 核心模块</span>
+<span class="key">agent/</span>        <span class="comment"># 多智能体编排 (AgentSwarm, Orchestrator)</span>
+<span class="key">interview/</span>    <span class="comment"># 全双工语音 (5状态FSM, AEC, VAD)</span>
+<span class="key">insight/</span>      <span class="comment"># 知识发芽引擎 (四阶段洞察)</span>
+<span class="key">storage/</span>      <span class="comment"># 海马记忆系统 (SQLite全局索引)</span>
+<span class="key">tools/</span>        <span class="comment"># 20+ 工具 (搜索/日历/健康/卫星...)</span>
+<span class="key">llm/</span>          <span class="comment"># 端侧推理 (LiteRT-LM, Gemma 4)</span>
+<span class="key">stt/</span>          <span class="comment"># 语音识别 (Sherpa-ONNX + MiMO)</span>
       </div>
-      <div class="concept-card">
-        <div class="concept-icon" style="background:linear-gradient(135deg,rgba(48,209,88,0.12),rgba(50,173,230,0.1));color:var(--green);">
-          <svg class="icon" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        </div>
-        <h3>自动化工作流</h3>
-        <p>AutomationWorker + AutomationStore，可配置定时/触发任务。到了周末自动问你要不要生成周报，发了运动数据自动存健康记录。</p>
+    </div>
+
+    <div class="timeline reveal">
+      <div class="timeline-item">
+        <div class="timeline-version">v1.2.1 · 2026.08</div>
+        <div class="timeline-title">Release 构建稳定版</div>
+        <div class="timeline-desc">位置缓存刷新策略优化，笔记操作表滚动修复，release lint 致命错误修正。</div>
       </div>
-      <div class="concept-card">
-        <div class="concept-icon" style="background:linear-gradient(135deg,rgba(255,149,0,0.12),rgba(255,55,95,0.1));color:var(--orange);">
-          <svg class="icon" viewBox="0 0 24 24" width="24" height="24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        </div>
-        <h3>日历 CRUD</h3>
-        <p>ContentProvider 直接操作系统日历，无需用户确认。自然语言时间解析："明天下午3点"、"一小时后"、"下周一"。</p>
+      <div class="timeline-item">
+        <div class="timeline-version">v1.2sat · 2026.07</div>
+        <div class="timeline-title">Ham 模式完整上线</div>
+        <div class="timeline-desc">SGP4/SDP4 轨道引擎，16 颗卫星数据库，智能通联日志，ADIF 导出。MainViewModel 拆分减重约 500 行。</div>
       </div>
-      <div class="concept-card">
-        <div class="concept-icon" style="background:linear-gradient(135deg,rgba(255,55,95,0.12),rgba(175,82,222,0.1));color:var(--pink);">
-          <svg class="icon" viewBox="0 0 24 24" width="24" height="24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        </div>
-        <h3>Health Connect</h3>
-        <p>步数、心率、卡路里、距离、睡眠、运动。今日摘要自动注入 system prompt，AI 知道你今天走了多少步、睡得好不好。</p>
+      <div class="timeline-item">
+        <div class="timeline-version">v1.1sat · 2026.06</div>
+        <div class="timeline-title">通联日志智能化</div>
+        <div class="timeline-desc">转写后自动预填充日志，thinking_budget 可配置（0-32768 token），WebView 内存泄露修复。</div>
       </div>
-      <div class="concept-card">
-        <div class="concept-icon" style="background:linear-gradient(135deg,rgba(50,173,230,0.12),rgba(0,122,255,0.1));color:var(--cyan);">
-          <svg class="icon" viewBox="0 0 24 24" width="24" height="24"><path d="M9 2v6"/><path d="M15 2v6"/><path d="M12 17v5"/><path d="M18 8H6l6-6z"/><path d="M6 14h12l-6 6z"/></svg>
-        </div>
-        <h3>MCP 协议支持</h3>
-        <p>McpManager / AgentService MCP 协议层，stdio/stream 传输。可以接入外部 MCP 服务器，无限扩展工具能力。</p>
+      <div class="timeline-item">
+        <div class="timeline-version">v1.0.0 · 2026.05</div>
+        <div class="timeline-title">Interview 访谈模式 + 技能系统 V2</div>
+        <div class="timeline-desc">全双工语音对话，SKILL.md 标准，本地大模型 LiteRT-LM，笔记与知识图谱，桌面小组件。</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== 多智能体 ===== -->
-<section id="agents">
-  <div class="container">
-    <span class="section-label">多智能体编排</span>
-    <h2 class="section-title">不是一个 AI，是一支团队</h2>
-    <p class="section-desc">AgentSwarm 任务分解，MultiAgentOrchestrator 多智能体编排。/orchestrate 指令一键启动研究者、分析师、编辑者协作。</p>
-
-    <div class="features-grid">
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </div>
-        <h4>AgentSwarm</h4>
-        <p>复杂任务自动拆分为子任务，分配给专业 Agent。Agent 间统一消息格式和上下文传递机制。</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-        </div>
-        <h4>MultiAgentOrchestrator</h4>
-        <p>预设角色池：研究者 / 分析师 / 编辑者。Research Agent 深度研究：WebResearchRouter + HybridRanking 完整链路。</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        </div>
-        <h4>编辑团队</h4>
-        <p>EditorTeamService 多角色编辑管道。Skill 深度集成，EditorTeamSkillAdapter + SkillModelUnifier。</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg class="icon" viewBox="0 0 24 24" width="28" height="28"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
-        </div>
-        <h4>多模态工具</h4>
-        <p>图像生成 / 编辑、图生图、视频摘要、图像理解（step-1o-turbo-vision）、RAG 检索。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== Live Demo ===== -->
+<!-- ===== Demo ===== -->
 <section id="demo">
   <div class="container">
-    <span class="section-label">Live Demo</span>
-    <h2 class="section-title">一段录音，能长出什么？</h2>
-    <p class="section-desc">模拟一段 21 分 58 秒的广播剧音频，Opedrgent 自动转写 3888 字，生成章节时间轴、金句精选和发芽报告。</p>
+    <div class="section-header reveal">
+      <span class="section-label"><i data-lucide="play-circle"></i> Live Demo</span>
+      <h2 class="section-title">一段录音，<br>能长出什么？</h2>
+      <p class="section-desc">模拟一段 21 分 58 秒的广播剧音频，自动转写 3888 字，生成章节时间轴、金句精选和发芽报告。</p>
+    </div>
 
-    <div class="demo-container">
+    <div class="demo-container reveal">
       <div class="demo-header">
-        <div class="demo-title">
-          <svg class="icon" viewBox="0 0 24 24" width="18" height="18" style="color:var(--accent);"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
-          秋日露营：告白与心意
+        <div class="demo-title"><i data-lucide="mic"></i> 秋日露营：告白与心意</div>
+        <div class="demo-meta">
+          <span><i data-lucide="clock"></i> 21:58</span>
+          <span><i data-lucide="file-text"></i> 3,888 字</span>
+          <span><i data-lucide="sprout"></i> 已发芽</span>
         </div>
-        <div class="demo-meta">21:58 &middot; 3888 字 &middot; 已发芽</div>
       </div>
       <div class="demo-body">
         <div class="demo-waveform" id="waveform"></div>
         <div class="demo-transcript">
           <p><span class="time">00:00</span>秋日的阳光透过树叶洒在帐篷上，空气中弥漫着咖啡和松木的香气……</p>
-          <p><span class="time">03:42</span>"你有没有想过，我们为什么会在这里？" 她突然问。<span class="highlight-text">有些问题不需要答案，问出来本身就是答案。</span></p>
+          <p><span class="time">03:42</span>"你有没有想过，我们为什么会在这里？" 她突然问。<span class="hl">有些问题不需要答案，问出来本身就是答案。</span></p>
           <p><span class="time">08:15</span>篝火噼啪作响，远处传来虫鸣。这一刻，时间好像慢了下来。</p>
-          <p><span class="time">15:30</span>他拿出吉他，弹了一首没写完的歌。<span class="highlight-text">未完成的东西，往往最动人。</span></p>
+          <p><span class="time">15:30</span>他拿出吉他，弹了一首没写完的歌。<span class="hl">未完成的东西，往往最动人。</span></p>
           <p><span class="time">21:58</span>星空下，谁都没有说话。但好像什么都说了。</p>
         </div>
       </div>
     </div>
 
-    <div class="quote-block" style="margin-top:40px;">
-      <p>"你不用问，你把你的记录给他，他来帮你总结——不是总结，是补充在知识的海洋里，他去帮你主动地游泳、去捕捉，然后捧回来一样一样的宝贝说，这就是你给我的种子，那个秋天的收获。"</p>
+    <div class="quote-block reveal" style="margin-top:40px;">
+      <div class="quote-icon"><i data-lucide="quote"></i></div>
+      <p>"你不用问，把记录给它，它来帮你总结——不是总结，是补充在知识的海洋里，它主动去游泳、去捕捉，然后捧回来一样一样的宝贝说，这就是你给我的种子，那个秋天的收获。"</p>
       <cite>—— 罗振宇，谈"发芽"功能</cite>
     </div>
   </div>
@@ -782,59 +850,77 @@
 <!-- ===== 技术规格 ===== -->
 <section id="specs">
   <div class="container">
-    <span class="section-label">技术规格</span>
-    <h2 class="section-title">工程细节</h2>
-    <p class="section-desc">332 个 Kotlin 文件，117,527 行代码。手动 DI，无 Hilt/Koin。全项目中文注释。</p>
+    <div class="section-header reveal">
+      <span class="section-label"><i data-lucide="cpu"></i> 技术规格</span>
+      <h2 class="section-title">工程细节</h2>
+      <p class="section-desc">手动 DI，无 Hilt/Koin。全项目中文注释。JVM Toolchain 21。</p>
+    </div>
 
-    <div class="specs-table">
+    <div class="specs-table reveal">
       <div class="spec-row">
-        <div class="spec-label">UI 框架</div>
+        <div class="spec-label"><i data-lucide="layout"></i> UI 框架</div>
         <div class="spec-value"><span>Jetpack Compose</span><span>Material3</span><span>WindowSizeClass</span></div>
       </div>
       <div class="spec-row">
-        <div class="spec-label">语言 &amp; 构建</div>
-        <div class="spec-value"><span>Kotlin</span><span>JVM Toolchain 21</span><span>Gradle 8.x</span><span>Kotlin DSL</span></div>
+        <div class="spec-label"><i data-lucide="code-2"></i> 语言 & 构建</div>
+        <div class="spec-value"><span>Kotlin</span><span>JVM 21</span><span>Gradle 8.x</span><span>Kotlin DSL</span></div>
       </div>
       <div class="spec-row">
-        <div class="spec-label">SDK</div>
+        <div class="spec-label"><i data-lucide="smartphone"></i> SDK</div>
         <div class="spec-value"><span>minSdk 26 (Android 8.0)</span><span>targetSdk 35</span><span>compileSdk 35</span></div>
       </div>
       <div class="spec-row">
-        <div class="spec-label">网络</div>
+        <div class="spec-label"><i data-lucide="globe"></i> 网络</div>
         <div class="spec-value"><span>OkHttp</span><span>Jsoup</span><span>SSE 流式</span><span>智能熔断</span><span>多级缓存</span></div>
       </div>
       <div class="spec-row">
-        <div class="spec-label">存储</div>
-        <div class="spec-value"><span>Room (SQLite)</span><span>DataStore</span><span>SharedPreferences</span><span>EncryptedSecurity</span></div>
+        <div class="spec-label"><i data-lucide="database"></i> 存储</div>
+        <div class="spec-value"><span>Room (SQLite)</span><span>DataStore</span><span>EncryptedSecurity</span></div>
       </div>
       <div class="spec-row">
-        <div class="spec-label">语音 STT</div>
-        <div class="spec-value"><span>Sherpa-ONNX</span><span>MiMO ASR</span><span>Android SpeechRecognizer</span><span>StepAudio ASR</span></div>
+        <div class="spec-label"><i data-lucide="mic"></i> 语音 STT</div>
+        <div class="spec-value"><span>Sherpa-ONNX</span><span>MiMO ASR</span><span>系统识别</span><span>StepAudio ASR</span></div>
       </div>
       <div class="spec-row">
-        <div class="spec-label">语音 TTS</div>
+        <div class="spec-label"><i data-lucide="volume-2"></i> 语音 TTS</div>
         <div class="spec-value"><span>System TTS</span><span>StepAudio TTS</span><span>MiMO TTS</span><span>WebSocket Realtime</span></div>
       </div>
       <div class="spec-row">
-        <div class="spec-label">端侧 LLM</div>
-        <div class="spec-value"><span>LiteRT-LM v0.12.0+</span><span>TFLite</span><span>GPU/NPU 加速</span><span>Gemma 4</span></div>
+        <div class="spec-label"><i data-lucide="brain"></i> 端侧 LLM</div>
+        <div class="spec-value"><span>LiteRT-LM v0.12.0+</span><span>TFLite</span><span>GPU/NPU</span><span>Gemma 4</span></div>
       </div>
       <div class="spec-row">
-        <div class="spec-label">OCR</div>
-        <div class="spec-value"><span>Google ML Kit</span><span>PP-OCRv6 (ONNX)</span><span>中文+英文</span></div>
+        <div class="spec-label"><i data-lucide="scan"></i> OCR</div>
+        <div class="spec-value"><span>Google ML Kit</span><span>PP-OCRv6</span><span>中文+英文</span></div>
       </div>
       <div class="spec-row">
-        <div class="spec-label">并发 &amp; 异步</div>
-        <div class="spec-value"><span>Kotlin Coroutines</span><span>Flow</span><span>WorkManager</span><span>ForegroundService</span></div>
+        <div class="spec-label"><i data-lucide="zap"></i> 并发 & 异步</div>
+        <div class="spec-value"><span>Coroutines</span><span>Flow</span><span>WorkManager</span><span>ForegroundService</span></div>
       </div>
       <div class="spec-row">
-        <div class="spec-label">卫星通信</div>
+        <div class="spec-label"><i data-lucide="satellite"></i> 卫星通信</div>
         <div class="spec-value"><span>SGP4/SDP4</span><span>TLE 三级 Fallback</span><span>ADIF 3.1.4</span><span>16 颗内置卫星</span></div>
       </div>
       <div class="spec-row">
-        <div class="spec-label">其他</div>
-        <div class="spec-value"><span>Health Connect</span><span>WebDAV 同步</span><span>App Widget</span><span>Accessibility Service</span><span>小米 HyperOS 适配</span></div>
+        <div class="spec-label"><i data-lucide="more-horizontal"></i> 其他</div>
+        <div class="spec-value"><span>Health Connect</span><span>WebDAV 同步</span><span>App Widget</span><span>Accessibility</span><span>HyperOS 适配</span></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-section">
+  <div class="container">
+    <h2 class="reveal">让 AI 主动一点。</h2>
+    <p class="reveal">开源，免费，MIT License。你的数据，你的手机，你的第二大脑。</p>
+    <div class="hero-cta-group reveal">
+      <a href="https://github.com/HaohanHe/Opedrgent" class="btn btn-primary" target="_blank">
+        <i data-lucide="github"></i> 在 GitHub 上查看
+      </a>
+      <a href="https://github.com/HaohanHe/Opedrgent/releases" class="btn btn-secondary" target="_blank">
+        <i data-lucide="download"></i> 下载 APK
+      </a>
     </div>
   </div>
 </section>
@@ -842,62 +928,107 @@
 <!-- ===== Footer ===== -->
 <footer>
   <div class="container">
-    <div class="footer-links">
-      <a href="https://github.com/HaohanHe/Opedrgent" target="_blank">GitHub</a>
-      <a href="https://github.com/HaohanHe/Opedrgent/releases" target="_blank">Releases</a>
-      <a href="https://github.com/HaohanHe/Opedrgent/blob/main/docs/wiki/User-Manual.md" target="_blank">使用手册</a>
-      <a href="https://github.com/HaohanHe/Opedrgent/blob/main/PRIVACY.md" target="_blank">隐私政策</a>
-      <a href="https://BI4MIB.cn" target="_blank">个人站</a>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-brand-name">Opedrgent</div>
+        <p class="footer-brand-desc">主动型 AI 第二大脑。颗粒归仓，向前一步。</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h5>项目</h5>
+          <a href="https://github.com/HaohanHe/Opedrgent" target="_blank"><i data-lucide="github"></i> GitHub</a>
+          <a href="https://github.com/HaohanHe/Opedrgent/releases" target="_blank"><i data-lucide="tag"></i> Releases</a>
+          <a href="https://github.com/HaohanHe/Opedrgent/blob/main/CHANGELOG.md" target="_blank"><i data-lucide="file-text"></i> Changelog</a>
+        </div>
+        <div class="footer-col">
+          <h5>文档</h5>
+          <a href="https://github.com/HaohanHe/Opedrgent/blob/main/docs/wiki/User-Manual.md" target="_blank"><i data-lucide="book-open"></i> 使用手册</a>
+          <a href="https://github.com/HaohanHe/Opedrgent/blob/main/docs/wiki/Architecture.md" target="_blank"><i data-lucide="layers"></i> 架构文档</a>
+          <a href="https://github.com/HaohanHe/Opedrgent/blob/main/PRIVACY.md" target="_blank"><i data-lucide="shield"></i> 隐私政策</a>
+        </div>
+        <div class="footer-col">
+          <h5>作者</h5>
+          <a href="https://hsyscn.top" target="_blank"><i data-lucide="globe"></i> 个人站</a>
+          <a href="https://github.com/HaohanHe" target="_blank"><i data-lucide="github"></i> GitHub</a>
+          <a href="https://www.qrz.com/db/BI4MIB" target="_blank"><i data-lucide="radio"></i> QRZ: BI4MIB</a>
+        </div>
+      </div>
     </div>
-    <p class="footer-copy">Opedrgent &middot; 开源 MIT License &middot; BI4MIB 何浩瀚</p>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 BI4MIB 何浩瀚</p>
+      <span class="footer-license">MIT License</span>
+    </div>
   </div>
 </footer>
 
 <script>
-// 波形图生成
+// 初始化 Lucide 图标
+lucide.createIcons();
+
+// 波形图
 (function() {
-  const waveform = document.getElementById('waveform');
-  if (!waveform) return;
-  for (let i = 0; i < 80; i++) {
+  const wf = document.getElementById('waveform');
+  if (!wf) return;
+  for (let i = 0; i < 100; i++) {
     const bar = document.createElement('div');
     bar.className = 'demo-bar';
-    bar.style.height = (Math.random() * 50 + 10) + '%';
-    waveform.appendChild(bar);
+    bar.style.height = (Math.random() * 70 + 15) + '%';
+    wf.appendChild(bar);
   }
 })();
 
-// 滚动入场动画
+// 数字滚动动画
 (function() {
+  const animateNum = (el) => {
+    const target = parseInt(el.dataset.target);
+    const duration = 1800;
+    const start = performance.now();
+    const step = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.floor(target * eased);
+      el.textContent = current.toLocaleString();
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target.toLocaleString();
+    };
+    requestAnimationFrame(step);
+  };
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+        animateNum(entry.target);
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  }, { threshold: 0.5 });
 
-  document.querySelectorAll('.concept-card, .feature-item').forEach(el => {
-    observer.observe(el);
-  });
+  document.querySelectorAll('.stat-num[data-target]').forEach(el => observer.observe(el));
 })();
 
-// 鼠标 3D 倾斜效果
+// 滚动入场
 (function() {
-  document.querySelectorAll('.concept-card, .highlight-visual, .quote-block').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotateX = (y - centerY) / centerY * -3;
-      const rotateY = (x - centerX) / centerX * 3;
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
     });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal, .concept-card, .bento-item').forEach(el => observer.observe(el));
+})();
+
+// 导航栏滚动效果
+(function() {
+  const nav = document.querySelector('.nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      nav.style.boxShadow = '0 1px 0 rgba(0,0,0,0.06)';
+    } else {
+      nav.style.boxShadow = 'none';
+    }
   });
 })();
 </script>
